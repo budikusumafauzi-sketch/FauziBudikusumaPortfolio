@@ -330,7 +330,16 @@ The page itself never calls the chat API on load, so **none of these affect any 
 | ADR-012 | **Skills in `.agents/skills/`** (Antigravity) instead of `.claude/skills/` | Owner's actual environment is Antigravity. | Legacy `.agent/skills/` is also supported by the IDE — verify the installed version (OD-13). |
 
 ## 13. Quality gates (commands finalized in TASK-003)
-`pnpm lint` · `pnpm typecheck` · `pnpm test` · `pnpm build` · aggregate `pnpm verify`. Seed and DB checks have their own scripts (TASK-018). Procedure and evidence format: `WORKFLOW.md` §7.
+
+| Command | Script target / tool | Role | Exit behavior |
+|---|---|---|---|
+| `pnpm lint` | `eslint` (Next.js / Flat Config) | Linter checks across codebase | Fails on lint errors |
+| `pnpm typecheck` | `tsc --noEmit` | Strict TypeScript compiler check | Fails on type errors |
+| `pnpm test` | `vitest run` | Vitest unit and regression tests | Fails on test assertion errors |
+| `pnpm build` | `next build` (Turbopack) | Production build & static generation | Fails on syntax, layout or build errors |
+| `pnpm verify` | `pnpm lint && pnpm typecheck && pnpm test && pnpm build` | Quality Gate Runner (all 4 in order) | Stops immediately on first non-zero exit |
+
+*Seed and DB checks have their own dedicated scripts implemented in Phase 4 (TASK-018). Procedure and evidence format: `WORKFLOW.md` §7.*
 
 ## 14. Known limitations (to repeat in the final runbook)
 In-memory rate limit is per-instance and resets on cold starts · Gemini free-tier quota and terms can change · keyword retrieval can miss paraphrases (by design; falls back safely) · the chatbot is unavailable when quota is exhausted but the site is unaffected.

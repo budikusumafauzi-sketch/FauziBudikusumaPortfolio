@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 1 — Project foundation |
 | **Hat** | Architect (+ QA) |
 | **Priority** | P0 |
@@ -71,4 +71,30 @@ Define the standard quality commands so every later task has an executable defin
 - Temptation to add hooks/extra tooling → not allowed without owner approval.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-003: <summary>`.)*
+
+## Completion Report — TASK-003 — 2026-10-22
+**Status:** DONE
+**Summary:** Configured standard verification tooling (`lint`, `typecheck`, `test`, `build`, `verify`) using ESLint, strict TypeScript compiler check, Vitest v5.0.5 with smoke testing in `tests/smoke.test.ts`, and Next.js Turbopack build. Confirmed individual execution and aggregate `pnpm verify` gate, proven gate failure on broken assertions, and recorded final commands in `ARCHITECTURE.md` §13.
+**Files:**
+- created: `vitest.config.ts`, `tests/smoke.test.ts`
+- modified: `package.json`, `pnpm-lock.yaml`, `ARCHITECTURE.md`, `tasks/TASK-003-verification-tooling.md`
+**Dependencies added:** `vitest@5.0.5` (devDependency)
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | ESLint exited with 0 warnings/errors |
+| `pnpm typecheck` | PASS | `tsc --noEmit` exited 0 with strict compiler validation |
+| `pnpm test` | PASS | Vitest run passed `tests/smoke.test.ts` (1 test passed in 148ms) |
+| `pnpm build` | PASS | `next build` compiled static routes in 190ms with 0 errors |
+| `pnpm verify` (clean) | PASS | Runs all 4 sequentially, exits 0 |
+| `pnpm verify` (deliberate fail) | PASS | Failed on broken smoke test (`AssertionError: expected 2 to be 3`) with exit code 1; stopped before `next build`. Reverted cleanly. |
+**Acceptance criteria:**
+- AC-1 ✔ — `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` each exit 0.
+- AC-2 ✔ — `pnpm verify` runs all four in order and exits 0.
+- AC-3 ✔ — Deliberate failure made `pnpm verify` exit 1 with explicit assertion error; reverted and verified green.
+- AC-4 ✔ — Scripts contain only cross-platform npm/pnpm commands (`pnpm lint && pnpm typecheck && pnpm test && pnpm build`).
+- AC-5 ✔ — `ARCHITECTURE.md` §13 documents the final commands, targets, and exit behaviors.
+**Rule & scope check:** Followed R-082, R-094. No git hooks or extraneous test frameworks added.
+**Conflicts / open decisions encountered:** None (OD-01 resolved: Vitest adopted).
+**Known gaps:** None.
+**Next task:** Gate G1 (AUTO GATE) passed -> Phase 1 complete. Stop before Phase 2.

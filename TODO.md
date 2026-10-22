@@ -11,19 +11,19 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-22 |
-| Current phase | **1 — Project foundation** (Gate G0 PASSED) |
-| Waiting for | **Gate G1 (AUTO)** — Next.js scaffold, verification tooling (`pnpm verify`), and clean build |
-| Last completed task | TASK-002 — Next.js foundation |
-| Next task | TASK-003 — Verification tooling and the `pnpm verify` gate |
+| Current phase | **2 — Design system and shared UI** (Gate G1 PASSED) |
+| Waiting for | Owner directive to begin Phase 2 (`TASK-004`) |
+| Last completed task | TASK-003 — Verification tooling and the `pnpm verify` gate (Gate G1 PASSED) |
+| Next task | TASK-004 — Design tokens, fonts and theme provider |
 | Blockers | none |
-| Last verified commit | pending commit for TASK-002 |
+| Last verified commit | pending commit for TASK-003 |
 
 ## 2. Phases and gates
 
 | Phase | Name | Tasks | Gate | Gate type | Status |
 |---|---|---|---|---|---|
 | 0 | Documentation and design lock | 001 | G0 | **OWNER** | `DONE` |
-| 1 | Project foundation | 002–003 | G1 | AUTO | `IN_PROGRESS` |
+| 1 | Project foundation | 002–003 | G1 | AUTO | `DONE` |
 | 2 | Design system and shared UI | 004–007 | G2 | AUTO | `TODO` |
 | 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `TODO` |
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `TODO` |
@@ -40,7 +40,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 |---|---|---|---|---|---|
 | [001](tasks/TASK-001-workspace-intake-and-design-reference.md) | Workspace intake and design reference | 0 | P0 | `DONE` | none |
 | [002](tasks/TASK-002-nextjs-foundation.md) | Next.js foundation | 1 | P0 | `DONE` | TASK-001, Gate G0 passed |
-| [003](tasks/TASK-003-verification-tooling.md) | Verification tooling and the `pnpm verify` gate | 1 | P0 | `IN_PROGRESS` | TASK-002 |
+| [003](tasks/TASK-003-verification-tooling.md) | Verification tooling and the `pnpm verify` gate | 1 | P0 | `DONE` | TASK-002 |
 | [004](tasks/TASK-004-tokens-fonts-theme.md) | Design tokens, fonts and theme provider | 2 | P0 | `TODO` | TASK-003; decisions DS-01/04/05/09, OD-10 |
 | [005](tasks/TASK-005-shared-ui-primitives.md) | Shared UI primitives | 2 | P0 | `TODO` | TASK-004 |
 | [006](tasks/TASK-006-navigation.md) | Navigation: sticky bar, mobile menu, theme toggle | 2 | P0 | `TODO` | TASK-005; decisions C-01, C-02, DS-02, DS-06 |
