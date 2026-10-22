@@ -1,1 +1,103 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "Fira Code", monospace;
+
+  --color-bg-page: var(--color-bg-page);
+  --color-bg-deep: var(--color-bg-deep);
+  --color-surface-card: var(--color-surface-card);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-border-default: var(--color-border-default);
+  --color-border-nav: var(--color-border-nav);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-strong: var(--color-text-strong);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-faint: var(--color-text-faint);
+  --color-accent: var(--color-accent);
+  --color-accent-text: var(--color-accent-text);
+  --color-accent-chip-bg: var(--color-accent-chip-bg);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-active: var(--color-accent-active);
+  --color-focus-ring: var(--color-focus-ring);
+}
+
+:root {
+  /* Light theme baseline (DESIGN.md §3.2, DS-05 approved) */
+  --color-bg-page: #FAFAFC;
+  --color-bg-deep: #FFFFFF;
+  --color-surface-card: #FFFFFF;
+  --color-surface-raised: #F1F1F5;
+  --color-border-default: #E4E4EC;
+  --color-border-nav: #E3E3E5;
+  --color-text-primary: #111115;
+  --color-text-strong: #0A0A0C;
+  --color-text-secondary: #52525E;
+  --color-text-muted: #7C7C85;
+  --color-text-faint: #A0A0AA;
+  --color-accent: #BE123C;
+  --color-accent-text: #9F1239;
+  --color-accent-chip-bg: #FFE4E6;
+  --color-accent-hover: #9F1239;
+  --color-accent-active: #881337;
+  --color-focus-ring: #BE123C;
+
+  /* Layout and dimensions */
+  --nav-height: 4.25rem;
+  --content-max-width: 80rem; /* 1280px */
+}
+
+.dark {
+  /* Dark theme baseline (DESIGN.md §3.1, 3 MASTER DESIGN.png) */
+  --color-bg-page: #131316;
+  --color-bg-deep: #0E0E11;
+  --color-surface-card: #131318;
+  --color-surface-raised: #1A1A22;
+  --color-border-default: #262630;
+  --color-border-nav: #1E1E26;
+  --color-text-primary: #E5E1E6;
+  --color-text-strong: #FEFEFE;
+  --color-text-secondary: #C7C5D0;
+  --color-text-muted: #9A98A2;
+  --color-text-faint: #6D6C74;
+  --color-accent: #E11D48;
+  --color-accent-text: #FFB3B6;
+  --color-accent-chip-bg: #28141B;
+  --color-accent-hover: #BE123C;
+  --color-accent-active: #9F1239;
+  --color-focus-ring: #E11D48;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

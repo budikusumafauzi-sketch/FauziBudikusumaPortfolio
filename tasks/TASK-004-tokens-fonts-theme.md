@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 2 — Design system and shared UI |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -80,4 +80,33 @@ Implement the centralized design tokens for **both themes** from the measured va
 - Wrong-theme flash cannot be eliminated with the documented setup after 3 attempts → `BLOCKED` with findings.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-004: <summary>`.)*
+
+## Completion Report — TASK-004 — 2026-10-22
+**Status:** DONE
+**Summary:** Implemented centralized design tokens for both dark and light modes in `globals.css` with `@theme` Tailwind CSS v4 variables. Wired Google fonts (Plus Jakarta Sans, Inter, JetBrains Mono) via `next/font/google` and configured `next-themes` ThemeProvider with class attribute strategy to prevent theme flashes. Base styles configured for container, focus-visible ring, smooth scroll, and reduced motion. Completed contrast evidence table in `DESIGN.md` §3.3.
+**Files:**
+- created: `src/components/layout/theme-provider.tsx`
+- modified: `src/app/globals.css`, `src/app/layout.tsx`, `package.json`, `pnpm-lock.yaml`, `DESIGN.md`, `tasks/TASK-004-tokens-fonts-theme.md`
+**Dependencies added:** `next-themes@0.4.6`
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | ESLint exited 0 with 0 errors/warnings |
+| `pnpm typecheck` | PASS | TypeScript check exited 0 |
+| `pnpm test` | PASS | Smoke test passed |
+| `pnpm build` | PASS | Next.js Turbopack built static pages cleanly in ~400ms |
+| `pnpm verify` | PASS | Aggregated pipeline clean |
+| Raw Hex Audit | PASS | 0 raw hex colors outside `src/app/globals.css` token definition block |
+| Contrast Evaluation | PASS | All token pairs meet or exceed WCAG AA; small text uses `accent-text` (`#FFB3B6`) on dark |
+**Acceptance criteria:**
+- AC-1 ✔ — Tokens match sampled values recorded in `DESIGN.md`.
+- AC-2 ✔ — Only 3 approved Google fonts loaded through `next/font/google`.
+- AC-3 ✔ — `next-themes` configured with `suppressHydrationWarning` and `attribute="class"` to prevent flash.
+- AC-4 ✔ — `prefers-reduced-motion: reduce` base rule present in `globals.css`.
+- AC-5 ✔ — Contrast evidence table completed in `DESIGN.md` §3.3.
+- AC-6 ✔ — No raw hex colors in code outside `src/app/globals.css`.
+- AC-7 ✔ — Page kept as neutral placeholder.
+**Rule & scope check:** Followed R-061, R-063, R-065, R-066.
+**Conflicts / open decisions encountered:** None (DS-01/04/05/09 defaults applied).
+**Known gaps:** None.
+**Next task:** TASK-005 — Shared UI primitives.

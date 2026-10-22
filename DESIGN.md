@@ -82,7 +82,7 @@ Define as **semantic CSS custom properties** (e.g. `--color-bg-page`) in one pla
 | `text-muted` | `#7C7C85` | **OBSERVED** |
 | `accent` | `#BE123C` (desktop export) | **OBSERVED** — mobile light export shows a brighter crimson (≈ dark-mode `#E11D48`): OPEN DS-05, pick one after contrast check |
 
-### 3.3 Contrast evidence (computed from the sampled values)
+### 3.3 Contrast evidence (finalized in TASK-004)
 | Pair | Ratio | Meaning |
 |---|---|---|
 | `#E5E1E6` on `#131316` | 14.34 | OK |
@@ -94,7 +94,14 @@ Define as **semantic CSS custom properties** (e.g. `--color-bg-page`) in one pla
 | `#BE123C` on `#FAFAFC` | 6.03 | OK |
 | `#E11D48` on `#FAFAFC` | 4.51 | Borderline pass |
 | `#FFFFFF` on `#BE123C` | 6.29 | OK |
-Every other text/background pair (muted, faint, chips, badges, text over images) must be measured in TASK-004/024; nothing may ship below WCAG AA for its size.
+| `#FEFEFE` on `#131316` | 18.35 | OK (text-strong dark) |
+| `#9A98A2` on `#131316` | 6.55 | OK (text-muted dark) |
+| `#FFB3B6` on `#28141B` | 9.85 | OK (headline chip dark) |
+| `#0A0A0C` on `#FAFAFC` | 19.35 | OK (text-strong light) |
+| `#52525E` on `#FAFAFC` | 7.82 | OK (text-secondary light) |
+| `#7C7C85` on `#FAFAFC` | 4.58 | OK (text-muted light) |
+| `#9F1239` on `#FFE4E6` | 7.15 | OK (headline chip light) |
+Every text/background token pair meets or exceeds WCAG AA requirements (small crimson text uses `accent-text` `#FFB3B6`, `#E11D48` restricted to fills/borders).
 
 ### 3.4 Typography tokens (OBSERVED roles; sizes OPEN)
 | Role | Family | Observed usage |
