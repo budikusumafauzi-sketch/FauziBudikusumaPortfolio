@@ -16,7 +16,7 @@
 | Last completed task | TASK-005 — Shared UI primitives |
 | Next task | TASK-006 — Navigation: sticky bar, mobile menu, theme toggle |
 | Blockers | none |
-| Last verified commit | pending commit for TASK-005 |
+| Last verified commit | `75e5233` (TASK-005 shared UI primitives) |
 
 ## 2. Phases and gates
 
