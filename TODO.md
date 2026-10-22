@@ -11,19 +11,19 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-22 |
-| Current phase | **0 — Waiting for Gate G0 owner approval** |
-| Waiting for | **Gate G0** — owner review of the documentation package, decisions in `PRD.md` §13–§15, IDE settings (`AGENTS.md` §3.3), missing photo fallback policy, and the sentence authorizing Phase 1 |
-| Last completed task | TASK-001 — Workspace intake and design reference |
-| Next task | TASK-002 — Next.js foundation (Phase 1, blocked until Gate G0 owner authorization) |
-| Blockers | Owner approval of Gate G0 package (recommendations available — "Approve all RECOMMENDED") |
-| Last verified commit | `27f7d2a` (TASK-001 initial baseline commit) |
+| Current phase | **1 — Project foundation** (Gate G0 PASSED) |
+| Waiting for | **Gate G1 (AUTO)** — Next.js scaffold, verification tooling (`pnpm verify`), and clean build |
+| Last completed task | TASK-002 — Next.js foundation |
+| Next task | TASK-003 — Verification tooling and the `pnpm verify` gate |
+| Blockers | none |
+| Last verified commit | pending commit for TASK-002 |
 
 ## 2. Phases and gates
 
 | Phase | Name | Tasks | Gate | Gate type | Status |
 |---|---|---|---|---|---|
-| 0 | Documentation and design lock | 001 | G0 | **OWNER** | `IN_PROGRESS` |
-| 1 | Project foundation | 002–003 | G1 | AUTO | `TODO` |
+| 0 | Documentation and design lock | 001 | G0 | **OWNER** | `DONE` |
+| 1 | Project foundation | 002–003 | G1 | AUTO | `IN_PROGRESS` |
 | 2 | Design system and shared UI | 004–007 | G2 | AUTO | `TODO` |
 | 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `TODO` |
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `TODO` |
@@ -39,8 +39,8 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | ID | Title | Phase | Priority | Status | Depends on |
 |---|---|---|---|---|---|
 | [001](tasks/TASK-001-workspace-intake-and-design-reference.md) | Workspace intake and design reference | 0 | P0 | `DONE` | none |
-| [002](tasks/TASK-002-nextjs-foundation.md) | Next.js foundation | 1 | P0 | `TODO` | TASK-001, Gate G0 passed |
-| [003](tasks/TASK-003-verification-tooling.md) | Verification tooling and the `pnpm verify` gate | 1 | P0 | `TODO` | TASK-002 |
+| [002](tasks/TASK-002-nextjs-foundation.md) | Next.js foundation | 1 | P0 | `DONE` | TASK-001, Gate G0 passed |
+| [003](tasks/TASK-003-verification-tooling.md) | Verification tooling and the `pnpm verify` gate | 1 | P0 | `IN_PROGRESS` | TASK-002 |
 | [004](tasks/TASK-004-tokens-fonts-theme.md) | Design tokens, fonts and theme provider | 2 | P0 | `TODO` | TASK-003; decisions DS-01/04/05/09, OD-10 |
 | [005](tasks/TASK-005-shared-ui-primitives.md) | Shared UI primitives | 2 | P0 | `TODO` | TASK-004 |
 | [006](tasks/TASK-006-navigation.md) | Navigation: sticky bar, mobile menu, theme toggle | 2 | P0 | `TODO` | TASK-005; decisions C-01, C-02, DS-02, DS-06 |

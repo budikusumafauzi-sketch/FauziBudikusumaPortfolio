@@ -253,18 +253,18 @@ content < sticky nav < floating TOP/launcher < chat panel < lightbox overlay < o
 ## 12. Known defects in the references (do **not** copy)
 Truncated email/GitHub text (light) · low-contrast red issuer chip over images (light) · weak caption contrast on gallery images (light) · stray line break inside the profile paragraph ("…and IT⏎networking") · inconsistent journey wording/dates between desktop and mobile · Enterprise Network Lab description not matching its tags · headline text varying between exports · mock certificate/hash/validity claims · ID/EN switch (C-01).
 
-## 13. Open design items
-| ID | Item | RECOMMENDED |
-|---|---|---|
-| DS-01 | Final type scale, spacing, radii, container width | Measure by overlay in TASK-004; record as tokens |
-| DS-02 | Navbar monogram: logo SVG vs "FB" text | Use the approved logo asset if it works at small size |
-| DS-03 | TOP: static in footer vs floating group | Static anchor in footer |
-| DS-04 | Mobile dark page bg `#0B0B0E` vs desktop `#131316` | Choose one token after review |
-| DS-05 | Light-mode accent `#BE123C` vs brighter mobile crimson | `#BE123C` (better contrast) unless owner prefers |
-| DS-06 | Mobile menu and mobile chat panel are not depicted | Derive from tokens; owner review at Gate G3/Phase 6 |
-| DS-07 | Faint corner text in the opening export | Omit |
-| DS-08 | Crimson card border = hover state? | Treat as hover/focus |
-| DS-09 | Default theme | System, fallback dark |
+## 13. Open design items (RESOLVED at Gate G0)
+| ID | Item | RECOMMENDED | Status / Decision (Gate G0) |
+|---|---|---|---|
+| DS-01 | Final type scale, spacing, radii, container width | Measure by overlay in TASK-004; record as tokens | **APPROVED** (Measure in TASK-004, record as tokens) |
+| DS-02 | Navbar monogram: logo SVG vs "FB" text | Use the approved logo asset if it works at small size | **APPROVED** (Use approved logo asset if works at small size) |
+| DS-03 | TOP: static in footer vs floating group | Static anchor in footer | **APPROVED** (Static anchor in footer) |
+| DS-04 | Mobile dark page bg `#0B0B0E` vs desktop `#131316` | Choose one token after review | **APPROVED** (Choose one token after review) |
+| DS-05 | Light-mode accent `#BE123C` vs brighter mobile crimson | `#BE123C` (better contrast) unless owner prefers | **APPROVED** (`#BE123C` adopted for contrast) |
+| DS-06 | Mobile menu and mobile chat panel are not depicted | Derive from tokens; owner review at Gate G3/Phase 6 | **APPROVED** (Derive from tokens; review at Gate G3/Phase 6) |
+| DS-07 | Faint corner text in the opening export | Omit | **APPROVED** (Omit faint corner text) |
+| DS-08 | Crimson card border = hover state? | Treat as hover/focus | **APPROVED** (Treat as hover/focus state) |
+| DS-09 | Default theme | System, fallback dark | **APPROVED** (System with fallback to dark) |
 
 ## 14. Fidelity verification procedure (used by every UI task)
 1. Open the relevant PNG(s) at full scale and list what must match.

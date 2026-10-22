@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 1 — Project foundation |
 | **Hat** | Architect |
 | **Priority** | P0 |
@@ -79,4 +79,32 @@ Create the Next.js (App Router, TypeScript, Tailwind) project with pnpm in the r
 - Tailwind/Next version incompatibility → follow the current docs; if unresolved after 3 attempts mark `BLOCKED`.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-002: <summary>`.)*
+
+## Completion Report — TASK-002 — 2026-10-22
+**Status:** DONE
+**Summary:** Next.js App Router scaffolded with strict TypeScript, Turbopack, and Tailwind CSS v4 in the root. Demo assets removed leaving a neutral placeholder. Git ignore rules verify .env protection, and .env.example contains variable names with dummy placeholders. `pnpm install`, `pnpm dev` (HTTP 200), and `pnpm build` verified clean.
+**Files:**
+- created: `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/globals.css`, `.gitignore`, `.env.example`
+- modified: `tasks/TASK-002-nextjs-foundation.md`
+**Dependencies added:**
+- `next@16.4.2`, `react@19.3.0`, `react-dom@19.3.0`, `tailwindcss@4.1.18`, `@tailwindcss/turbopack@4.1.18`, `typescript@5.9.3`, `eslint@9.39.2`, `eslint-config-next@16.4.2`, `@types/node@20.19.35`, `@types/react@19.2.14`, `@types/react-dom@19.2.14` (installed as standard baseline)
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm install` | PASS | Already up to date / clean in 439ms using pnpm v11.25.0 |
+| `pnpm dev` | PASS | Ready in 438ms; `GET /` returns HTTP status `200` |
+| `pnpm build` | PASS | Next.js 16.4.2 Turbopack, static routes compiled cleanly with 0 errors |
+| `pnpm lint` | PASS | ESLint exited 0 with no warnings or errors |
+| `git check-ignore .env .env.local` | PASS | Output: `.env`, `.env.local` |
+**Acceptance criteria:**
+- AC-1 ✔ — `pnpm install` clean, lockfile present.
+- AC-2 ✔ — `pnpm dev` serves `/` with HTTP 200; dev server cleanly stopped.
+- AC-3 ✔ — `pnpm build` succeeds with no `.env` present.
+- AC-4 ✔ — `.env` & `.env.local` ignored; `.env.example` tracked with dummy values.
+- AC-5 ✔ — Existing docs and `design/approved/*` preserved intact.
+- AC-6 ✔ — No demo assets/styles; strictly framework baseline.
+- AC-7 ✔ — Versions recorded: Node v24.19.0, pnpm v11.25.0, Next.js 16.4.2, React 19.3.0, Tailwind CSS 4.1.18.
+**Rule & scope check:** Followed R-021, R-022, R-070..R-074, R-094. No scope added.
+**Conflicts / open decisions encountered:** None.
+**Known gaps:** None.
+**Next task:** TASK-003 — Verification tooling and the `pnpm verify` gate.

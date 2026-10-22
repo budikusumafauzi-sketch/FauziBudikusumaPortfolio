@@ -344,7 +344,7 @@ Owner answers are recorded here. **Shortcut:** the owner may reply *"Approve all
 
 | Item | Decision | Date | Recorded by |
 |---|---|---|---|
-| *(empty — awaiting owner at Gate G0)* | | | |
+| Gate G0 Package | **APPROVED:** "Approve all RECOMMENDED in C-01..C-11 and OD-01..OD-13. Start Phase 1." All RECOMMENDED resolutions in §13 (C-01..C-11) and §14 (OD-01..OD-13) adopted. Modular placeholder fallback policy confirmed for missing photos (`public/images/placeholders/*`). Recommended defaults in `DESIGN.md` §13 (DS-01..DS-09) adopted. Phase 1 authorized. | 2026-10-22 | Architect (Antigravity) |
 
 ## 16. Traceability (requirement group → tasks)
 Hero/Nav/Opening/Theme → TASK-004…007, 009 · Profile, Skills, Projects, Credentials, Gallery, Contact → TASK-010…015 · Data → TASK-008, 017, 018 · Chatbot backend → TASK-019…022 · Chatbot UI → TASK-023 · Quality/Security → TASK-024, 025 · Deployment/Acceptance → TASK-026, 027. Full table: `TODO.md`.
