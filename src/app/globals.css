@@ -44,6 +44,7 @@
   --color-accent-chip-bg: #FFE4E6;
   --color-accent-hover: #9F1239;
   --color-accent-active: #881337;
+  --color-accent-glow: rgba(190, 18, 60, 0.2);
   --color-focus-ring: #BE123C;
 
   /* Layout and dimensions */
@@ -69,6 +70,7 @@
   --color-accent-chip-bg: #28141B;
   --color-accent-hover: #BE123C;
   --color-accent-active: #9F1239;
+  --color-accent-glow: rgba(225, 29, 72, 0.35);
   --color-focus-ring: #E11D48;
 }
 

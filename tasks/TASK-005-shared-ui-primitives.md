@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 2 — Design system and shared UI |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -70,4 +70,31 @@ Build only the reusable primitives that the approved sections actually share, ea
 - A required state cannot be derived from the references → mark DS-xx OPEN, implement a conservative RECOMMENDED state, report.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-005: <summary>`.)*
+
+## Completion Report — TASK-005 — 2026-10-22
+**Status:** DONE
+**Summary:** Built shared UI primitives in `src/components/ui/primitives.tsx`: Container, Button (primary with soft crimson glow, secondary, outline, ghost), IconButton (accessible name enforced, min 44px touch target on mobile), Card (hairline border, interactive hover), Chip (accent and neutral variants), SectionHeader (Plus Jakarta heavy display + mono descriptor, no numeric prefixes per C-11), and CornerFrame (4 L-shaped brackets for portrait and opening frames). Zero raw hex colors used.
+**Files:**
+- created: `src/components/ui/primitives.tsx`, `tests/primitives.test.ts`
+- modified: `package.json`, `pnpm-lock.yaml`, `src/app/globals.css`, `tasks/TASK-005-shared-ui-primitives.md`
+**Dependencies added:** `lucide-react@1.61.0`
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | ESLint exited 0 with 0 errors/warnings |
+| `pnpm typecheck` | PASS | TypeScript check exited 0 |
+| `pnpm test` | PASS | All unit tests passed (smoke test + primitives test) in ~200ms |
+| `pnpm build` | PASS | Next.js Turbopack built static pages in ~420ms |
+| `pnpm verify` | PASS | Full verification pipeline clean |
+| Raw Hex Audit | PASS | 0 raw hex colors in `src/components/ui/primitives.tsx` |
+| Touch Target & A11Y | PASS | IconButton default size is 44px min tap target with mandatory `aria-label` |
+**Acceptance criteria:**
+- AC-1 ✔ — Primitives render in both themes using semantic tokens.
+- AC-2 ✔ — All required states exist (default, hover, focus-visible, active, disabled).
+- AC-3 ✔ — 100% token-driven, zero raw hex/px in components.
+- AC-4 ✔ — Icon controls enforce accessible names.
+- AC-5 ✔ — All primitives verified; preview page kept clean.
+**Rule & scope check:** Followed R-063, R-064, R-070..R-074.
+**Conflicts / open decisions encountered:** None (C-11 enforced in SectionHeader).
+**Known gaps:** None.
+**Next task:** TASK-006 — Navigation: sticky bar, mobile menu, theme toggle.

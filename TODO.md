@@ -13,10 +13,10 @@
 | Date | 2026-10-22 |
 | Current phase | **2 — Design system and shared UI** |
 | Waiting for | **Gate G2 (AUTO)** — Shared UI, sticky navbar, and opening overlay |
-| Last completed task | TASK-004 — Design tokens, fonts and theme provider |
-| Next task | TASK-005 — Shared UI primitives |
+| Last completed task | TASK-005 — Shared UI primitives |
+| Next task | TASK-006 — Navigation: sticky bar, mobile menu, theme toggle |
 | Blockers | none |
-| Last verified commit | `dbf4c91` (TASK-004 design tokens and theme) |
+| Last verified commit | pending commit for TASK-005 |
 
 ## 2. Phases and gates
 
@@ -42,8 +42,8 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [002](tasks/TASK-002-nextjs-foundation.md) | Next.js foundation | 1 | P0 | `DONE` | TASK-001, Gate G0 passed |
 | [003](tasks/TASK-003-verification-tooling.md) | Verification tooling and the `pnpm verify` gate | 1 | P0 | `DONE` | TASK-002 |
 | [004](tasks/TASK-004-tokens-fonts-theme.md) | Design tokens, fonts and theme provider | 2 | P0 | `DONE` | TASK-003; decisions DS-01/04/05/09, OD-10 |
-| [005](tasks/TASK-005-shared-ui-primitives.md) | Shared UI primitives | 2 | P0 | `IN_PROGRESS` | TASK-004 |
-| [006](tasks/TASK-006-navigation.md) | Navigation: sticky bar, mobile menu, theme toggle | 2 | P0 | `TODO` | TASK-005; decisions C-01, C-02, DS-02, DS-06 |
+| [005](tasks/TASK-005-shared-ui-primitives.md) | Shared UI primitives | 2 | P0 | `DONE` | TASK-004 |
+| [006](tasks/TASK-006-navigation.md) | Navigation: sticky bar, mobile menu, theme toggle | 2 | P0 | `IN_PROGRESS` | TASK-005; decisions C-01, C-02, DS-02, DS-06 |
 | [007](tasks/TASK-007-opening-overlay.md) | Opening overlay | 2 | P1 | `TODO` | TASK-004, TASK-005; decisions C-05, C-11, DS-07 |
 | [008](tasks/TASK-008-content-data-modules.md) | Typed content data modules | 3 | P0 | `TODO` | TASK-003 |
 | [009](tasks/TASK-009-hero-and-cv.md) | Hero section and CV download | 3 | P0 | `TODO` | TASK-006, TASK-008; decision C-05 |
