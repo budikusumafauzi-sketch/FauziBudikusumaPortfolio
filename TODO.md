@@ -16,7 +16,7 @@
 | Last completed task | TASK-007 — Opening overlay |
 | Next task | Phase 3 / TASK-008 — Typed content data modules |
 | Blockers | none |
-| Last verified commit | `TASK-007` (pending commit) |
+| Last verified commit | `ed0f567` (TASK-007 opening overlay with CSS fail-safe) |
 
 ## 2. Phases and gates
 
