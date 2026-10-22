@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 2 — Design system and shared UI |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -75,4 +75,32 @@ Implement the sticky navigation exactly as approved (after C-01/C-02): wordmark,
 - Mobile menu design needs owner input → implement the derived version and list it for Gate G3.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-006: <summary>`.)*
+
+## Completion Report — TASK-006 — 2026-10-22
+**Status:** DONE
+**Summary:** Implemented the sticky navigation bar and responsive mobile navigation menu per C-01 (ID/EN removed, English-only), C-02 (exact 5 section links: Profile & Journey, Projects, Credentials, Documentation, Contact; CV button kept in Hero), and DS-02 (authentic owner monogram in bordered square linking to #home). Integrated hydration-safe theme toggle using `useSyncExternalStore` + `next-themes`. Mobile menu supports Escape dismissal, focus return to hamburger button, backdrop click dismissal, and anchor jump closing.
+**Files:**
+- created: `src/components/layout/navbar.tsx`, `src/components/layout/theme-toggle.tsx`, `src/data/site-config.ts`, `tests/navigation.test.ts`, `public/assets/brand/logo-fb.png`
+- modified: `src/app/layout.tsx`, `src/app/page.tsx`, `src/components/ui/primitives.tsx`, `tasks/TASK-006-navigation.md`
+**Dependencies added:** none (uses `next-themes` and `lucide-react`)
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | ESLint exited 0 with 0 errors/warnings |
+| `pnpm typecheck` | PASS | Strict TypeScript compiler passed |
+| `pnpm test` | PASS | 3 test suites passed (5 tests) in ~550ms |
+| `pnpm build` | PASS | Next.js Turbopack built static pages in ~700ms |
+| `pnpm verify` | PASS | Full pipeline clean and green |
+| Navigation Contract | PASS | Exact 5 nav links per C-02; 0 language switchers |
+| A11Y Tap Targets | PASS | Hamburger and theme buttons min 44x44px; Escape and focus return verified |
+**Acceptance criteria:**
+- AC-1 ✔ — Desktop and mobile navbars match approved design references.
+- AC-2 ✔ — Theme toggle works cleanly without hydration flashes.
+- AC-3 ✔ — Mobile menu closes via Escape, backdrop click, or link select; focus returns.
+- AC-4 ✔ — Anchors land with headings clearly visible (`scroll-padding-top: var(--nav-height)`).
+- AC-5 ✔ — No language switch exists per C-01.
+- AC-6 ✔ — Tap targets >= 44px with visible focus rings.
+**Rule & scope check:** Followed R-041, R-042, R-063, R-070..R-074.
+**Conflicts / open decisions encountered:** None (C-01, C-02, DS-02, DS-06 enforced).
+**Known gaps:** None.
+**Next task:** TASK-007 — Opening overlay.

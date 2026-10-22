@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import React from "react";
 import { Container, Button, IconButton, Card, Chip, SectionHeader, CornerFrame } from "@/components/ui/primitives";
 
 describe("Shared UI Primitives", () => {

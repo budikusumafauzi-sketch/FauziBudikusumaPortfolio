@@ -102,42 +102,49 @@ export interface IconButtonProps
   size?: "sm" | "md";
 }
 
-export function IconButton({
-  "aria-label": ariaLabel,
-  variant = "default",
-  size = "md",
-  className = "",
-  children,
-  ...props
-}: IconButtonProps) {
-  const baseStyles =
-    "inline-flex items-center justify-center rounded-md border transition-colors cursor-pointer disabled:pointer-events-none disabled:opacity-40";
+export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+  function IconButton(
+    {
+      "aria-label": ariaLabel,
+      variant = "default",
+      size = "md",
+      className = "",
+      children,
+      ...props
+    },
+    ref
+  ) {
+    const baseStyles =
+      "inline-flex items-center justify-center rounded-md border transition-colors cursor-pointer disabled:pointer-events-none disabled:opacity-40";
 
-  const sizeStyles = {
-    sm: "h-9 w-9 min-h-[36px] min-w-[36px]",
-    md: "h-11 w-11 min-h-[44px] min-w-[44px]", // ≥ 44px touch target on mobile (A11Y)
-  }[size];
+    const sizeStyles = {
+      sm: "h-9 w-9 min-h-[36px] min-w-[36px]",
+      md: "h-11 w-11 min-h-[44px] min-w-[44px]", // ≥ 44px touch target on mobile (A11Y)
+    }[size];
 
-  const variantStyles = {
-    default:
-      "bg-surface-card border-border-default text-text-secondary hover:text-text-primary hover:border-accent active:bg-surface-raised",
-    active:
-      "bg-surface-raised border-accent text-accent",
-    ghost:
-      "bg-transparent border-transparent text-text-secondary hover:text-text-primary hover:bg-surface-raised",
-  }[variant];
+    const variantStyles = {
+      default:
+        "bg-surface-card border-border-default text-text-secondary hover:text-text-primary hover:border-accent active:bg-surface-raised",
+      active:
+        "bg-surface-raised border-accent text-accent",
+      ghost:
+        "bg-transparent border-transparent text-text-secondary hover:text-text-primary hover:bg-surface-raised",
+    }[variant];
 
-  return (
-    <button
-      type="button"
-      aria-label={ariaLabel}
-      className={`${baseStyles} ${sizeStyles} ${variantStyles} ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-}
+    return (
+      <button
+        ref={ref}
+        type="button"
+        aria-label={ariaLabel}
+        className={`${baseStyles} ${sizeStyles} ${variantStyles} ${className}`}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+IconButton.displayName = "IconButton";
 
 /* ==========================================================================
    Card Primitive
