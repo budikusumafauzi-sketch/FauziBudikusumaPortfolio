@@ -16,7 +16,7 @@
 | Last completed task | TASK-006 — Navigation: sticky bar, mobile menu, theme toggle |
 | Next task | TASK-007 — Opening overlay |
 | Blockers | none |
-| Last verified commit | pending commit for TASK-006 |
+| Last verified commit | `e38a33d` (TASK-006 navigation and mobile menu) |
 
 ## 2. Phases and gates
 
