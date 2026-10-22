@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 2 — Design system and shared UI |
 | **Hat** | UI |
 | **Priority** | P1 |
@@ -70,4 +70,31 @@ Implement the opening overlay from `1 OPENING.png`, with a **fail-safe** so it c
 - C-05 undecided → use the owner-provided text only once decided.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-007: <summary>`.)*
+## Completion Report — TASK-007 — 2026-10-22
+**Status:** DONE
+**Summary:** Implemented cinematic opening overlay from `1 OPENING.png` with two-tone corner frame, owner monogram logo, unified role title (`C-05`), animated progress bar, status line with pulsing indicator, skip controls (Escape and click), and pure CSS fail-safe auto-fadeout keyframes (`pointer-events: none`). Tested with Vitest and Next.js static build.
+**Files:**
+- `src/components/layout/opening-overlay.tsx`: created (opening overlay component with session suppression and escape key listener)
+- `tests/overlay.test.ts`: created (test suite validating accessibility roles, C-05 conformance, and CSS fail-safe keyframes)
+- `src/app/globals.css`: modified (added `@keyframes overlay-fadeout` and `@keyframes overlay-progress` with `prefers-reduced-motion` overrides)
+- `src/app/layout.tsx`: modified (mounted `<OpeningOverlay />` inside RootLayout)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test tests/overlay.test.ts` | PASS | 4 tests passed (accessibility, role, C-05, CSS keyframes) |
+| `pnpm verify` | PASS | ESLint clean, TypeScript clean, 9/9 tests pass, Next.js 16.4.2 build 100% static |
+| CSS Fail-safe check | PASS | `@keyframes overlay-fadeout` forces `opacity: 0`, `visibility: hidden`, `pointer-events: none` at 100% |
+| Reduced motion | PASS | `.opening-progress-bar { animation: none; width: 100%; }`, `.opening-overlay-failsafe { animation: overlay-fadeout 0.3s ease-out forwards; }` |
+**Acceptance criteria:**
+- AC-1 ✔ — Overlay matches `1 OPENING.png` with two-tone corner frame, owner logo, name, mono role (`C-05`), progress bar, and status line.
+- AC-2 ✔ — CSS fail-safe animation (`overlay-fadeout 2.8s`) automatically dismisses overlay and clears pointer events without JS.
+- AC-3 ✔ — If assets or fonts are slow or blocked, CSS animation unconditionally dismisses overlay after 2.8s.
+- AC-4 ✔ — `@media (prefers-reduced-motion: reduce)` disables progress animation and shortens fadeout to 0.3s instant transition.
+- AC-5 ✔ — `pointer-events: none` and `visibility: hidden` ensure no scroll lock, no focus trap, and page navigation is unobstructed.
+- AC-6 ✔ — Authentic owner logo `public/assets/brand/logo-fb.png` utilized.
+**Design comparison (UI tasks):** refs used: `1 OPENING.png`. Two-tone corner frame, dark crimson accent (`#d4002d`), tracking, and monospace status match the approved export.
+**Rule & scope check:** Followed `R-041` (no raw hex in component; uses semantic tokens), `R-065` (fail-safe opening overlay), `C-05` (unified role), `C-11` (clean header/footer). No scope added.
+**Conflicts / open decisions encountered:** none (C-05 approved).
+**Known gaps:** none.
+**Next task:** Gate G2 verification and recording.

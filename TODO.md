@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-22 |
-| Current phase | **2 — Design system and shared UI** |
-| Waiting for | **Gate G2 (AUTO)** — Shared UI, sticky navbar, and opening overlay |
-| Last completed task | TASK-006 — Navigation: sticky bar, mobile menu, theme toggle |
-| Next task | TASK-007 — Opening overlay |
+| Current phase | **2 — Design system and shared UI** (Gate G2 PASSED) |
+| Waiting for | **Owner approval to begin Phase 3 (Gate G2 PASSED — HARD STOP)** |
+| Last completed task | TASK-007 — Opening overlay |
+| Next task | Phase 3 / TASK-008 — Typed content data modules |
 | Blockers | none |
-| Last verified commit | `e38a33d` (TASK-006 navigation and mobile menu) |
+| Last verified commit | `TASK-007` (pending commit) |
 
 ## 2. Phases and gates
 
@@ -24,7 +24,7 @@
 |---|---|---|---|---|---|
 | 0 | Documentation and design lock | 001 | G0 | **OWNER** | `DONE` |
 | 1 | Project foundation | 002–003 | G1 | AUTO | `DONE` |
-| 2 | Design system and shared UI | 004–007 | G2 | AUTO | `IN_PROGRESS` |
+| 2 | Design system and shared UI | 004–007 | G2 | AUTO | `DONE` |
 | 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `TODO` |
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `TODO` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `TODO` |
@@ -44,7 +44,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [004](tasks/TASK-004-tokens-fonts-theme.md) | Design tokens, fonts and theme provider | 2 | P0 | `DONE` | TASK-003; decisions DS-01/04/05/09, OD-10 |
 | [005](tasks/TASK-005-shared-ui-primitives.md) | Shared UI primitives | 2 | P0 | `DONE` | TASK-004 |
 | [006](tasks/TASK-006-navigation.md) | Navigation: sticky bar, mobile menu, theme toggle | 2 | P0 | `DONE` | TASK-005; decisions C-01, C-02, DS-02, DS-06 |
-| [007](tasks/TASK-007-opening-overlay.md) | Opening overlay | 2 | P1 | `IN_PROGRESS` | TASK-004, TASK-005; decisions C-05, C-11, DS-07 |
+| [007](tasks/TASK-007-opening-overlay.md) | Opening overlay | 2 | P1 | `DONE` | TASK-004, TASK-005; decisions C-05, C-11, DS-07 |
 | [008](tasks/TASK-008-content-data-modules.md) | Typed content data modules | 3 | P0 | `TODO` | TASK-003 |
 | [009](tasks/TASK-009-hero-and-cv.md) | Hero section and CV download | 3 | P0 | `TODO` | TASK-006, TASK-008; decision C-05 |
 | [010](tasks/TASK-010-profile-journey.md) | Profile & Journey section | 3 | P0 | `TODO` | TASK-008, TASK-005 |
