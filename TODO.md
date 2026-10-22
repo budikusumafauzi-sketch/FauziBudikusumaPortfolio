@@ -16,7 +16,7 @@
 | Last completed task | TASK-003 — Verification tooling and the `pnpm verify` gate (Gate G1 PASSED) |
 | Next task | TASK-004 — Design tokens, fonts and theme provider |
 | Blockers | none |
-| Last verified commit | pending commit for TASK-003 |
+| Last verified commit | `688092c` (TASK-003 verification tooling) |
 
 ## 2. Phases and gates
 
