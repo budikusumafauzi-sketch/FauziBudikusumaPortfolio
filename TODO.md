@@ -16,7 +16,7 @@
 | Last completed task | TASK-004 — Design tokens, fonts and theme provider |
 | Next task | TASK-005 — Shared UI primitives |
 | Blockers | none |
-| Last verified commit | pending commit for TASK-004 |
+| Last verified commit | `dbf4c91` (TASK-004 design tokens and theme) |
 
 ## 2. Phases and gates
 
