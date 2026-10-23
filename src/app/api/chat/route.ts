@@ -25,8 +25,9 @@ import {
 } from '@/lib/chat-contract';
 import { checkRateLimit, getClientKey } from '@/lib/server/rate-limit';
 import { checkGuard } from '@/lib/server/guard';
-import { retrieveKnowledge } from '@/lib/server/retrieval';
+import { retrieveKnowledge, buildContext } from '@/lib/server/retrieval';
 import { prisma } from '@/lib/server/db';
+import { generateGroundedAnswer } from '@/lib/server/gemini';
 
 /** Safe JSON response with cache-control and no internal leakage. */
 function json(body: ChatResponse, status: number, extra?: HeadersInit): NextResponse {
@@ -119,8 +120,34 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return json({ status: 'no_data', answer: COPY.no_data }, 200);
     }
 
-    // TASK-021 will pass records to Gemini generator; for now return unavailable
-    return json({ status: 'unavailable', answer: COPY.unavailable }, 503);
+    // ── Layer 8: Grounded generation via Gemini ───────────────────────────────
+    const facts = buildContext(records);
+    const geminiResult = await generateGroundedAnswer(facts, message);
+
+    if (!geminiResult.success) {
+      if (process.env.NODE_ENV !== 'test') {
+        console.error(geminiResult.logCode);
+      }
+      if (geminiResult.status === 'no_data') {
+        return json({ status: 'no_data', answer: COPY.no_data }, 200);
+      }
+      return json({ status: 'unavailable', answer: COPY.unavailable }, 503);
+    }
+
+    const sources = records.map((r) => ({
+      slug: r.id,
+      title: r.title,
+      category: r.category,
+    }));
+
+    return json(
+      {
+        status: 'ok',
+        answer: geminiResult.answer,
+        sources,
+      },
+      200,
+    );
   } catch (err) {
     // Catch-all: log code only, never expose internals (R-029).
     if (process.env.NODE_ENV !== 'test') {

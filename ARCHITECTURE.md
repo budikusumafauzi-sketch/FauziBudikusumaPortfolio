@@ -75,7 +75,7 @@
 | Unit tests | Vitest | RECOMMENDED (OD-01) |
 | Visual checks | Antigravity browser agent (no dependency); Playwright optional | RECOMMENDED (OD-01) |
 
-**Version policy.** Use mutually compatible **stable** versions at implementation time. Do not pin old versions from memory. Record exact installed versions in task completion reports. Prisma CLI `6.19.3` and `@prisma/client` `6.19.3` installed in Phase 4 (TASK-017). Neon connection verified on AWS `us-east-2`. Before touching Next.js, Prisma, Neon, or the Gemini SDK, open the current official documentation (links in the blueprint §19).
+**Version policy.** Use mutually compatible **stable** versions at implementation time. Do not pin old versions from memory. Record exact installed versions in task completion reports. Prisma CLI `6.19.3` and `@prisma/client` `6.19.3` installed in Phase 4 (TASK-017). Neon connection verified on AWS `us-east-2`. `@google/genai` `2.30.0` installed in Phase 5 (TASK-021). Before touching Next.js, Prisma, Neon, or the Gemini SDK, open the current official documentation (links in the blueprint §19).
 
 ## 4. Repository layout (planned — create only when a task says so)
 
@@ -296,6 +296,7 @@ The page itself never calls the chat API on load, so **none of these affect any 
 
 **Candidates (all subject to current-terms verification — OD-06, OD-07, OD-05):** Vercel Hobby (app + Route Handlers; historically personal/non-commercial — confirm a professional portfolio qualifies), Neon Free Tier (PostgreSQL), Gemini API free tier on an **unbilled** project, provider-supplied subdomain (no purchased domain). If any is ineligible: **do not switch plans, enable billing, or quietly substitute** — present a compliant free alternative and record an OPEN DECISION.
 - **OD-07 Verification Record (2026-10-23):** Neon Free Tier confirmed active. Plan: Free ($0/mo, Rp0). Limits: 1 project, up to 10 branches, 0.5 GiB storage, compute autosuspend after 5 minutes of inactivity. Connection pooling: built-in PgBouncer on port 5432 with `-pooler` hostname, requires `sslmode=require`. Direct connection: port 5432 without `-pooler`. Region: AWS `us-east-2` (Ohio). Prisma version: CLI `6.19.3`, client `@prisma/client@6.19.3`.
+- **OD-05 Verification Record (2026-10-23):** Gemini API free tier confirmed active on unbilled project ($0/mo, Rp0). SDK: `@google/genai@2.30.0`. Model identifier from owner intake snippet: `models/gemini-3.8-flash`. Free tier quotas: 15 RPM / 1M TPM / 1,500 RPD. Grounded chatbot requires 0 tools, 0 search, 0 retries, maxOutputTokens: 300..512.
 
 **Environment variables (names RECOMMENDED — OD-04; values never in Markdown):**
 
