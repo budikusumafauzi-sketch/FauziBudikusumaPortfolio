@@ -16,7 +16,7 @@
 | Last completed task | TASK-015 — Direct Channels, footer and Back to Top |
 | Next task | TASK-016 — Static site sweep and Gate G3 package |
 | Blockers | none |
-| Last verified commit | `pending` (TASK-015 direct contact channels and footer) |
+| Last verified commit | `315d647` (TASK-015 direct contact channels and footer) |
 
 ## 2. Phases and gates
 
