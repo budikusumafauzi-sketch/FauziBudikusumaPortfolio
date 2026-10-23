@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 5 — Chatbot backend |
 | **Hat** | Backend |
 | **Priority** | P0 |
@@ -69,5 +69,36 @@ Implement the bounded keyword/category retrieval and the fixed `no_data` fallbac
 ## 11. Blocked / stop conditions
 - Persistent recall problems → adjust keywords/intent map; propose (don't build) anything heavier as an OD.
 
-## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-020: <summary>`.)*
+## 12. Completion Report — TASK-020 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented bounded keyword/category retrieval pipeline (normalize, detect intent categories, tokenize, single bounded query with take: 20, application-side scoring with floor >= 2, top K <= 6, context cap <= 4000 chars) and wired no_data fallback into POST /api/chat.
+**Files:**
+- created: `src/lib/server/retrieval.ts` (retrieval pipeline, intent mapping, tokenization, scoring, context builder)
+- modified: `src/app/api/chat/route.ts` (wired retrieveKnowledge and 200 no_data short-circuit with 0 Gemini calls)
+- created: `tests/retrieval.test.ts` (47 unit tests for pure helpers, category detection, scoring, context caps, mocked DB retrieval)
+- modified: `ARCHITECTURE.md` (limits confirmed in §7)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test -- tests/retrieval.test.ts` | PASS | 47 tests passed (100%) |
+| `pnpm test` | PASS | 18 test files, 221 tests passed |
+| `pnpm lint` | PASS | 0 errors, 0 warnings |
+| `pnpm typecheck` | PASS | 0 type errors |
+| `pnpm build` | PASS | Next.js dynamic route `/api/chat` builds successfully |
+**Acceptance criteria:**
+- AC-1 ✔: All 10 category queries (English and Indonesian) detected and mapped accurately.
+- AC-2 ✔: Off-topic / nonsense queries produce `no_data` or `out_of_scope`.
+- AC-3 ✔: No Gemini call occurs on `no_data` or `out_of_scope` (short-circuited in route).
+- AC-4 ✔: Exactly 1 bounded DB query per request (`take: 20`); at most K=6 records; context cap 4,000 chars.
+- AC-5 ✔: Query filters constructed solely from sanitized tokens and server enum constants.
+- AC-6 ✔: Final values recorded in `ARCHITECTURE.md` §7.
+**Rule & scope check:**
+- R-031: Zero Gemini calls on guard or no_data paths.
+- R-036: Client controls only message text, no query or DB parameters.
+- ADR-003: No pgvector, embeddings, or external search services used.
+- ADR-011: Bounded keyword/category retrieval with score floor.
+**Conflicts / open decisions encountered:** none
+**Known gaps:**
+- Gemini generator integration scheduled for TASK-021.
+**Next task:** TASK-021 (Gemini integration and failure handling)

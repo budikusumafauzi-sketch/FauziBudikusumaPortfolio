@@ -13,10 +13,10 @@
 | Date | 2026-10-23 |
 | Current phase | **5 — Chatbot backend** |
 | Waiting for | Execution of Phase 5 tasks |
-| Last completed task | TASK-019 — Chat API contract, validation, scope guard and rate limit |
-| Next task | TASK-020 — Retrieval and no-data fallback |
+| Last completed task | TASK-020 — Retrieval and no-data fallback |
+| Next task | TASK-021 — Gemini integration and failure handling |
 | Blockers | None |
-| Last verified commit | pending commit for TASK-019 |
+| Last verified commit | pending commit for TASK-020 |
 
 ## 2. Phases and gates
 
@@ -57,7 +57,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [017](tasks/TASK-017-prisma-schema-migration.md) | Prisma schema and first migration | 4 | P0 | `DONE` | TASK-008; Phase 4 entry criteria |
 | [018](tasks/TASK-018-seed-and-readonly-role.md) | Seed, read-only runtime role and negative write test | 4 | P0 | `DONE` | TASK-017 |
 | [019](tasks/TASK-019-chat-contract-validation-ratelimit.md) | Chat API contract, validation, scope guard and rate limit | 5 | P0 | `DONE` | TASK-003 (G4 recommended; may use a mocked data layer) |
-| [020](tasks/TASK-020-retrieval-and-fallback.md) | Retrieval and no-data fallback | 5 | P0 | `TODO` | TASK-018, TASK-019 |
+| [020](tasks/TASK-020-retrieval-and-fallback.md) | Retrieval and no-data fallback | 5 | P0 | `DONE` | TASK-018, TASK-019 |
 | [021](tasks/TASK-021-gemini-integration-and-failures.md) | Gemini integration and failure handling | 5 | P0 | `TODO` | TASK-020 |
 | [022](tasks/TASK-022-chatbot-security-tests.md) | Chatbot security and abuse tests | 5 | P0 | `TODO` | TASK-021 |
 | [023](tasks/TASK-023-chatbot-ui.md) | Chatbot UI: launcher, panel and states | 6 | P0 | `TODO` | TASK-022 and Gate G3 passed; decision C-09 |

@@ -25,6 +25,8 @@ import {
 } from '@/lib/chat-contract';
 import { checkRateLimit, getClientKey } from '@/lib/server/rate-limit';
 import { checkGuard } from '@/lib/server/guard';
+import { retrieveKnowledge } from '@/lib/server/retrieval';
+import { prisma } from '@/lib/server/db';
 
 /** Safe JSON response with cache-control and no internal leakage. */
 function json(body: ChatResponse, status: number, extra?: HeadersInit): NextResponse {
@@ -100,9 +102,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return json({ status: 'out_of_scope', answer: COPY.out_of_scope }, 200);
     }
 
-    // ── Layer 7: Retrieval + Gemini (stubbed in TASK-019) ─────────────────────
-    // TASK-020 will replace this with real retrieval.
-    // TASK-021 will replace the unavailable return with a Gemini call.
+    // ── Layer 7: Bounded knowledge retrieval ──────────────────────────────────
+    let records: Awaited<ReturnType<typeof retrieveKnowledge>> = [];
+    try {
+      records = await retrieveKnowledge(prisma, message);
+    } catch {
+      // Database error / timeout -> 503 unavailable with operational log
+      if (process.env.NODE_ENV !== 'test') {
+        console.error('chat.db_error');
+      }
+      return json({ status: 'unavailable', answer: COPY.unavailable }, 503);
+    }
+
+    // Short-circuit with no_data (0 Gemini calls) when 0 records match
+    if (records.length === 0) {
+      return json({ status: 'no_data', answer: COPY.no_data }, 200);
+    }
+
+    // TASK-021 will pass records to Gemini generator; for now return unavailable
     return json({ status: 'unavailable', answer: COPY.unavailable }, 503);
   } catch (err) {
     // Catch-all: log code only, never expose internals (R-029).
