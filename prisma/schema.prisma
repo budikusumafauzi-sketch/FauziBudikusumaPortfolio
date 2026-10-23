@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("MIGRATION_DATABASE_URL")
+}
+
+enum KnowledgeCategory {
+  PROFILE
+  EDUCATION
+  EXPERIENCE
+  SKILL
+  PROJECT
+  CERTIFICATION
+  GALLERY
+  CONTACT
+}
+
+model KnowledgeRecord {
+  id        String            @id
+  category  KnowledgeCategory
+  title     String
+  body      String
+  keywords  String[]
+  url       String?
+  position  Int               @default(0)
+  source    String
+  updatedAt DateTime          @updatedAt
+
+  @@index([category, position])
+  @@index([keywords], type: Gin)
+}

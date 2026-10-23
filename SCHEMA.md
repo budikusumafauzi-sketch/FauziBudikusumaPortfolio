@@ -190,10 +190,10 @@ ALTER ROLE portfolio_runtime SET default_transaction_read_only = on;  -- defense
 ## 10. Retrieval fields and query rationale
 Search uses `category` (intent), `title` (weight 3), `keywords` (weight 2), `body` (weight 1) with a score floor — see `ARCHITECTURE.md` §8.2. Queries are built **only** from server-derived tokens and enums; the client can never supply a table, column, filter or SQL fragment. Result sets are bounded (`take: 20`, then top K).
 
-## 11. Open schema items
-| ID | Item | Resolve in |
-|---|---|---|
-| SCH-01 | Final model shape (single table confirmed vs split) | TASK-017 |
-| SCH-02 | Whether `GALLERY` records are useful to the chatbot | TASK-017 |
-| SCH-03 | Dev/prod database separation under free-tier limits | TASK-017 (OD-07) |
-| SCH-04 | Exact statement timeout and connection-pool settings | TASK-017/018 |
+## 11. Schema decisions record (Resolved in TASK-017)
+| ID | Item | Status | Resolution |
+|---|---|---|---|
+| SCH-01 | Final model shape (single table confirmed vs split) | **RESOLVED** | Single table `KnowledgeRecord` confirmed and implemented in `prisma/schema.prisma` with applied migration `20261023072807_init`. |
+| SCH-02 | Whether `GALLERY` records are useful to the chatbot | **RESOLVED** | Confirmed in enum `KnowledgeCategory`. Captions included only for verified gallery items if confirmed. |
+| SCH-03 | Dev/prod database separation under free-tier limits | **RESOLVED** (OD-07) | Verified on 2026-10-23: Neon Free Tier supports up to 10 branches on 1 project (0.5 GiB, autosuspend). Active development database on AWS `us-east-2` with unpooled direct `MIGRATION_DATABASE_URL` and pooled `DATABASE_URL`. |
+| SCH-04 | Exact statement timeout and connection-pool settings | **RESOLVED** | Role-level `statement_timeout = '3s'` enforced on runtime role; PgBouncer connection pooler on `-pooler` host with `sslmode=require`. |

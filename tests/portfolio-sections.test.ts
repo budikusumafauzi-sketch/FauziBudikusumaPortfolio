@@ -95,6 +95,10 @@ describe("Phase 3 Full Static Portfolio QA Integration Sweep", () => {
       const list = fs.readdirSync(dir);
       for (const file of list) {
         const fullPath = path.join(dir, file);
+        // Exclude server-only directories from client/page bundle checks
+        if (fullPath.includes(path.join("src", "lib", "server")) || fullPath.includes(path.join("src", "app", "api"))) {
+          continue;
+        }
         const stat = fs.statSync(fullPath);
         if (stat.isDirectory()) {
           results = results.concat(scanFiles(fullPath));
@@ -105,7 +109,7 @@ describe("Phase 3 Full Static Portfolio QA Integration Sweep", () => {
       return results;
     }
 
-    const allSrcFiles = scanFiles(srcDir);
+    const clientPageFiles = scanFiles(srcDir);
     const forbiddenPatterns = [
       "@prisma/client",
       "@google/genai",
@@ -113,7 +117,7 @@ describe("Phase 3 Full Static Portfolio QA Integration Sweep", () => {
       "process.env.GEMINI_API_KEY",
     ];
 
-    for (const file of allSrcFiles) {
+    for (const file of clientPageFiles) {
       const content = fs.readFileSync(file, "utf-8");
       for (const pattern of forbiddenPatterns) {
         expect(content).not.toContain(pattern);
