@@ -16,7 +16,7 @@
 | Last completed task | TASK-009 — Hero section and CV download |
 | Next task | TASK-010 — Profile & Journey section |
 | Blockers | none |
-| Last verified commit | `TASK-009` (pending commit) |
+| Last verified commit | `ba79878` (TASK-009 hero section with corner-framed portrait and CV action) |
 
 ## 2. Phases and gates
 
