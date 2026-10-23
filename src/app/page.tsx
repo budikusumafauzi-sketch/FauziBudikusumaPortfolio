@@ -1,10 +1,10 @@
 import { HeroSection } from "@/components/sections/hero";
 import { ProfileJourneySection } from "@/components/sections/profile-journey";
+import { SkillsSection } from "@/components/sections/skills";
 import { Container } from "@/components/ui/primitives";
 
 export default function HomePage() {
   const remainingSections = [
-    { id: "skills", label: "Skills" },
     { id: "projects", label: "Projects" },
     { id: "credentials", label: "Credentials" },
     { id: "documentation", label: "Documentation" },
@@ -15,6 +15,7 @@ export default function HomePage() {
     <main className="min-h-screen">
       <HeroSection />
       <ProfileJourneySection />
+      <SkillsSection />
 
       <Container className="space-y-16 py-12">
         {remainingSections.map((sec) => (

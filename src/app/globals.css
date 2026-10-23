@@ -150,3 +150,42 @@ body {
   }
 }
 
+/* ==========================================================================
+   Skills Marquee Keyframes & Pause Behavior (TASK-011 / FR-SKL)
+   ========================================================================== */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.skills-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 50s linear infinite;
+  will-change: transform;
+}
+
+.skills-marquee-track:hover,
+.skills-marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-marquee-container {
+    overflow: visible !important;
+  }
+  .skills-marquee-track {
+    animation: none !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  .skills-marquee-duplicate {
+    display: none !important;
+  }
+}
+

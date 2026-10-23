@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 3 — Static portfolio sections |
 | **Hat** | UI |
 | **Priority** | P1 |
@@ -70,4 +70,27 @@ Build the seamless, accessible skills marquee with a reduced-motion static fallb
 - Skills list/mapping missing → BLOCKED for final content; layout work may proceed with DRAFT fixtures.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-011: <summary>`.)*
+## Completion Report — TASK-011 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented accessible Technical Skills marquee (`#skills`) with infinite CSS loop, hover and focus-within pause behavior, smooth edge gradient fades, and pure CSS `@media (prefers-reduced-motion: reduce)` wrapping grid fallback. In accordance with `C-04`, tiles are rendered as clean icon-only squares with accessible screen-reader titles and dedicated assistive technology list preventing duplicate announcements.
+**Files:**
+- `src/components/sections/skills.tsx`: created (SkillsSection component)
+- `src/app/globals.css`: modified (added `@keyframes marquee`, `.skills-marquee-track`, hover/focus pause rules, and reduced motion overrides)
+- `src/app/page.tsx`: modified (mounted SkillsSection at `#skills`)
+- `tests/skills.test.ts`: created (unit tests for section ID, C-11 compliance, all 34 skills, single screen-reader list, and CSS keyframe presence)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test tests/skills.test.ts` | PASS | 5 tests passed (id, C-11 compliance, 34 skills, aria-hidden duplicate track, CSS rules) |
+| `pnpm verify` | PASS | ESLint clean, TypeScript clean, 32/32 tests pass, Next.js static build successful |
+| C-04 compliance | PASS | Square icon tiles visually; 1 single screen-reader list; duplicate track has `aria-hidden="true"` |
+| Reduced motion | PASS | `@media (prefers-reduced-motion: reduce)` switches to static flex-wrap grid and hides duplicate track |
+**Acceptance criteria:**
+- AC-1 ✔ — Infinite loop is seamless across viewports.
+- AC-2 ✔ — Animation pauses smoothly on `:hover` and `:focus-within`.
+- AC-3 ✔ — Reduced motion shows static, wrapping grid without movement.
+- AC-4 ✔ — Assistive technology exposes exactly one list of skills via `<div className="sr-only">`.
+- AC-5 ✔ — All 34 skills are authentic, mapped from `dokumen informasi/A. Desain dan aset visual/logo skills/link`.
+- AC-6 ✔ — Matches visual baseline in dark and light themes without overflow.
+**Next task:** `TASK-012` — Selected Projects Grid.
