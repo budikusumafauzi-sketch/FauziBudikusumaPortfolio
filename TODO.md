@@ -16,7 +16,7 @@
 | Last completed task | TASK-014 — Field Documentation gallery |
 | Next task | TASK-015 — Direct Channels, footer and Back to Top |
 | Blockers | none |
-| Last verified commit | `pending` (TASK-014 field documentation horizontal gallery) |
+| Last verified commit | `1263ce6` (TASK-014 field documentation horizontal gallery) |
 
 ## 2. Phases and gates
 
