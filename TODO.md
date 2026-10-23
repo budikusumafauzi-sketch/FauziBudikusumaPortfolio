@@ -13,10 +13,10 @@
 | Date | 2026-10-23 |
 | Current phase | **3 — Static portfolio sections** |
 | Waiting for | **Gate G3 (OWNER)** — Static portfolio sections |
-| Last completed task | TASK-011 — Skills marquee |
-| Next task | TASK-012 — Projects grid |
+| Last completed task | TASK-012 — Projects grid |
+| Next task | TASK-013 — Credentials carousel and certificate lightbox |
 | Blockers | none |
-| Last verified commit | `21120a7` (TASK-011 accessible skills marquee with reduced-motion fallback) |
+| Last verified commit | `TASK-012` (pending commit) |
 
 ## 2. Phases and gates
 
@@ -49,7 +49,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [009](tasks/TASK-009-hero-and-cv.md) | Hero section and CV download | 3 | P0 | `DONE` | TASK-006, TASK-008; decision C-05 |
 | [010](tasks/TASK-010-profile-journey.md) | Profile & Journey section | 3 | P0 | `DONE` | TASK-008, TASK-005 |
 | [011](tasks/TASK-011-skills-marquee.md) | Skills marquee | 3 | P1 | `DONE` | TASK-008; decision C-04 |
-| [012](tasks/TASK-012-projects-grid.md) | Projects grid | 3 | P0 | `TODO` | TASK-008; decisions C-06, C-07, C-10 |
+| [012](tasks/TASK-012-projects-grid.md) | Projects grid | 3 | P0 | `DONE` | TASK-008; decisions C-06, C-07, C-10 |
 | [013](tasks/TASK-013-certifications-lightbox.md) | Credentials carousel and certificate lightbox | 3 | P0 | `TODO` | TASK-008, TASK-005; decisions C-03, C-08, OD-12 |
 | [014](tasks/TASK-014-gallery.md) | Field Documentation gallery | 3 | P1 | `TODO` | TASK-008 |
 | [015](tasks/TASK-015-contact-footer.md) | Direct Channels, footer and Back to Top | 3 | P0 | `TODO` | TASK-008; decisions OD-11, DS-03 |

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 3 — Static portfolio sections |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -71,4 +71,28 @@ Build the Projects grid with the strict 3/2/1 column rule and the never-stretch 
 - C-06/C-07 undecided → implement only the unaffected parts.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-012: <summary>`.)*
+## Completion Report — TASK-012 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented the Selected Projects grid (`#projects`) with strict 3/2/1 responsive geometry (`lg:grid-cols-3`, `md:grid-cols-2`, `grid-cols-1`) and equal card heights (`flex flex-col justify-between`). Locked 16:10 cover thumbnails rendered with Next.js Image without mockup strings (`C-06`), verified GitHub repository links (`rel="noopener noreferrer"`), private badge handling, and truthful project descriptions (correcting `C-10` eBPF mockup defect).
+**Files:**
+- `src/components/sections/projects.tsx`: created (ProjectsSection component)
+- `src/app/page.tsx`: modified (mounted ProjectsSection at `#projects`)
+- `tests/projects.test.ts`: created (unit tests for 3-2-1 grid, external link security, C-06, C-11)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test tests/projects.test.ts` | PASS | 6 tests passed (id, C-11 compliance, 3-2-1 grid, external links, security rel, C-06) |
+| `pnpm verify` | PASS | ESLint clean, TypeScript clean, 38/38 tests pass, Next.js static build successful |
+| C-06 compliance | PASS | Strict absence of `[PREVIEW 16:10]`; clean aspect-[16/10] image container |
+| C-07 & security | PASS | Verified public repositories link with `target="_blank" rel="noopener noreferrer"` |
+| C-10 compliance | PASS | Enterprise Network Lab description matches MikroTik CHR routing topology |
+| Never-stretch last row | PASS | CSS grid preserves 1/3 column width per card regardless of item count |
+**Acceptance criteria:**
+- AC-1 ✔ — 3/2/1 columns at desktop/tablet/mobile with equal heights.
+- AC-2 ✔ — Last row cards maintain fixed column width, never stretching to fill empty slots.
+- AC-3 ✔ — Thumbnails locked to 16:10 ratio with Next.js Image fill layout causing no layout shift.
+- AC-4 ✔ — External links carry `target="_blank"` and `rel="noopener noreferrer"`.
+- AC-5 ✔ — Zero filters/search/detail modals exist; strictly clean showcase grid.
+- AC-6 ✔ — Clean card anatomy with hover glow in both dark and light modes.
+**Next task:** `TASK-013` — Credentials carousel and certificate lightbox.
