@@ -16,7 +16,7 @@
 | Last completed task | TASK-016 — Static site sweep and Gate G3 package |
 | Next task | Gate G3 Owner Review Package (OWNER GATE) |
 | Blockers | Waiting for Owner approval at Gate G3 before Phase 4 |
-| Last verified commit | `pending` (TASK-016 static site sweep and Gate G3 package) |
+| Last verified commit | `12d07f8` (TASK-016 static site sweep and Gate G3 package) |
 
 ## 2. Phases and gates
 
