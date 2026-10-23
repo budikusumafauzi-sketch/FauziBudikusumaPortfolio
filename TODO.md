@@ -16,7 +16,7 @@
 | Last completed task | TASK-012 — Projects grid |
 | Next task | TASK-013 — Credentials carousel and certificate lightbox |
 | Blockers | none |
-| Last verified commit | `TASK-012` (pending commit) |
+| Last verified commit | `b108cb2` (TASK-012 3-2-1 projects grid with verified repos and private badge) |
 
 ## 2. Phases and gates
 
