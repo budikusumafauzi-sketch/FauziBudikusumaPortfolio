@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-23 |
-| Current phase | **4 — Data preparation and PostgreSQL** |
-| Waiting for | None (Phase 4 active) |
-| Last completed task | TASK-017 — Prisma schema and first migration |
-| Next task | TASK-018 — Seed, read-only runtime role and negative write test |
+| Current phase | **4 — Data preparation and PostgreSQL** (Completed, Gate G4 PASSED) |
+| Waiting for | Owner directive to begin Phase 5 |
+| Last completed task | TASK-018 — Seed, read-only runtime role and negative write test |
+| Next task | Phase 5 — Grounded AI Chatbot Backend (TASK-019) |
 | Blockers | None |
-| Last verified commit | `12d07f8` (TASK-016 static site sweep and Gate G3 package) |
+| Last verified commit | `e925b94` (TASK-017 KnowledgeRecord Prisma schema and initial migration) |
 
 ## 2. Phases and gates
 
@@ -26,7 +26,7 @@
 | 1 | Project foundation | 002–003 | G1 | AUTO | `DONE` |
 | 2 | Design system and shared UI | 004–007 | G2 | AUTO | `DONE` |
 | 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `DONE` |
-| 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `IN_PROGRESS` |
+| 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `DONE` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `TODO` |
 | 6 | Chatbot UI and integration | 023 | G6 | AUTO | `TODO` |
 | 7 | Quality and security review | 024–025 | G7 | AUTO | `TODO` |
@@ -55,7 +55,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [015](tasks/TASK-015-contact-footer.md) | Direct Channels, footer and Back to Top | 3 | P0 | `DONE` | TASK-008; decisions OD-11, DS-03 |
 | [016](tasks/TASK-016-static-site-qa-and-gate.md) | Static site sweep and Gate G3 package | 3 | P0 | `DONE` | TASK-009 … TASK-015 |
 | [017](tasks/TASK-017-prisma-schema-migration.md) | Prisma schema and first migration | 4 | P0 | `DONE` | TASK-008; Phase 4 entry criteria |
-| [018](tasks/TASK-018-seed-and-readonly-role.md) | Seed, read-only runtime role and negative write test | 4 | P0 | `TODO` | TASK-017 |
+| [018](tasks/TASK-018-seed-and-readonly-role.md) | Seed, read-only runtime role and negative write test | 4 | P0 | `DONE` | TASK-017 |
 | [019](tasks/TASK-019-chat-contract-validation-ratelimit.md) | Chat API contract, validation, scope guard and rate limit | 5 | P0 | `TODO` | TASK-003 (G4 recommended; may use a mocked data layer) |
 | [020](tasks/TASK-020-retrieval-and-fallback.md) | Retrieval and no-data fallback | 5 | P0 | `TODO` | TASK-018, TASK-019 |
 | [021](tasks/TASK-021-gemini-integration-and-failures.md) | Gemini integration and failure handling | 5 | P0 | `TODO` | TASK-020 |
