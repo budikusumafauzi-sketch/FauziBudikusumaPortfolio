@@ -16,7 +16,7 @@
 | Last completed task | TASK-022 — Chatbot security and abuse tests |
 | Next task | TASK-023 — Chatbot UI: launcher, panel and states (Phase 6) |
 | Blockers | None |
-| Last verified commit | `pending` (TASK-022 add comprehensive /api/chat security, prompt-injection, and resilience test suite) |
+| Last verified commit | `cdd9949` (TASK-022 add comprehensive /api/chat security, prompt-injection, and resilience test suite) |
 
 ## 2. Phases and gates
 
