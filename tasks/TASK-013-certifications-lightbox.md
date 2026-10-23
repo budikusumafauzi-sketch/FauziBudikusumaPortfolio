@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 3 — Static portfolio sections |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -72,4 +72,31 @@ Build the Embla credentials carousel and the **image-only** accessible certifica
 - Any request to add the design's hash/validity text → not allowed (R-010).
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-013: <summary>`.)*
+## Completion Report — TASK-013 — 2026-10-23
+**Status:** DONE
+**Summary:** Built the credentials carousel using `embla-carousel-react` and an accessible, image-only certificate lightbox strictly conforming to C-03, C-08, and OD-12 without mock verification sidebars.
+**Files:**
+- Created: `src/components/sections/credentials.tsx` (carousel + clean image-only modal)
+- Created: `tests/credentials.test.ts` (DOM/Vitest suite for credentials section)
+- Modified: `package.json` (added `embla-carousel-react@8.6.0`)
+- Modified: `src/app/page.tsx` (mounted CredentialsSection)
+**Dependencies added:** `embla-carousel-react@8.6.0` — recommended carousel library per ARCHITECTURE.md §3 and TASK-013
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | ESLint clean across all files |
+| `pnpm typecheck` | PASS | tsc zero errors |
+| `pnpm test` | PASS | 10 test files, 43 tests passed |
+| `pnpm build` | PASS | Next.js SSG static prerender successful |
+**Acceptance criteria:**
+- AC-1 ✔: Accessible carousel prev/next buttons in section header, drag/touch enabled, disabled state when at ends.
+- AC-2 ✔: Image-only lightbox displays solely full uncropped scan and accessible close X button; zero fake hashes/validity sidebars per C-03.
+- AC-3 ✔: Keyboard Escape closes modal; focus returned to trigger card button; body scroll locked without jumping page.
+- AC-4 ✔: Missing-image fallback rendered as respectful inert frame.
+- AC-5 ✔: Solid surface-raised backgrounds on issuer chips ensure high contrast across dark and light modes.
+- AC-6 ✔: Clean cards matching 3 MASTER DESIGN.png and C-08 verified fields.
+**Design comparison (UI tasks):** Evaluated against 3 MASTER DESIGN.png and 4 PREVIEW CERTIFICATION.png (filtering out C-03 fake sidebar chrome).
+**Rule & scope check:** No invented verification metadata; no raw hex; no database queries; file economy respected.
+**Conflicts / open decisions encountered:** C-03 (image-only modal enforced), C-08 (verified fields only), OD-12 (dialog focus & keyboard).
+**Known gaps:** None.
+**Next task:** TASK-014

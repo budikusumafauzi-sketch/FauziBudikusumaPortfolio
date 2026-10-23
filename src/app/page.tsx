@@ -2,11 +2,11 @@ import { HeroSection } from "@/components/sections/hero";
 import { ProfileJourneySection } from "@/components/sections/profile-journey";
 import { SkillsSection } from "@/components/sections/skills";
 import { ProjectsSection } from "@/components/sections/projects";
+import { CredentialsSection } from "@/components/sections/credentials";
 import { Container } from "@/components/ui/primitives";
 
 export default function HomePage() {
   const remainingSections = [
-    { id: "credentials", label: "Credentials" },
     { id: "documentation", label: "Documentation" },
     { id: "contact", label: "Contact" },
   ];
@@ -17,6 +17,7 @@ export default function HomePage() {
       <ProfileJourneySection />
       <SkillsSection />
       <ProjectsSection />
+      <CredentialsSection />
 
       <Container className="space-y-16 py-12">
         {remainingSections.map((sec) => (
