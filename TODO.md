@@ -13,10 +13,10 @@
 | Date | 2026-10-23 |
 | Current phase | **3 — Static portfolio sections** |
 | Waiting for | **Gate G3 (OWNER)** — Static portfolio sections |
-| Last completed task | TASK-013 — Credentials carousel and certificate lightbox |
-| Next task | TASK-014 — Field Documentation gallery |
+| Last completed task | TASK-014 — Field Documentation gallery |
+| Next task | TASK-015 — Direct Channels, footer and Back to Top |
 | Blockers | none |
-| Last verified commit | `392cc6a` (TASK-013 credentials carousel and image-only lightbox) |
+| Last verified commit | `pending` (TASK-014 field documentation horizontal gallery) |
 
 ## 2. Phases and gates
 
@@ -51,7 +51,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [011](tasks/TASK-011-skills-marquee.md) | Skills marquee | 3 | P1 | `DONE` | TASK-008; decision C-04 |
 | [012](tasks/TASK-012-projects-grid.md) | Projects grid | 3 | P0 | `DONE` | TASK-008; decisions C-06, C-07, C-10 |
 | [013](tasks/TASK-013-certifications-lightbox.md) | Credentials carousel and certificate lightbox | 3 | P0 | `DONE` | TASK-008, TASK-005; decisions C-03, C-08, OD-12 |
-| [014](tasks/TASK-014-gallery.md) | Field Documentation gallery | 3 | P1 | `TODO` | TASK-008 |
+| [014](tasks/TASK-014-gallery.md) | Field Documentation gallery | 3 | P1 | `DONE` | TASK-008 |
 | [015](tasks/TASK-015-contact-footer.md) | Direct Channels, footer and Back to Top | 3 | P0 | `TODO` | TASK-008; decisions OD-11, DS-03 |
 | [016](tasks/TASK-016-static-site-qa-and-gate.md) | Static site sweep and Gate G3 package | 3 | P0 | `TODO` | TASK-009 … TASK-015 |
 | [017](tasks/TASK-017-prisma-schema-migration.md) | Prisma schema and first migration | 4 | P0 | `TODO` | TASK-008; Phase 4 entry criteria |
