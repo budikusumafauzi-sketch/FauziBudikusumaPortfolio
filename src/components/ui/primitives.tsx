@@ -32,6 +32,7 @@ export interface ButtonProps
   size?: "sm" | "md" | "lg";
   href?: string;
   external?: boolean;
+  download?: string | boolean;
 }
 
 export function Button({
@@ -67,6 +68,8 @@ export function Button({
   const combinedClasses = `${baseStyles} ${sizeStyles} ${variantStyles} ${className}`;
 
   if (href) {
+    const anchorProps = { ...props } as React.AnchorHTMLAttributes<HTMLAnchorElement>;
+    delete (anchorProps as { type?: unknown }).type;
     return (
       <a
         href={href}
@@ -75,6 +78,7 @@ export function Button({
           ? { target: "_blank", rel: "noopener noreferrer" }
           : {})}
         aria-disabled={disabled}
+        {...anchorProps}
       >
         {children}
       </a>
@@ -180,10 +184,14 @@ export function Card({
    ========================================================================== */
 export interface ChipProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: "accent" | "neutral" | "outline";
+  dot?: boolean;
+  dotColor?: "accent" | "success" | "muted";
 }
 
 export function Chip({
   variant = "neutral",
+  dot = false,
+  dotColor = "accent",
   className = "",
   children,
   ...props
@@ -197,11 +205,23 @@ export function Chip({
     outline: "bg-transparent text-text-muted border border-border-default",
   }[variant];
 
+  const dotColorClass = {
+    accent: "bg-accent",
+    success: "bg-emerald-500",
+    muted: "bg-text-muted",
+  }[dotColor];
+
   return (
     <span
       className={`${baseStyles} ${variantStyles} ${className}`}
       {...props}
     >
+      {dot && (
+        <span
+          className={`h-1.5 w-1.5 rounded-full ${dotColorClass} animate-pulse`}
+          aria-hidden="true"
+        />
+      )}
       {children}
     </span>
   );
