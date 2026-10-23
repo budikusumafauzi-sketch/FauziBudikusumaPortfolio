@@ -16,7 +16,7 @@
 | Last completed task | TASK-008 — Typed content data modules |
 | Next task | TASK-009 — Hero section and CV download |
 | Blockers | none |
-| Last verified commit | `TASK-008` (pending commit) |
+| Last verified commit | `4b5dba2` (TASK-008 typed content data modules and Zod validation) |
 
 ## 2. Phases and gates
 
