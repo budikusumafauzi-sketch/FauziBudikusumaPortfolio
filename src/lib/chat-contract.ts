@@ -1,0 +1,151 @@
+/**
+ * Chat API contract — shared by server (Route Handler) and client (chat widget).
+ * All limits, status codes and fixed visitor copy are defined here.
+ *
+ * IMPORTANT: This file must NOT import server-only modules. It is used
+ * by both the server Route Handler and client-side code.
+ */
+import { z } from 'zod';
+
+// ─── Hard limits (OD-08 finalized in TASK-019) ───────────────────────────────
+
+/** Maximum character length of a visitor message (trimmed). */
+export const MAX_MESSAGE_LENGTH = 300;
+
+/** Maximum request body size in bytes. */
+export const MAX_BODY_BYTES = 2048; // 2 KB
+
+/** Rate limit: maximum requests per rolling window per IP. */
+export const RATE_LIMIT_MAX = 10;
+
+/** Rate limit window in milliseconds (1 minute). */
+export const RATE_LIMIT_WINDOW_MS = 60_000;
+
+/** Maximum records returned by retrieval query (K). */
+export const RETRIEVAL_TOP_K = 6;
+
+/** Maximum candidate records fetched from DB before scoring. */
+export const RETRIEVAL_TAKE = 20;
+
+/** Maximum total characters sent to Gemini as context. */
+export const CONTEXT_MAX_CHARS = 4_000;
+
+/** Maximum characters per individual record body sent to Gemini. */
+export const CONTEXT_RECORD_MAX_CHARS = 600;
+
+/** Maximum output tokens from Gemini. */
+export const GEMINI_MAX_OUTPUT_TOKENS = 300;
+
+/** Gemini call temperature — low for factual determinism. */
+export const GEMINI_TEMPERATURE = 0.2;
+
+/** Gemini call timeout in milliseconds. */
+export const GEMINI_TIMEOUT_MS = 8_000;
+
+/** DB query timeout in milliseconds (app-level; DB role also has statement_timeout). */
+export const DB_TIMEOUT_MS = 2_000;
+
+/** Maximum answer length (characters) for sanitized model output. */
+export const ANSWER_MAX_CHARS = 1_200;
+
+// ─── Status codes ─────────────────────────────────────────────────────────────
+
+export const ChatStatusSchema = z.enum([
+  'ok',
+  'no_data',
+  'out_of_scope',
+  'invalid_request',
+  'too_large',
+  'unsupported_media_type',
+  'rate_limited',
+  'unavailable',
+  'error',
+]);
+export type ChatStatus = z.infer<typeof ChatStatusSchema>;
+
+// ─── Request schema ────────────────────────────────────────────────────────────
+
+/**
+ * Strict Zod schema for POST /api/chat request body.
+ * .strict() rejects any unknown keys — the client can NEVER pass
+ * model, table names, filters, SQL, or extra parameters.
+ */
+export const ChatRequestSchema = z
+  .object({
+    message: z
+      .string()
+      .trim()
+      .min(1, 'Message must not be empty')
+      .max(MAX_MESSAGE_LENGTH, `Message must be at most ${MAX_MESSAGE_LENGTH} characters`)
+      .transform((s) =>
+        // Strip control characters (keep printable + whitespace)
+        s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim(),
+      )
+      .refine((s) => s.length >= 1, 'Message must not be empty after sanitization'),
+  })
+  .strict(); // ← rejects unknown fields (AC-2)
+
+export type ChatRequest = z.infer<typeof ChatRequestSchema>;
+
+// ─── Source record (verified portfolio reference) ─────────────────────────────
+
+export const SourceSchema = z.object({
+  slug: z.string(),
+  title: z.string(),
+  category: z.string(),
+});
+export type Source = z.infer<typeof SourceSchema>;
+
+// ─── Response shapes ──────────────────────────────────────────────────────────
+
+export const ChatResponseSchema = z.union([
+  // Grounded answer
+  z.object({
+    status: z.literal('ok'),
+    answer: z.string(),
+    sources: z.array(SourceSchema),
+  }),
+  // Deterministic no-data or out-of-scope (no Gemini call)
+  z.object({
+    status: z.union([z.literal('no_data'), z.literal('out_of_scope')]),
+    answer: z.string(),
+  }),
+  // Client error
+  z.object({
+    status: z.union([
+      z.literal('invalid_request'),
+      z.literal('too_large'),
+      z.literal('unsupported_media_type'),
+    ]),
+    answer: z.string(),
+  }),
+  // Rate limited — includes retryAfterSeconds
+  z.object({
+    status: z.literal('rate_limited'),
+    answer: z.string(),
+    retryAfterSeconds: z.number().int().positive(),
+  }),
+  // Server errors
+  z.object({
+    status: z.union([z.literal('unavailable'), z.literal('error')]),
+    answer: z.string(),
+  }),
+]);
+
+export type ChatResponse = z.infer<typeof ChatResponseSchema>;
+
+// ─── Fixed visitor copy (constants — never AI-generated, R-039) ───────────────
+
+export const COPY = {
+  no_data:
+    "I only have access to Fauzi's approved public portfolio data, and that information isn't available there.",
+  out_of_scope:
+    "I can only answer questions about Fauzi's public portfolio, so I can't help with that request.",
+  unavailable:
+    'The assistant is temporarily unavailable. The rest of the portfolio works as usual — please try again later.',
+  rate_limited: 'Too many questions in a short time. Please wait a moment and try again.',
+  invalid_request: `Please enter a question between 1 and ${MAX_MESSAGE_LENGTH} characters.`,
+  error: 'Something went wrong. Please try again later.',
+  too_large: 'Request body is too large.',
+  unsupported_media_type: 'Only application/json requests are accepted.',
+} as const satisfies Record<string, string>;

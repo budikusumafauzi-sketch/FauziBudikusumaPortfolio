@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 5 — Chatbot backend |
 | **Hat** | Backend |
 | **Priority** | P0 |
@@ -72,5 +72,42 @@ Create `POST /api/chat` with the strict contract, validation, fixed responses, d
 ## 11. Blocked / stop conditions
 - Hosting header behavior for client IP is unknown locally → implement the safe fallback and schedule verification in TASK-026.
 
-## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-019: <summary>`.)*
+## 12. Completion Report — TASK-019 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented the Chat API contract, strict Zod schema validation (.strict()), sliding-window rate limiter with bounded map, deterministic pre-retrieval scope guard, and Route Handler structure for POST /api/chat. Recorded finalized limits under OD-08 in ARCHITECTURE.md §7.
+**Files:**
+- created: `src/lib/chat-contract.ts` (shared contract, limits, Zod schema, fixed visitor copy)
+- created: `src/lib/server/rate-limit.ts` (sliding window rate limiter, bounded map, client IP detection)
+- created: `src/lib/server/guard.ts` (pre-retrieval deterministic regex guard for injection, secret, mutation, private data, off-topic)
+- created: `src/app/api/chat/route.ts` (POST /api/chat route handler with 7-layer defense-in-depth and 405 method guards)
+- created: `tests/chat-contract.test.ts` (93 comprehensive unit tests covering contract, validation, rate limiting, and scope guard)
+- created: `tests/__mocks__/server-only.ts` (test-environment mock for server-only package)
+- modified: `vitest.config.ts` (added alias for server-only mock)
+- modified: `ARCHITECTURE.md` (recorded finalized limits under OD-08 in §7)
+- modified: `.gitignore` (added .vscode/)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test -- tests/chat-contract.test.ts` | PASS | 93 tests passed (100%) |
+| `pnpm lint` | PASS | Exit code 0, 0 errors, 0 warnings |
+| `pnpm typecheck` | PASS | Exit code 0, 0 type errors |
+| `pnpm build` | PASS | Route `/api/chat` built as dynamic server-rendered route |
+**Acceptance criteria:**
+- AC-1 ✔: Status table paths reachable (tested in `tests/chat-contract.test.ts`).
+- AC-2 ✔: Zod `.strict()` schema rejects unknown properties with 400 invalid_request; client cannot supply parameters.
+- AC-3 ✔: Burst test returns 429 with `Retry-After` header and `retryAfterSeconds`; store map bounded to 5,000 entries.
+- AC-4 ✔: Guard matches return `out_of_scope` with fixed copy; 0 DB / 0 Gemini calls.
+- AC-5 ✔: Responses contain only visitor-safe copy; no stack traces, paths, SQL, or provider details.
+- AC-6 ✔: Final limit values recorded in `ARCHITECTURE.md` §7 under OD-08.
+**Rule & scope check:**
+- R-026: Visitor input and model outputs treated as untrusted data.
+- R-029: No internal details or stack traces exposed in responses.
+- R-036: Client cannot pass query or model parameters.
+- R-039: Fixed visitor copy constants used for all error/status conditions.
+- R-070..R-074: File economy verified.
+**Conflicts / open decisions encountered:**
+- OD-08 finalized with limits recorded in `ARCHITECTURE.md` §7.
+**Known gaps:**
+- Database retrieval and Gemini generation stubbed as `unavailable` per task specification; implemented in TASK-020 and TASK-021.
+**Next task:** TASK-020 (Retrieval and no-data fallback)

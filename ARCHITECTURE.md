@@ -181,18 +181,18 @@ Visitor browser                              ← Zone E: untrusted
 | `unavailable` | 503 | Missing key, quota/rate limit, Gemini/DB timeout or failure |
 | `error` | 500 | Unexpected exception |
 
-**Starting limits — RECOMMENDED, finalize under OD-08 in TASK-019 and record the final values here:**
+**Final limits — FINALIZED under OD-08 in TASK-019:**
 
-| Parameter | Start value |
+| Parameter | Final value |
 |---|---|
 | Max message length | 300 characters (trimmed, min 1) |
-| Max request body | 2 KB |
-| Rate limit | 10 requests / minute / IP (sliding window) |
+| Max request body | 2 KB (2,048 bytes) |
+| Rate limit | 10 requests / minute / IP (sliding window, 60,000 ms) |
 | DB query timeout | 2 s (plus role-level `statement_timeout`) |
-| Gemini timeout | 8 s (total request budget ≤ 10 s — verify the host's function limit) |
+| Gemini timeout | 8 s (total request budget ≤ 10 s — within host limit) |
 | Retrieved records (K) | ≤ 6 |
 | Context sent to Gemini | ≤ 4,000 characters; per-record body ≤ 600 |
-| Model output | `maxOutputTokens` ≈ 300; answer cap 1,200 characters; low temperature (≈ 0.2) |
+| Model output | `maxOutputTokens`: 300; answer cap 1,200 characters; temperature: 0.2 |
 | Retries | **0** (no loops that multiply quota use) |
 
 **Fixed visitor copy — RECOMMENDED** (stored as constants, not generated):

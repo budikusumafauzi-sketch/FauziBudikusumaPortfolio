@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-23 |
-| Current phase | **4 — Data preparation and PostgreSQL** (Completed, Gate G4 PASSED) |
-| Waiting for | Owner directive to begin Phase 5 |
-| Last completed task | TASK-018 — Seed, read-only runtime role and negative write test |
-| Next task | Phase 5 — Grounded AI Chatbot Backend (TASK-019) |
+| Current phase | **5 — Chatbot backend** |
+| Waiting for | Execution of Phase 5 tasks |
+| Last completed task | TASK-019 — Chat API contract, validation, scope guard and rate limit |
+| Next task | TASK-020 — Retrieval and no-data fallback |
 | Blockers | None |
-| Last verified commit | `609ca7e` (TASK-018 portfolio_runtime role, seed, and negative write verification) |
+| Last verified commit | pending commit for TASK-019 |
 
 ## 2. Phases and gates
 
@@ -56,7 +56,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [016](tasks/TASK-016-static-site-qa-and-gate.md) | Static site sweep and Gate G3 package | 3 | P0 | `DONE` | TASK-009 … TASK-015 |
 | [017](tasks/TASK-017-prisma-schema-migration.md) | Prisma schema and first migration | 4 | P0 | `DONE` | TASK-008; Phase 4 entry criteria |
 | [018](tasks/TASK-018-seed-and-readonly-role.md) | Seed, read-only runtime role and negative write test | 4 | P0 | `DONE` | TASK-017 |
-| [019](tasks/TASK-019-chat-contract-validation-ratelimit.md) | Chat API contract, validation, scope guard and rate limit | 5 | P0 | `TODO` | TASK-003 (G4 recommended; may use a mocked data layer) |
+| [019](tasks/TASK-019-chat-contract-validation-ratelimit.md) | Chat API contract, validation, scope guard and rate limit | 5 | P0 | `DONE` | TASK-003 (G4 recommended; may use a mocked data layer) |
 | [020](tasks/TASK-020-retrieval-and-fallback.md) | Retrieval and no-data fallback | 5 | P0 | `TODO` | TASK-018, TASK-019 |
 | [021](tasks/TASK-021-gemini-integration-and-failures.md) | Gemini integration and failure handling | 5 | P0 | `TODO` | TASK-020 |
 | [022](tasks/TASK-022-chatbot-security-tests.md) | Chatbot security and abuse tests | 5 | P0 | `TODO` | TASK-021 |
