@@ -16,7 +16,7 @@
 | Last completed task | TASK-013 — Credentials carousel and certificate lightbox |
 | Next task | TASK-014 — Field Documentation gallery |
 | Blockers | none |
-| Last verified commit | `pending` (TASK-013 credentials carousel and image-only lightbox) |
+| Last verified commit | `392cc6a` (TASK-013 credentials carousel and image-only lightbox) |
 
 ## 2. Phases and gates
 
