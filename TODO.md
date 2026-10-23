@@ -16,7 +16,7 @@
 | Last completed task | TASK-010 — Profile & Journey section |
 | Next task | TASK-011 — Skills marquee |
 | Blockers | none |
-| Last verified commit | `TASK-010` (pending commit) |
+| Last verified commit | `6281e3f` (TASK-010 profile overview and chronological journey timeline) |
 
 ## 2. Phases and gates
 
