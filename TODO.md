@@ -16,7 +16,7 @@
 | Last completed task | TASK-018 — Seed, read-only runtime role and negative write test |
 | Next task | Phase 5 — Grounded AI Chatbot Backend (TASK-019) |
 | Blockers | None |
-| Last verified commit | `e925b94` (TASK-017 KnowledgeRecord Prisma schema and initial migration) |
+| Last verified commit | `1a86f51` (TASK-018 portfolio_runtime role, seed, and negative write verification) |
 
 ## 2. Phases and gates
 
