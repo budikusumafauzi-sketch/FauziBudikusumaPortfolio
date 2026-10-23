@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 3 — Static portfolio sections |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -64,4 +64,24 @@ Build Profile & Journey: Profile Summary card and Education & Experience Timelin
 - Journey facts unverified → render DRAFT values in development and list them for the owner; do not alter them.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-010: <summary>`.)*
+## Completion Report — TASK-010 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented Profile & Journey section (`#profile`) per `3 MASTER DESIGN.png`, `5 PREVIEW MOBILE DARK MODE.png`, and `6 LIGHT MODE.png`. Built 2-column layout with engineering foundations card (verified summary, operational principles, verified profile chip) and chronological journey timeline card with vertical rail, pulsating current marker, organizations, periods, and technology chips.
+**Files:**
+- `src/components/sections/profile-journey.tsx`: created (Profile & Journey section component)
+- `src/app/page.tsx`: modified (mounted ProfileJourneySection at `#profile`)
+- `tests/profile-journey.test.ts`: created (unit tests for section ID, C-11 compliance, journey entries, principles)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test tests/profile-journey.test.ts` | PASS | 4 tests passed (id, C-11 compliance, all journey entries, principles) |
+| `pnpm verify` | PASS | ESLint clean, TypeScript clean, 27/27 tests pass, Next.js static build successful |
+| C-11 compliance | PASS | SectionHeader renders "Profile & Journey" without numeric index prefix (`01 //`) |
+| No per-breakpoint copy forking (C-10) | PASS | 100% of text rendered from typed data modules `profileData` and `journeyData` |
+**Acceptance criteria:**
+- AC-1 ✔ — Both cards match design references in dark and light modes across all viewports.
+- AC-2 ✔ — Identical verified wording on desktop and mobile from `journeyData` and `profileData`.
+- AC-3 ✔ — Chronological timeline with AMIKOM (current/pulsing), Kominfo DIY (2025 intern), SMK N 1 Seyegan (2023–2026).
+- AC-4 ✔ — No text clipping or overflow; headings follow clean hierarchy (`<h3>` and `<h4>`).
+**Next task:** `TASK-011` — Technical Skills Marquee.

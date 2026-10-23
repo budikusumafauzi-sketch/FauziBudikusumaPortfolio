@@ -1,9 +1,9 @@
 import { HeroSection } from "@/components/sections/hero";
+import { ProfileJourneySection } from "@/components/sections/profile-journey";
 import { Container } from "@/components/ui/primitives";
 
 export default function HomePage() {
-  const sections = [
-    { id: "profile", label: "Profile & Journey" },
+  const remainingSections = [
     { id: "skills", label: "Skills" },
     { id: "projects", label: "Projects" },
     { id: "credentials", label: "Credentials" },
@@ -14,9 +14,10 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
       <HeroSection />
+      <ProfileJourneySection />
 
       <Container className="space-y-16 py-12">
-        {sections.map((sec) => (
+        {remainingSections.map((sec) => (
           <section
             key={sec.id}
             id={sec.id}
