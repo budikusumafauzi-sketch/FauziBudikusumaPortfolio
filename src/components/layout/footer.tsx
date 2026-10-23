@@ -23,7 +23,7 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-2">
               <div className="relative h-8 w-8 overflow-hidden rounded border border-border-default bg-surface-raised flex items-center justify-center">
                 <Image
-                  src="/assets/profile/logo-fb.png"
+                  src="/assets/brand/logo-fb.png"
                   alt="FB Logo"
                   width={28}
                   height={28}

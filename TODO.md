@@ -13,10 +13,10 @@
 | Date | 2026-10-23 |
 | Current phase | **3 — Static portfolio sections** |
 | Waiting for | **Gate G3 (OWNER)** — Static portfolio sections |
-| Last completed task | TASK-015 — Direct Channels, footer and Back to Top |
-| Next task | TASK-016 — Static site sweep and Gate G3 package |
-| Blockers | none |
-| Last verified commit | `315d647` (TASK-015 direct contact channels and footer) |
+| Last completed task | TASK-016 — Static site sweep and Gate G3 package |
+| Next task | Gate G3 Owner Review Package (OWNER GATE) |
+| Blockers | Waiting for Owner approval at Gate G3 before Phase 4 |
+| Last verified commit | `pending` (TASK-016 static site sweep and Gate G3 package) |
 
 ## 2. Phases and gates
 
@@ -25,7 +25,7 @@
 | 0 | Documentation and design lock | 001 | G0 | **OWNER** | `DONE` |
 | 1 | Project foundation | 002–003 | G1 | AUTO | `DONE` |
 | 2 | Design system and shared UI | 004–007 | G2 | AUTO | `DONE` |
-| 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `IN_PROGRESS` |
+| 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `WAITING_OWNER` |
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `TODO` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `TODO` |
 | 6 | Chatbot UI and integration | 023 | G6 | AUTO | `TODO` |
@@ -53,7 +53,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [013](tasks/TASK-013-certifications-lightbox.md) | Credentials carousel and certificate lightbox | 3 | P0 | `DONE` | TASK-008, TASK-005; decisions C-03, C-08, OD-12 |
 | [014](tasks/TASK-014-gallery.md) | Field Documentation gallery | 3 | P1 | `DONE` | TASK-008 |
 | [015](tasks/TASK-015-contact-footer.md) | Direct Channels, footer and Back to Top | 3 | P0 | `DONE` | TASK-008; decisions OD-11, DS-03 |
-| [016](tasks/TASK-016-static-site-qa-and-gate.md) | Static site sweep and Gate G3 package | 3 | P0 | `TODO` | TASK-009 … TASK-015 |
+| [016](tasks/TASK-016-static-site-qa-and-gate.md) | Static site sweep and Gate G3 package | 3 | P0 | `DONE` | TASK-009 … TASK-015 |
 | [017](tasks/TASK-017-prisma-schema-migration.md) | Prisma schema and first migration | 4 | P0 | `TODO` | TASK-008; Phase 4 entry criteria |
 | [018](tasks/TASK-018-seed-and-readonly-role.md) | Seed, read-only runtime role and negative write test | 4 | P0 | `TODO` | TASK-017 |
 | [019](tasks/TASK-019-chat-contract-validation-ratelimit.md) | Chat API contract, validation, scope guard and rate limit | 5 | P0 | `TODO` | TASK-003 (G4 recommended; may use a mocked data layer) |
