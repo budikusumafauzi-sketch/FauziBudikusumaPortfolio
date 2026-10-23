@@ -16,7 +16,7 @@
 | Last completed task | TASK-018 — Seed, read-only runtime role and negative write test |
 | Next task | Phase 5 — Grounded AI Chatbot Backend (TASK-019) |
 | Blockers | None |
-| Last verified commit | `1a86f51` (TASK-018 portfolio_runtime role, seed, and negative write verification) |
+| Last verified commit | `609ca7e` (TASK-018 portfolio_runtime role, seed, and negative write verification) |
 
 ## 2. Phases and gates
 
