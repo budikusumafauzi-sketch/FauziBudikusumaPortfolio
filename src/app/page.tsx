@@ -4,13 +4,9 @@ import { SkillsSection } from "@/components/sections/skills";
 import { ProjectsSection } from "@/components/sections/projects";
 import { CredentialsSection } from "@/components/sections/credentials";
 import { DocumentationSection } from "@/components/sections/documentation";
-import { Container } from "@/components/ui/primitives";
+import { ContactSection } from "@/components/sections/contact";
 
 export default function HomePage() {
-  const remainingSections = [
-    { id: "contact", label: "Contact" },
-  ];
-
   return (
     <main className="min-h-screen">
       <HeroSection />
@@ -19,20 +15,7 @@ export default function HomePage() {
       <ProjectsSection />
       <CredentialsSection />
       <DocumentationSection />
-
-      <Container className="space-y-16 py-12">
-        {remainingSections.map((sec) => (
-          <section
-            key={sec.id}
-            id={sec.id}
-            className="rounded-xl border border-border-default/40 bg-surface-card/20 p-8"
-          >
-            <h2 className="font-display text-lg font-bold uppercase text-text-muted">
-              {sec.label}
-            </h2>
-          </section>
-        ))}
-      </Container>
+      <ContactSection />
     </main>
   );
 }

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { OpeningOverlay } from "@/components/layout/opening-overlay";
+import { Footer } from "@/components/layout/footer";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -39,7 +40,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen bg-bg-page text-text-primary antialiased selection:bg-accent selection:text-white">
+      <body id="top" className="min-h-screen bg-bg-page text-text-primary antialiased selection:bg-accent selection:text-white">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -49,6 +50,7 @@ export default function RootLayout({
           <OpeningOverlay />
           <Navbar />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

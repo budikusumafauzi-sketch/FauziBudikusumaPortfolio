@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 3 — Static portfolio sections |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -66,4 +66,31 @@ Build the four contact cards, the footer and the Back to Top control with no tru
 - Contacts not approved/verified → BLOCKED for final values; layout proceeds with fixtures.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-015: <summary>`.)*
+## Completion Report — TASK-015 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented the 4 verified direct contact channel cards with zero truncation, and built the editorial site footer with brand monogram, unified role headline, 5 quick anchor links, and a non-colliding Back to Top control.
+**Files:**
+- Created: `src/components/sections/contact.tsx` (Direct Contact channels section)
+- Created: `src/components/layout/footer.tsx` (Editorial Footer with Back to Top)
+- Created: `tests/contact-footer.test.ts` (DOM/Vitest suite for contact & footer)
+- Modified: `src/app/page.tsx` (mounted ContactSection)
+- Modified: `src/app/layout.tsx` (mounted Footer and added id="top" to body)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | ESLint zero errors/warnings |
+| `pnpm typecheck` | PASS | tsc zero errors |
+| `pnpm test` | PASS | 12 test files, 56 tests passed |
+| `pnpm build` | PASS | Next.js SSG static prerender successful |
+**Acceptance criteria:**
+- AC-1 ✔: Word-wrapping (`break-all`) ensures long email/handle values never truncate or clip in light or dark modes (fixing C-10 light mode defect).
+- AC-2 ✔: Only the 4 approved channels (Email, LinkedIn, GitHub, Instagram) with verified full URLs rendered per OD-11.
+- AC-3 ✔: External links carry `target="_blank"` and `rel="noopener noreferrer"`.
+- AC-4 ✔: Footer includes brand logo, role headline (C-05), verified location, and non-colliding Back to Top anchor link to `#top` (DS-03).
+- AC-5 ✔: Responsive grid layout (4 cols desktop, 2x2 tablet/mobile).
+**Design comparison (UI tasks):** Evaluated against 3 MASTER DESIGN.png, 5 PREVIEW MOBILE DARK MODE.png, 6 LIGHT MODE.png, and 7 PREVIEW MOBILE LIGHT MODE.png.
+**Rule & scope check:** Zero `<form>`, zero input/message fields per PRD §2.2 scope guard; no raw hex; file economy maintained.
+**Conflicts / open decisions encountered:** OD-11 (4 approved channels), DS-03 (Back to Top placement), C-05 (unified role), C-10 (no truncation).
+**Known gaps:** None.
+**Next task:** TASK-016
