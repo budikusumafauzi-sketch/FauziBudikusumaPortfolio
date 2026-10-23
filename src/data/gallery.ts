@@ -1,0 +1,58 @@
+import { GalleryItem, GalleryItemSchema } from "./schemas";
+
+export const galleryData: GalleryItem[] = [
+  GalleryItemSchema.parse({
+    id: "gallery-mikrotik-lab",
+    verification: "DRAFT",
+    position: 0,
+    title: "MikroTik Routing & Infrastructure",
+    caption: "Hardware routing configuration session with multi-area OSPF protocols.",
+    imagePath: "/assets/gallery/placeholder-gallery-1.svg",
+    alt: "MikroTik routing equipment and laboratory setup",
+  }),
+  GalleryItemSchema.parse({
+    id: "gallery-kominfo-operations",
+    verification: "DRAFT",
+    position: 1,
+    title: "Dinas Kominfo DIY Field Operations",
+    caption: "Technical supervision, ticket resolution, and provincial network continuity.",
+    imagePath: "/assets/gallery/placeholder-gallery-2.svg",
+    alt: "Field support workstation and incident tracking monitors",
+  }),
+  GalleryItemSchema.parse({
+    id: "gallery-network-cabling",
+    verification: "DRAFT",
+    position: 2,
+    title: "Structured Cabling & Termination",
+    caption: "Patch panel cable management and Cat6 termination testing.",
+    imagePath: "/assets/gallery/placeholder-gallery-3.svg",
+    alt: "Server rack cabling with clean cable management",
+  }),
+  GalleryItemSchema.parse({
+    id: "gallery-server-cluster",
+    verification: "DRAFT",
+    position: 3,
+    title: "Linux Server Administration",
+    caption: "Deployment of virtualization nodes and network monitoring agents.",
+    imagePath: "/assets/gallery/placeholder-gallery-4.svg",
+    alt: "Linux enterprise server terminal and performance monitoring",
+  }),
+  GalleryItemSchema.parse({
+    id: "gallery-amikom-dev",
+    verification: "DRAFT",
+    position: 4,
+    title: "Amikom Academic Laboratory",
+    caption: "Full-stack software development workstation and API testing environment.",
+    imagePath: "/assets/gallery/placeholder-gallery-5.svg",
+    alt: "Development workstation showing IDE and database clients",
+  }),
+  GalleryItemSchema.parse({
+    id: "gallery-bnsp-exam",
+    verification: "DRAFT",
+    position: 5,
+    title: "BNSP Competency Assessment",
+    caption: "Practical vocational competency examination in wide area network design.",
+    imagePath: "/assets/gallery/placeholder-gallery-6.svg",
+    alt: "Vocational competency evaluation session with physical test benches",
+  }),
+];

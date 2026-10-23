@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 3 — Static portfolio sections |
 | **Hat** | Architect |
 | **Priority** | P0 |
@@ -75,4 +75,48 @@ Create the typed, validated content modules in `src/data/` that every static sec
 - Owner states a fact differently from the design → follow the owner and record it.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-008: <summary>`.)*
+## Completion Report — TASK-008 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented typed, Zod-validated content data modules (`profile`, `journey`, `skills`, `projects`, `certifications`, `gallery`, `contacts`, `site-config`), ingested verified assets from `dokumen informasi/` (portrait, 7 certificate scans, 34 skill icons, 6 repository links, 4 contacts), created aspect-ratio-locked modular SVG placeholders for projects/gallery and valid minimal PDF for CV, and verified with 10 unit tests.
+**Files:**
+- `src/data/schemas.ts`: created (Zod schemas for all content models with verification state enum)
+- `src/data/profile.ts`: created (verified owner profile data)
+- `src/data/journey.ts`: created (verified chronological education & internship timeline)
+- `src/data/skills.ts`: created (34 verified skills categorized across 5 groups with Devicon CDN URLs)
+- `src/data/projects.ts`: created (6 verified projects with GitHub repository URLs and modular SVG thumbnails)
+- `src/data/certifications.ts`: created (7 verified certificate records with scan image paths on disk)
+- `src/data/gallery.ts`: created (6 modular field documentation items marked as DRAFT)
+- `src/data/contacts.ts`: created (4 verified public contact channels from Subfolder B)
+- `src/data/site-config.ts`: modified (extended with cvPath and cvDownloadName)
+- `src/data/index.ts`: created (barrel export)
+- `tests/content.test.ts`: created (10 unit tests for schema validation, negative tests, disk presence, URL safety)
+- `public/assets/profile/fauzi-portrait.jpg`: created (copied from authentic owner asset)
+- `public/assets/certificates/*.jpg`: created (7 authentic certificate scans copied)
+- `public/assets/projects/placeholder-project-*.svg`: created (6 aspect-ratio 16:10 modular SVGs)
+- `public/assets/gallery/placeholder-gallery-*.svg`: created (6 aspect-ratio 16:10 modular SVGs)
+- `public/assets/cv/fauzi-budikusuma-cv-placeholder.pdf`: created (valid minimal PDF fallback)
+**Dependencies added:** `zod@^4.6.7` (installed to provide strict schema validation)
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test tests/content.test.ts` | PASS | 10 tests passed (schemas, negative cases, disk asset presence, URL safety) |
+| `pnpm verify` | PASS | ESLint clean, TypeScript clean, 19/19 tests pass, Next.js static build successful |
+| Mock string check | PASS | Grep for `[PREVIEW 16:10]`, `SHA-256 HASH VERIFIED`, `Lorem ipsum` in data modules returns 0 matches |
+| Disk asset presence | PASS | All 7 certificate JPGs, portrait JPG, 6 project SVGs, 6 gallery SVGs, and CV PDF verified on disk |
+**Acceptance criteria:**
+- AC-1 ✔ — All 8 modules exist, are typed, and pass Zod validation in `pnpm test`.
+- AC-2 ✔ — Items backed by owner docs are marked `VERIFIED`; modular gallery items are marked `DRAFT`.
+- AC-3 ✔ — Zero mock design content (no fake hashes, no mock thumbnails, no lorem ipsum).
+- AC-4 ✔ — Inconsistencies resolved to single clean wording matching `C-05`, `C-06`, `C-10`.
+- AC-5 ✔ — All URLs are verified from Subfolder B (`URL Repositori`, `Email`, `URL Linkedin`, etc.).
+- AC-6 ✔ — Owner verification list documented in completion report.
+**Owner Verification List:**
+- `profile`: VERIFIED (backed by owner info and photo)
+- `journey`: VERIFIED (AMIKOM, Kominfo DIY, SMK N 1 Seyegan)
+- `skills`: VERIFIED (34 skills mapped from owner links)
+- `projects`: VERIFIED (6 GitHub repos verified from Subfolder B; visual covers are modular SVGs)
+- `certifications`: VERIFIED (7 certificate scans copied from Subfolder A)
+- `gallery`: DRAFT (modular SVGs in place, ready for real activity photos anytime)
+- `contacts`: VERIFIED (4 channels verified from Subfolder B)
+- `cv`: DRAFT (valid minimal placeholder PDF in place, ready for final owner PDF)
+**Next task:** `TASK-009` — Hero section and CV download.

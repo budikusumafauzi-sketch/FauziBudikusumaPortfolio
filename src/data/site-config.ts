@@ -9,6 +9,8 @@ export interface SiteConfig {
   title: string;
   description: string;
   navItems: NavItem[];
+  cvPath: string;
+  cvDownloadName: string;
 }
 
 export const siteConfig: SiteConfig = {
@@ -24,4 +26,6 @@ export const siteConfig: SiteConfig = {
     { label: "Documentation", href: "#documentation" },
     { label: "Contact", href: "#contact" },
   ],
+  cvPath: "/assets/cv/fauzi-budikusuma-cv-placeholder.pdf",
+  cvDownloadName: "Fauzi-Budikusuma-CV.pdf",
 };
