@@ -16,7 +16,7 @@
 | Last completed task | TASK-011 — Skills marquee |
 | Next task | TASK-012 — Projects grid |
 | Blockers | none |
-| Last verified commit | `TASK-011` (pending commit) |
+| Last verified commit | `21120a7` (TASK-011 accessible skills marquee with reduced-motion fallback) |
 
 ## 2. Phases and gates
 
