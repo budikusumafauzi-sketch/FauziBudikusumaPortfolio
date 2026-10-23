@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 5 — Chatbot backend |
 | **Hat** | Security |
 | **Priority** | P0 |
@@ -67,4 +67,35 @@ Attack the chatbot backend the way a hostile visitor would and fix what breaks. 
 - A fix would require a design/scope change → stop event with the smallest proposal.
 
 ## 12. Completion Report
-*(Append the report using the template in `AGENTS.md` §9 when finished. Then update `Status`, `TODO.md` §1 and commit: `TASK-022: <summary>`.)*
+
+## Completion Report — TASK-022 — 2026-10-23
+**Status:** DONE
+**Summary:** Implemented comprehensive automated security, prompt-injection, input abuse, client bundle isolation, zero-call verification matrix, and live grounded smoke tests covering all 7 areas in ARCHITECTURE.md §10.
+**Files:**
+- `tests/chatbot-security-matrix.test.ts` (created) — 37 automated test scenarios covering the full ARCHITECTURE.md §10 verification matrix (injection, context-spoofing, secret probes, rate-limit abuse, client bundle isolation, static resilience, zero-call proofs).
+- `tests/live-smoke.test.ts` (created) — Live end-to-end grounded query test against Neon PostgreSQL and Gemini API.
+- `src/lib/server/guard.ts` (modified) — Broadened fiction/creative writing regex pattern to capture narrative prompts deterministically.
+- `tasks/TASK-022-chatbot-security-tests.md` (modified) — Updated status to DONE and recorded completion report.
+- `TODO.md` (modified) — Updated status of TASK-022 to DONE, Phase 5 to DONE, Gate G5 to PASSED.
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm test` | PASS | 21 test files, 275 passed (100% green) |
+| `vitest run tests/chatbot-security-matrix.test.ts` | PASS | 37 passed in 106ms |
+| `vitest run tests/live-smoke.test.ts` | PASS | 1 passed (live query executed, returns safe structured response) |
+| `pnpm lint` | PASS | 0 errors, 0 warnings |
+| `pnpm typecheck` | PASS | 0 errors |
+| `pnpm build` | PASS | Compiled successfully in 568ms, static pages generated |
+| `$env:GEMINI_API_KEY=""; $env:DATABASE_URL=""; pnpm build` | PASS | Static Resilience Principle verified (exit code 0) |
+**Acceptance criteria:**
+- **AC-1** ✔ Every injection/abuse case yields specified safe refusal response; spy confirms zero Gemini calls (`toHaveBeenCalledTimes(0)`) on guard and no-data paths.
+- **AC-2** ✔ Response text, status, and sources inspected: zero leaks of API keys, SQL queries, database credentials, server stack traces, filesystem paths, or raw system prompts.
+- **AC-3** ✔ Client bundle static scan confirmed: `src/components/**` and client modules contain zero imports of `@google/genai`, `@prisma/client`, `src/lib/server/**`, `process.env.GEMINI_API_KEY`, or `process.env.DATABASE_URL`.
+- **AC-4** ✔ No AI or chat request occurs on initial page load (all routes statically prerendered except dynamic `/api/chat`).
+- **AC-5** ✔ All 37 security matrix tests pass reliably; full regression suite (275 tests) passes; `pnpm verify` exits 0.
+**Design comparison (UI tasks):** N/A (backend security and verification task)
+**Rule & scope check:** Confirmed no extra scope added; R-020..R-025, R-030..R-036 strictly honored. Zero raw API keys logged or leaked.
+**Conflicts / open decisions encountered:** None.
+**Known gaps:** None.
+**Next task:** Gate G5 Report / Owner directive before Phase 6 (TASK-023).

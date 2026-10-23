@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-23 |
-| Current phase | **5 — Chatbot backend** |
-| Waiting for | Execution of Phase 5 tasks |
-| Last completed task | TASK-021 — Gemini integration and failure handling |
-| Next task | TASK-022 — Chatbot security and abuse tests |
+| Current phase | **5 — Chatbot backend (PASSED Gate G5)** |
+| Waiting for | Owner directive to proceed to Phase 6 (TASK-023) |
+| Last completed task | TASK-022 — Chatbot security and abuse tests |
+| Next task | TASK-023 — Chatbot UI: launcher, panel and states (Phase 6) |
 | Blockers | None |
-| Last verified commit | pending commit for TASK-021 |
+| Last verified commit | `pending` (TASK-022 add comprehensive /api/chat security, prompt-injection, and resilience test suite) |
 
 ## 2. Phases and gates
 
@@ -27,7 +27,7 @@
 | 2 | Design system and shared UI | 004–007 | G2 | AUTO | `DONE` |
 | 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `DONE` |
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `DONE` |
-| 5 | Chatbot backend | 019–022 | G5 | AUTO | `TODO` |
+| 5 | Chatbot backend | 019–022 | G5 | AUTO | `DONE` |
 | 6 | Chatbot UI and integration | 023 | G6 | AUTO | `TODO` |
 | 7 | Quality and security review | 024–025 | G7 | AUTO | `TODO` |
 | 8 | Deployment and final acceptance | 026–027 | G8 | **OWNER** | `TODO` |
@@ -59,7 +59,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [019](tasks/TASK-019-chat-contract-validation-ratelimit.md) | Chat API contract, validation, scope guard and rate limit | 5 | P0 | `DONE` | TASK-003 (G4 recommended; may use a mocked data layer) |
 | [020](tasks/TASK-020-retrieval-and-fallback.md) | Retrieval and no-data fallback | 5 | P0 | `DONE` | TASK-018, TASK-019 |
 | [021](tasks/TASK-021-gemini-integration-and-failures.md) | Gemini integration and failure handling | 5 | P0 | `DONE` | TASK-020 |
-| [022](tasks/TASK-022-chatbot-security-tests.md) | Chatbot security and abuse tests | 5 | P0 | `TODO` | TASK-021 |
+| [022](tasks/TASK-022-chatbot-security-tests.md) | Chatbot security and abuse tests | 5 | P0 | `DONE` | TASK-021 |
 | [023](tasks/TASK-023-chatbot-ui.md) | Chatbot UI: launcher, panel and states | 6 | P0 | `TODO` | TASK-022 and Gate G3 passed; decision C-09 |
 | [024](tasks/TASK-024-accessibility-responsive-audit.md) | Accessibility and responsive audit | 7 | P0 | `TODO` | TASK-023 |
 | [025](tasks/TASK-025-security-dependency-review.md) | Security and dependency review | 7 | P0 | `TODO` | TASK-023 |
