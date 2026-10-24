@@ -16,6 +16,7 @@ import {
   buildPrompt,
   sanitizeAnswer,
   generateGroundedAnswer,
+  classifyGeminiError,
 } from '@/lib/server/gemini';
 import { ANSWER_MAX_CHARS, COPY } from '@/lib/chat-contract';
 import { POST } from '@/app/api/chat/route';
@@ -157,7 +158,7 @@ describe('generateGroundedAnswer unit tests with mocked client', () => {
     }
   });
 
-  it('classifies safety blockage as chat.bad_output', async () => {
+  it('classifies safety blockage as chat.gemini_denied (CR-004)', async () => {
     const mockClient = {
       models: {
         generateContent: vi.fn().mockResolvedValue({
@@ -172,11 +173,11 @@ describe('generateGroundedAnswer unit tests with mocked client', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.status).toBe('unavailable');
-      expect(result.logCode).toBe('chat.bad_output');
+      expect(result.logCode).toBe('chat.gemini_denied');
     }
   });
 
-  it('classifies empty model response as chat.bad_output', async () => {
+  it('classifies empty model response as chat.gemini_empty (CR-004)', async () => {
     const mockClient = {
       models: {
         generateContent: vi.fn().mockResolvedValue({
@@ -191,8 +192,17 @@ describe('generateGroundedAnswer unit tests with mocked client', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.status).toBe('unavailable');
-      expect(result.logCode).toBe('chat.bad_output');
+      expect(result.logCode).toBe('chat.gemini_empty');
     }
+  });
+
+  it('verifies classifyGeminiError maps all CR-004 operational codes', () => {
+    expect(classifyGeminiError(new Error('timeout'), true)).toBe('chat.gemini_timeout');
+    expect(classifyGeminiError(new Error('429 RESOURCE_EXHAUSTED quota exceeded'), false)).toBe('chat.gemini_quota');
+    expect(classifyGeminiError(new Error('API_KEY_INVALID'), false)).toBe('chat.gemini_key');
+    expect(classifyGeminiError(new Error('403 PERMISSION_DENIED'), false)).toBe('chat.gemini_denied');
+    expect(classifyGeminiError(new Error('fetch failed: ENOTFOUND'), false)).toBe('chat.gemini_network');
+    expect(classifyGeminiError(new Error('Generic failure'), false)).toBe('chat.gemini_error');
   });
 });
 

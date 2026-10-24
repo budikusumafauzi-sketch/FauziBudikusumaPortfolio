@@ -4,7 +4,7 @@ import { z } from 'zod';
 const ServerEnvSchema = z.object({
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
-  GEMINI_MODEL: z.string().default('models/gemini-3.8-flash'),
+  GEMINI_MODEL: z.string().default('models/gemini-3.1-flash-lite'),
 });
 
 export type ServerEnv = z.infer<typeof ServerEnvSchema>;
@@ -17,14 +17,28 @@ export interface EnvValidationResult {
 
 /**
  * Validates server environment variables lazily at request time.
+ * Strips any Windows CRLF, trailing whitespace, or wrapping quotes (CR-004).
  * Never called at build time, ensuring static build resilience.
  */
 export function getServerEnv(): EnvValidationResult {
   const env = process.env;
+  const rawApiKey = (env['GEMINI_API_KEY'] || '')
+    .replace(/\r|\n/g, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
+  const rawModel = (env['GEMINI_MODEL'] || 'models/gemini-3.1-flash-lite')
+    .replace(/\r|\n/g, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
+  const rawDb = (env['DATABASE_URL'] || '')
+    .replace(/\r|\n/g, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
+
   const parsed = ServerEnvSchema.safeParse({
-    DATABASE_URL: env['DATABASE_URL'],
-    GEMINI_API_KEY: env['GEMINI_API_KEY'],
-    GEMINI_MODEL: env['GEMINI_MODEL'] || 'models/gemini-3.8-flash',
+    DATABASE_URL: rawDb,
+    GEMINI_API_KEY: rawApiKey,
+    GEMINI_MODEL: rawModel || 'models/gemini-3.1-flash-lite',
   });
 
   if (!parsed.success) {

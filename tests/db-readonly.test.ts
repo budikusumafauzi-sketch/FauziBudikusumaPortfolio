@@ -45,7 +45,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
       orderBy: { position: "asc" },
     });
 
-    expect(records.length).toBe(26);
+    expect(records.length).toBe(27);
     expect(records.every((r) => r.body.length > 0)).toBe(true);
     expect(records.every((r) => r.title.length > 0)).toBe(true);
 

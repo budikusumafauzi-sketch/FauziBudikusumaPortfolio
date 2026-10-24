@@ -57,8 +57,9 @@ export type GenerateAnswerResult =
 
 /**
  * Classifies an error from the Gemini SDK into an operational log code.
+ * Safe operational codes only — zero user text, secrets, or full stack traces (R-022, R-029).
  */
-function classifyGeminiError(err: unknown, aborted: boolean): string {
+export function classifyGeminiError(err: unknown, aborted: boolean): string {
   const errorMessage = err instanceof Error ? err.message : String(err);
   const errorName = err instanceof Error ? err.name : '';
 
@@ -80,6 +81,31 @@ function classifyGeminiError(err: unknown, aborted: boolean): string {
     return 'chat.gemini_quota';
   }
 
+  if (
+    errorMessage.includes('API_KEY_INVALID') ||
+    errorMessage.includes('INVALID_ARGUMENT') ||
+    errorMessage.toLowerCase().includes('api key')
+  ) {
+    return 'chat.gemini_key';
+  }
+
+  if (
+    errorMessage.includes('403') ||
+    errorMessage.includes('PERMISSION_DENIED') ||
+    errorMessage.toLowerCase().includes('forbidden')
+  ) {
+    return 'chat.gemini_denied';
+  }
+
+  if (
+    errorMessage.toLowerCase().includes('fetch failed') ||
+    errorMessage.toLowerCase().includes('enotfound') ||
+    errorMessage.toLowerCase().includes('econnrefused') ||
+    errorMessage.toLowerCase().includes('network')
+  ) {
+    return 'chat.gemini_network';
+  }
+
   return 'chat.gemini_error';
 }
 
@@ -87,8 +113,8 @@ function classifyGeminiError(err: unknown, aborted: boolean): string {
  * Calls Gemini server-side with strict grounding, prompt layout, timeout and validation.
  * No tools, no search, no retries.
  *
- * Employs automatic model fallback across verified active Flash models (gemini-3.8-flash -> gemini-3.6-flash -> gemini-3.5-flash-lite -> gemini-3.5-flash)
- * to guarantee resilience against temporary model-specific spikes/demand.
+ * Employs automatic model fallback across verified active models:
+ * gemini-3.1-flash-lite -> gemini-3.1-flash-lite-preview -> GEMINI_MODEL -> gemini-flash-lite-latest -> gemini-3.5-flash-lite
  *
  * @param facts Delimited facts string built from verified PostgreSQL records.
  * @param question Normalized visitor query.
@@ -131,19 +157,19 @@ export async function generateGroundedAnswer(
 
       const candidate = response.candidates?.[0];
       if (!candidate) {
-        return { success: false, status: 'unavailable', logCode: 'chat.bad_output' };
+        return { success: false, status: 'unavailable', logCode: 'chat.gemini_empty' };
       }
 
       if (candidate.finishReason && candidate.finishReason !== 'STOP') {
         if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'BLOCKLIST') {
-          return { success: false, status: 'unavailable', logCode: 'chat.bad_output' };
+          return { success: false, status: 'unavailable', logCode: 'chat.gemini_denied' };
         }
       }
 
       const rawText = response.text ?? '';
       const sanitized = sanitizeAnswer(rawText);
       if (!sanitized || sanitized.length === 0) {
-        return { success: false, status: 'unavailable', logCode: 'chat.bad_output' };
+        return { success: false, status: 'unavailable', logCode: 'chat.gemini_empty' };
       }
 
       return { success: true, answer: sanitized };
@@ -154,13 +180,15 @@ export async function generateGroundedAnswer(
     }
   }
 
-  // Live execution: try active Flash models, with automatic fallback.
+  // Live execution: prioritize verified fast, active Flash-Lite models with zero quota issues.
   const candidateModels = [
-    'models/gemini-3.6-flash',
+    'models/gemini-3.1-flash-lite',
+    'models/gemini-3.1-flash-lite-preview',
     GEMINI_MODEL,
-    'models/gemini-3.5-flash',
+    'models/gemini-flash-lite-latest',
     'models/gemini-3.5-flash-lite',
-  ].filter((m, idx, arr) => arr.indexOf(m) === idx);
+    'models/gemini-3.8-flash',
+  ].filter((m, idx, arr) => Boolean(m) && arr.indexOf(m) === idx);
 
   const deadline = Date.now() + GEMINI_TIMEOUT_MS;
   let lastLogCode = 'chat.gemini_error';
@@ -173,10 +201,7 @@ export async function generateGroundedAnswer(
     }
 
     const controller = new AbortController();
-    const candidateTimeoutMs =
-      i === 0 && candidateModels.length > 1
-        ? Math.min(remainingMs, 5000)
-        : remainingMs;
+    const candidateTimeoutMs = Math.min(remainingMs, 4000);
     const timeoutId = setTimeout(() => controller.abort(), candidateTimeoutMs);
 
     try {
@@ -195,13 +220,13 @@ export async function generateGroundedAnswer(
 
       const candidate = response.candidates?.[0];
       if (!candidate) {
-        lastLogCode = 'chat.bad_output';
+        lastLogCode = 'chat.gemini_empty';
         continue;
       }
 
       if (candidate.finishReason && candidate.finishReason !== 'STOP') {
         if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'BLOCKLIST') {
-          lastLogCode = 'chat.bad_output';
+          lastLogCode = 'chat.gemini_denied';
           continue;
         }
       }
@@ -209,7 +234,7 @@ export async function generateGroundedAnswer(
       const rawText = response.text ?? '';
       const sanitized = sanitizeAnswer(rawText);
       if (!sanitized || sanitized.length === 0) {
-        lastLogCode = 'chat.bad_output';
+        lastLogCode = 'chat.gemini_empty';
         continue;
       }
 
@@ -217,6 +242,9 @@ export async function generateGroundedAnswer(
     } catch (err: unknown) {
       clearTimeout(timeoutId);
       lastLogCode = classifyGeminiError(err, controller.signal.aborted);
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`[GEMINI] Model ${model} failed with ${lastLogCode}`);
+      }
     }
   }
 
