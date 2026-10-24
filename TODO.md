@@ -10,13 +10,13 @@
 
 | Field | Value |
 |---|---|
-| Date | 2026-10-23 |
+| Date | 2026-10-24 |
 | Current phase | **5 — Chatbot backend (PASSED Gate G5)** |
 | Waiting for | Owner directive to proceed to Phase 6 (TASK-023) |
 | Last completed task | TASK-022 — Chatbot security and abuse tests |
 | Next task | TASK-023 — Chatbot UI: launcher, panel and states (Phase 6) |
 | Blockers | None |
-| Last verified commit | `cdd9949` (TASK-022 add comprehensive /api/chat security, prompt-injection, and resilience test suite) |
+| Last verified commit | `pending` (TASK-021 & TASK-022 align Gemini 3.8 Flash SDK integration and enforce strict HTTP 200 live smoke test) |
 
 ## 2. Phases and gates
 

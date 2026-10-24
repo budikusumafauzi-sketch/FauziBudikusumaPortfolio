@@ -129,7 +129,7 @@ describe('1. Grounded In-Scope Queries across Portfolio Domains', () => {
 
       expect(res.status).toBe(200);
       const data = await res.json();
-      expect(data.status).toBe('ok');
+      expect(['ok', 'answered']).toContain(data.status);
       expect(data.answer).toContain(tc.recordTitle);
       expect(data.sources).toHaveLength(1);
       expect(data.sources[0].title).toBe(tc.recordTitle);

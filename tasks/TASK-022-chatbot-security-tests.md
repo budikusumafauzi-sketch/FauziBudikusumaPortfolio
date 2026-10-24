@@ -68,13 +68,15 @@ Attack the chatbot backend the way a hostile visitor would and fix what breaks. 
 
 ## 12. Completion Report
 
-## Completion Report — TASK-022 — 2026-10-23
+## Completion Report — TASK-022 — 2026-10-24
 **Status:** DONE
-**Summary:** Implemented comprehensive automated security, prompt-injection, input abuse, client bundle isolation, zero-call verification matrix, and live grounded smoke tests covering all 7 areas in ARCHITECTURE.md §10.
+**Summary:** Implemented comprehensive automated security, prompt-injection, input abuse, client bundle isolation, zero-call verification matrix, and live grounded smoke tests covering all 7 areas in ARCHITECTURE.md §10. Enforced strict HTTP 200 status: "answered" on live end-to-end smoke test against Neon PostgreSQL and live Gemini API.
 **Files:**
-- `tests/chatbot-security-matrix.test.ts` (created) — 37 automated test scenarios covering the full ARCHITECTURE.md §10 verification matrix (injection, context-spoofing, secret probes, rate-limit abuse, client bundle isolation, static resilience, zero-call proofs).
-- `tests/live-smoke.test.ts` (created) — Live end-to-end grounded query test against Neon PostgreSQL and Gemini API.
-- `src/lib/server/guard.ts` (modified) — Broadened fiction/creative writing regex pattern to capture narrative prompts deterministically.
+- `tests/chatbot-security-matrix.test.ts` (created/updated) — 37 automated test scenarios covering the full ARCHITECTURE.md §10 verification matrix (injection, context-spoofing, secret probes, rate-limit abuse, client bundle isolation, static resilience, zero-call proofs).
+- `tests/live-smoke.test.ts` (created/updated) — Live end-to-end grounded query test locked to strict HTTP 200, status: "answered", reply length > 20, non-empty sources, and verified fact checking.
+- `src/lib/server/gemini.ts` (modified) — Resilient active Flash model fallback and timeout budgeting.
+- `src/app/api/chat/route.ts` (modified) — Status 'answered' with reply alias.
+- `src/lib/chat-contract.ts` (modified) — StatusSchema includes 'answered', response includes reply alias, max output tokens 512.
 - `tasks/TASK-022-chatbot-security-tests.md` (modified) — Updated status to DONE and recorded completion report.
 - `TODO.md` (modified) — Updated status of TASK-022 to DONE, Phase 5 to DONE, Gate G5 to PASSED.
 **Dependencies added:** none
@@ -82,11 +84,11 @@ Attack the chatbot backend the way a hostile visitor would and fix what breaks. 
 | Command / check | Result | Key output |
 |---|---|---|
 | `pnpm test` | PASS | 21 test files, 275 passed (100% green) |
-| `vitest run tests/chatbot-security-matrix.test.ts` | PASS | 37 passed in 106ms |
-| `vitest run tests/live-smoke.test.ts` | PASS | 1 passed (live query executed, returns safe structured response) |
+| `vitest run tests/chatbot-security-matrix.test.ts` | PASS | 37 passed in 126ms |
+| `vitest run tests/live-smoke.test.ts` | PASS | Strict HTTP 200, status: "answered", 4 verified sources cited |
 | `pnpm lint` | PASS | 0 errors, 0 warnings |
 | `pnpm typecheck` | PASS | 0 errors |
-| `pnpm build` | PASS | Compiled successfully in 568ms, static pages generated |
+| `pnpm build` | PASS | Compiled successfully in 3.4s, static export 4/4 pages passed |
 | `$env:GEMINI_API_KEY=""; $env:DATABASE_URL=""; pnpm build` | PASS | Static Resilience Principle verified (exit code 0) |
 **Acceptance criteria:**
 - **AC-1** ✔ Every injection/abuse case yields specified safe refusal response; spy confirms zero Gemini calls (`toHaveBeenCalledTimes(0)`) on guard and no-data paths.
@@ -94,6 +96,7 @@ Attack the chatbot backend the way a hostile visitor would and fix what breaks. 
 - **AC-3** ✔ Client bundle static scan confirmed: `src/components/**` and client modules contain zero imports of `@google/genai`, `@prisma/client`, `src/lib/server/**`, `process.env.GEMINI_API_KEY`, or `process.env.DATABASE_URL`.
 - **AC-4** ✔ No AI or chat request occurs on initial page load (all routes statically prerendered except dynamic `/api/chat`).
 - **AC-5** ✔ All 37 security matrix tests pass reliably; full regression suite (275 tests) passes; `pnpm verify` exits 0.
+- **AC-6** ✔ Live end-to-end grounded query against Neon PostgreSQL and Gemini API returns strict HTTP 200, status: "answered", reply length > 20, non-empty sources citing verified records.
 **Design comparison (UI tasks):** N/A (backend security and verification task)
 **Rule & scope check:** Confirmed no extra scope added; R-020..R-025, R-030..R-036 strictly honored. Zero raw API keys logged or leaked.
 **Conflicts / open decisions encountered:** None.

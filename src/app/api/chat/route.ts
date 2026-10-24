@@ -142,8 +142,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     return json(
       {
-        status: 'ok',
+        status: 'answered',
         answer: geminiResult.answer,
+        reply: geminiResult.answer,
         sources,
       },
       200,

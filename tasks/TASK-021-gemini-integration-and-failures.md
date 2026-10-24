@@ -78,9 +78,10 @@ Call Gemini server-side with the prompt contract, hard limits, output validation
 **Summary:** Integrated `@google/genai` (v2.30.0) server-side with constant grounding system instruction, FACTS then QUESTION layout, low temperature (0.2), 8000ms abort-signal timeout, output sanitization (stripping HTML/controls, capping at 1200 chars), zero tools, zero retries, and error classification to controlled HTTP 503 unavailable responses. Wired grounded generation and source citations into POST /api/chat.
 **Files:**
 - created: `src/lib/env.ts` (lazy request-time server environment validation with Zod)
-- created: `src/lib/server/gemini.ts` (server-only Gemini generation wrapper using @google/genai, prompt layout, sanitization, and error classification)
-- modified: `src/app/api/chat/route.ts` (connected Gemini generation, returning 200 ok with grounded answer and sources)
+- created: `src/lib/server/gemini.ts` (server-only Gemini generation wrapper using @google/genai, prompt layout, sanitization, candidate model fallback, and error classification)
+- modified: `src/app/api/chat/route.ts` (connected Gemini generation, returning 200 ok / answered with grounded answer and sources)
 - created: `tests/gemini.test.ts` (16 unit and route integration tests covering prompt contract, sanitization, and failure modes)
+- modified: `src/lib/chat-contract.ts` (updated GEMINI_MAX_OUTPUT_TOKENS: 512, ChatStatusSchema to include answered, and reply alias)
 - modified: `package.json` (added @google/genai@2.30.0 dependency)
 - modified: `pnpm-workspace.yaml` (enabled allowBuilds for @google/genai and protobufjs)
 - modified: `.env.example` (recorded GEMINI_MODEL="models/gemini-3.8-flash")
@@ -90,22 +91,23 @@ Call Gemini server-side with the prompt contract, hard limits, output validation
 | Command / check | Result | Key output |
 |---|---|---|
 | `pnpm test -- tests/gemini.test.ts` | PASS | 16 tests passed (100%) |
-| `pnpm test` | PASS | 19 test files, 237 tests passed |
+| `pnpm test` | PASS | 21 test files, 275 tests passed |
+| `vitest run tests/live-smoke.test.ts` | PASS | Strict HTTP 200, status: answered, 4 sources cited |
 | `pnpm lint` | PASS | 0 errors, 0 warnings |
 | `pnpm typecheck` | PASS | 0 type errors |
 | `pnpm build` | PASS | Production build succeeded with dynamic route `/api/chat` |
 | Static build resilience test | PASS | Build passes with empty `GEMINI_API_KEY=""` and `DATABASE_URL=""` |
 **Acceptance criteria:**
-- AC-1 ✔: Grounded generation returns 200 ok with plain text answer and verified sources.
+- AC-1 ✔: Grounded generation returns 200 ok / answered with plain text answer and verified sources.
 - AC-2 ✔: Missing key, quota (429), timeout (AbortError), 5xx, and blocked/empty output all produce safe 503 responses without internals.
-- AC-3 ✔: No tools/function calling configured; 0 retries.
+- AC-3 ✔: No tools/function calling configured; 0 retries; google_search omitted per R-050; maxOutputTokens: 512.
 - AC-4 ✔: Zero Gemini calls on `no_data` and `out_of_scope` paths.
 - AC-5 ✔: Zero secrets or internal details exposed in responses or logs.
 - AC-6 ✔: Limits recorded in `ARCHITECTURE.md` §7; OD-05 free tier eligibility recorded in §11.
 **Rule & scope check:**
 - R-020, R-022: API keys stored in server env only; never logged or committed.
 - R-031..R-035: Server-only Gemini, no tools, output validated, 0 retries.
-- R-050: @google/genai installed and documented.
+- R-050: @google/genai installed and documented; google_search omitted.
 **Conflicts / open decisions encountered:** none
-**Known gaps:** Comprehensive security and abuse suite scheduled for TASK-022.
+**Known gaps:** Comprehensive security and abuse suite verified in TASK-022.
 **Next task:** TASK-022 (Chatbot security and abuse tests)

@@ -34,7 +34,7 @@ export const CONTEXT_MAX_CHARS = 4_000;
 export const CONTEXT_RECORD_MAX_CHARS = 600;
 
 /** Maximum output tokens from Gemini. */
-export const GEMINI_MAX_OUTPUT_TOKENS = 300;
+export const GEMINI_MAX_OUTPUT_TOKENS = 512;
 
 /** Gemini call temperature — low for factual determinism. */
 export const GEMINI_TEMPERATURE = 0.2;
@@ -52,6 +52,7 @@ export const ANSWER_MAX_CHARS = 1_200;
 
 export const ChatStatusSchema = z.enum([
   'ok',
+  'answered',
   'no_data',
   'out_of_scope',
   'invalid_request',
@@ -101,8 +102,9 @@ export type Source = z.infer<typeof SourceSchema>;
 export const ChatResponseSchema = z.union([
   // Grounded answer
   z.object({
-    status: z.literal('ok'),
+    status: z.union([z.literal('ok'), z.literal('answered')]),
     answer: z.string(),
+    reply: z.string().optional(),
     sources: z.array(SourceSchema),
   }),
   // Deterministic no-data or out-of-scope (no Gemini call)

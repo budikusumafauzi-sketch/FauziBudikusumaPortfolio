@@ -9,7 +9,7 @@
  * - Route handler integration with grounded answer and sources
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from 'vitest';
 import { NextRequest } from 'next/server';
 import {
   SYSTEM_INSTRUCTION,
@@ -59,7 +59,7 @@ describe('Gemini prompt contract and sanitization', () => {
 });
 
 describe('generateGroundedAnswer unit tests with mocked client', () => {
-  const originalEnv = process.env;
+  const originalEnv = { ...process.env };
 
   beforeEach(() => {
     process.env = {
@@ -68,6 +68,14 @@ describe('generateGroundedAnswer unit tests with mocked client', () => {
       GEMINI_MODEL: 'models/gemini-3.8-flash',
       DATABASE_URL: 'postgresql://fake:fake@fake.neon.tech/fake',
     };
+  });
+
+  afterEach(() => {
+    process.env = { ...originalEnv };
+  });
+
+  afterAll(() => {
+    process.env = { ...originalEnv };
   });
 
   it('returns success with grounded plain-text answer on STOP finishReason', async () => {
@@ -190,6 +198,10 @@ describe('generateGroundedAnswer unit tests with mocked client', () => {
 
 describe('Route Handler POST /api/chat with Gemini grounding and sources', () => {
   beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
     vi.restoreAllMocks();
   });
 
