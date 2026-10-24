@@ -89,9 +89,9 @@ export function OpeningOverlay() {
         </CornerFrame>
 
         {/* Name in Huge Plus Jakarta Display */}
-        <h1 className="font-display font-black uppercase tracking-tight text-3xl sm:text-4xl md:text-5xl text-text-strong mt-8 sm:mt-10">
+        <div className="font-display font-black uppercase tracking-tight text-3xl sm:text-4xl md:text-5xl text-text-strong mt-8 sm:mt-10">
           {siteConfig.name}
-        </h1>
+        </div>
 
         {/* Subtitle in JetBrains Mono per C-05 */}
         <p className="font-mono text-xs sm:text-sm uppercase tracking-widest text-text-secondary mt-3 max-w-md">

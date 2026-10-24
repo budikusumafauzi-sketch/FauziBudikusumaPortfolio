@@ -66,7 +66,7 @@ export function ProjectsSection() {
                       href={project.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-accent hover:text-accent-hover transition-colors"
+                      className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-accent-text hover:text-accent transition-colors"
                     >
                       <span>GitHub Repository</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -78,7 +78,7 @@ export function ProjectsSection() {
                     </div>
                   )}
 
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-text-faint">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
                     {project.repoVisibility}
                   </span>
                 </div>

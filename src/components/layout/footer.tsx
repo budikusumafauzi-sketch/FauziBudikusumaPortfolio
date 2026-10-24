@@ -35,12 +35,12 @@ export function Footer() {
               </span>
             </div>
 
-            <p className="font-mono text-xs text-accent uppercase tracking-wider font-semibold mb-2">
+            <p className="font-mono text-xs text-accent-text uppercase tracking-wider font-semibold mb-2">
               SOFTWARE DEVELOPMENT &amp; NETWORK ENGINEER
             </p>
 
             <div className="flex items-center gap-1.5 text-xs text-text-muted">
-              <MapPin className="h-3.5 w-3.5 text-text-faint" />
+              <MapPin className="h-3.5 w-3.5 text-text-muted" />
               <span>Yogyakarta, Indonesia</span>
             </div>
           </div>
@@ -72,7 +72,7 @@ export function Footer() {
         {/* Bottom Bar: Copyright & System Notice */}
         <div className="border-t border-border-default/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-text-muted">
           <p>© {CURRENT_YEAR} FAUZI BUDIKUSUMA. ALL RIGHTS RESERVED.</p>
-          <p className="text-text-faint">ENGINEERED FOR RESILIENCE &amp; PERFORMANCE</p>
+          <p className="text-text-muted">ENGINEERED FOR RESILIENCE &amp; PERFORMANCE</p>
         </div>
       </Container>
     </footer>

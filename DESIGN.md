@@ -82,26 +82,38 @@ Define as **semantic CSS custom properties** (e.g. `--color-bg-page`) in one pla
 | `text-muted` | `#7C7C85` | **OBSERVED** |
 | `accent` | `#BE123C` (desktop export) | **OBSERVED** — mobile light export shows a brighter crimson (≈ dark-mode `#E11D48`): OPEN DS-05, pick one after contrast check |
 
-### 3.3 Contrast evidence (finalized in TASK-004)
-| Pair | Ratio | Meaning |
-|---|---|---|
-| `#E5E1E6` on `#131316` | 14.34 | OK |
-| `#C7C5D0` on `#131316` | 10.88 | OK |
-| `#FFB3B6` on `#131316` | 10.93 | OK for small crimson text on dark |
-| `#E11D48` on `#131316` | **3.95** | **Fails 4.5 for small text.** Use only for fills, borders, large/bold text (≥ 3:1 UI components). Small crimson text on dark must use `accent-text`. |
-| `#FFFFFF` on `#E11D48` | 4.70 | OK for button labels |
-| `#111115` on `#FAFAFC` | 18.07 | OK |
-| `#BE123C` on `#FAFAFC` | 6.03 | OK |
-| `#E11D48` on `#FAFAFC` | 4.51 | Borderline pass |
-| `#FFFFFF` on `#BE123C` | 6.29 | OK |
-| `#FEFEFE` on `#131316` | 18.35 | OK (text-strong dark) |
-| `#9A98A2` on `#131316` | 6.55 | OK (text-muted dark) |
-| `#FFB3B6` on `#28141B` | 9.85 | OK (headline chip dark) |
-| `#0A0A0C` on `#FAFAFC` | 19.35 | OK (text-strong light) |
-| `#52525E` on `#FAFAFC` | 7.82 | OK (text-secondary light) |
-| `#7C7C85` on `#FAFAFC` | 4.58 | OK (text-muted light) |
-| `#9F1239` on `#FFE4E6` | 7.15 | OK (headline chip light) |
-Every text/background token pair meets or exceeds WCAG AA requirements (small crimson text uses `accent-text` `#FFB3B6`, `#E11D48` restricted to fills/borders).
+### 3.3 Contrast evidence (authoritative Phase 7 audit record — TASK-024)
+| Pair | Theme | Ratio | Text Size | Pass/Fail | Notes |
+|---|---|---|---|---|---|
+| `text-strong` (`#FEFEFE`) on `bg-page` (`#131316`) | Dark | **18.39:1** | Any | PASS | Titles and headings |
+| `text-primary` (`#E5E1E6`) on `bg-page` (`#131316`) | Dark | **14.34:1** | Any | PASS | Primary body and labels |
+| `text-secondary` (`#C7C5D0`) on `bg-page` (`#131316`) | Dark | **10.88:1** | Any | PASS | Secondary text and summaries |
+| `text-muted` (`#9A98A2`) on `bg-page` (`#131316`) | Dark | **6.52:1** | Normal/Small | PASS | Exceeds 4.5:1 threshold |
+| `accent-text` (`#FFB3B6`) on `bg-page` (`#131316`) | Dark | **10.93:1** | Small | PASS | Small crimson text, badges & chips |
+| `accent-text` (`#FFB3B6`) on `accent-chip-bg` (`#28141B`) | Dark | **10.26:1** | Small | PASS | Headline chip & status badges |
+| `accent` (`#E11D48`) on `bg-page` (`#131316`) | Dark | **3.95:1** | Large / UI | PASS | Exceeds 3.0:1 for large text (≥24px/bold) & UI borders/fills. Restricted per R-041/Item 38. |
+| `white` (`#FFFFFF`) on `accent` (`#E11D48`) | Dark | **4.70:1** | Normal/Small | PASS | Primary CTA button label |
+| `text-strong` (`#FEFEFE`) on `surface-card` (`#131318`) | Dark | **18.36:1** | Any | PASS | Card titles |
+| `text-primary` (`#E5E1E6`) on `surface-card` (`#131318`) | Dark | **14.32:1** | Any | PASS | Card primary text |
+| `text-secondary` (`#C7C5D0`) on `surface-card` (`#131318`) | Dark | **10.87:1** | Any | PASS | Card descriptions |
+| `text-muted` (`#9A98A2`) on `surface-card` (`#131318`) | Dark | **6.51:1** | Normal/Small | PASS | Card metadata & tags |
+| `text-strong` (`#0A0A0C`) on `bg-page` (`#FAFAFC`) | Light | **18.98:1** | Any | PASS | Titles and headings |
+| `text-primary` (`#111115`) on `bg-page` (`#FAFAFC`) | Light | **18.07:1** | Any | PASS | Primary body |
+| `text-secondary` (`#52525E`) on `bg-page` (`#FAFAFC`) | Light | **7.39:1** | Any | PASS | Secondary text |
+| `text-muted` (`#71717A`) on `bg-page` (`#FAFAFC`) | Light | **4.64:1** | Normal/Small | PASS | Tuned in Phase 7 to meet 4.5:1 |
+| `accent-text` (`#9F1239`) on `bg-page` (`#FAFAFC`) | Light | **7.69:1** | Small | PASS | Small crimson text & badges |
+| `accent-text` (`#9F1239`) on `accent-chip-bg` (`#FFE4E6`) | Light | **6.68:1** | Small | PASS | Headline chip & status badges |
+| `accent` (`#BE123C`) on `bg-page` (`#FAFAFC`) | Light | **6.03:1** | Any | PASS | Exceeds 4.5:1 across all sizes |
+| `white` (`#FFFFFF`) on `accent` (`#BE123C`) | Light | **6.29:1** | Normal/Small | PASS | Primary CTA button label |
+| `text-strong` (`#0A0A0C`) on `surface-card` (`#FFFFFF`) | Light | **19.78:1** | Any | PASS | Card titles |
+| `text-primary` (`#111115`) on `surface-card` (`#FFFFFF`) | Light | **18.84:1** | Any | PASS | Card primary text |
+| `text-secondary` (`#52525E`) on `surface-card` (`#FFFFFF`) | Light | **7.70:1** | Any | PASS | Card descriptions |
+| `text-muted` (`#71717A`) on `surface-card` (`#FFFFFF`) | Light | **4.83:1** | Normal/Small | PASS | Tuned in Phase 7 to meet 4.5:1 |
+| `white` (`#FFFFFF`) on Field Doc Scrim (`black/90`) | Both | **> 15:1** | Any | PASS | Gallery titles & captions |
+| `accent-text` (`#FFB3B6`) on Field Doc Scrim (`black/90`) | Both | **> 10:1** | Small | PASS | Field log index brackets |
+| `text-faint` (`#6D6C74`) on `bg-page` (`#131316`) | Dark | **3.57:1** | Non-text UI | PASS | Decorative bracket corners/borders (≥3.0:1). Forbidden for essential text per Item 38. |
+
+Every essential readable text pair in both dark and light themes strictly meets or exceeds WCAG AA (normal text ≥ 4.5:1, large text ≥ 3.0:1, non-text UI ≥ 3.0:1). Small crimson text strictly uses `accent-text`, and `accent` (`#E11D48`) on dark surfaces is restricted to large headlines, fills, and interactive borders.
 
 ### 3.4 Typography tokens (OBSERVED roles; sizes OPEN)
 | Role | Family | Observed usage |

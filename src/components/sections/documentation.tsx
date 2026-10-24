@@ -94,7 +94,7 @@ export function DocumentationSection() {
                   {/* Gradient Scrim for Legibility in Both Dark and Light Themes */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent flex flex-col justify-end p-5 text-white">
                     {/* Mono Bracket Index */}
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-accent font-semibold mb-1">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-accent-text font-semibold mb-1">
                       [ FIELD LOG // 0{idx + 1} ]
                     </span>
 

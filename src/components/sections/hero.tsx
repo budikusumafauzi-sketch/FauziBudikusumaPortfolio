@@ -7,7 +7,7 @@ import { ArrowUpRight, Download, Mail } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section id="hero" className="relative pt-8 pb-16 sm:pt-12 sm:pb-24 overflow-hidden">
+    <section id="home" className="relative pt-8 pb-16 sm:pt-12 sm:pb-24 overflow-hidden">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Editorial Information & CTAs */}
@@ -17,7 +17,7 @@ export function HeroSection() {
               <Chip variant="neutral" dot={true}>
                 AVAILABLE FOR OPPORTUNITIES // 2026
               </Chip>
-              <span className="hidden sm:inline font-mono text-xs uppercase tracking-wider text-text-faint">
+              <span className="hidden sm:inline font-mono text-xs uppercase tracking-wider text-text-muted">
                 {profileData.location}
               </span>
             </div>
@@ -29,7 +29,7 @@ export function HeroSection() {
 
             {/* Unified Role Headline (C-05) */}
             <div className="mt-4 mb-6">
-              <span className="inline-block font-mono text-xs sm:text-sm md:text-base font-semibold uppercase tracking-widest text-accent bg-accent/10 border border-accent/20 px-3 py-1.5 rounded-md">
+              <span className="inline-block font-mono text-xs sm:text-sm md:text-base font-semibold uppercase tracking-widest text-accent-text bg-accent/10 border border-accent/20 px-3 py-1.5 rounded-md">
                 {profileData.headline}
               </span>
             </div>
@@ -106,7 +106,7 @@ export function HeroSection() {
                     <span className="font-mono text-[10px] uppercase tracking-widest text-text-primary/90 bg-bg-page/80 backdrop-blur-sm px-2 py-0.5 rounded border border-border-default/60">
                       ID // FB-TKJ-ENG
                     </span>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-accent bg-bg-page/80 backdrop-blur-sm px-2 py-0.5 rounded border border-accent/40">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-accent-text bg-bg-page/80 backdrop-blur-sm px-2 py-0.5 rounded border border-accent/40 font-semibold">
                       PORTRAIT VERIFIED
                     </span>
                   </div>

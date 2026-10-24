@@ -165,7 +165,7 @@ export function CredentialsSection() {
                       <Chip variant="neutral" className="bg-surface-raised text-[10px]">
                         {cert.issuer}
                       </Chip>
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-accent font-semibold">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-accent-text font-semibold">
                         {cert.issuedLabel}
                       </span>
                     </div>
@@ -186,7 +186,7 @@ export function CredentialsSection() {
                   {/* Card Bottom: Category */}
                   <div className="border-t border-border-default/80 pt-3 mt-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-text-muted">
                     <span>CATEGORY // {cert.category}</span>
-                    <span className="text-text-faint">VERIFIED</span>
+                    <span className="text-text-muted">VERIFIED</span>
                   </div>
                 </Card>
               </div>

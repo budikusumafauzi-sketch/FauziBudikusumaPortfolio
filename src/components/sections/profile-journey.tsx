@@ -26,7 +26,7 @@ export function ProfileJourneySection() {
             <Card className="p-6 sm:p-8 flex flex-col justify-between h-full bg-surface-card">
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <span className="font-mono text-xs uppercase tracking-widest text-text-faint">
+                  <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
                     SYS // OVERVIEW
                   </span>
                   <Chip variant="accent">VERIFIED PROFILE</Chip>
@@ -41,7 +41,7 @@ export function ProfileJourneySection() {
                 </p>
 
                 <div className="border-t border-border-default/80 pt-6 my-6">
-                  <h4 className="font-mono text-xs uppercase tracking-widest text-text-faint mb-4">
+                  <h4 className="font-mono text-xs uppercase tracking-widest text-text-muted mb-4 font-semibold">
                     OPERATIONAL PRINCIPLES:
                   </h4>
                   <ul className="space-y-3">
@@ -70,7 +70,7 @@ export function ProfileJourneySection() {
                 <h3 className="font-display font-bold text-lg sm:text-xl text-text-strong uppercase tracking-tight">
                   Chronological Journey
                 </h3>
-                <span className="font-mono text-xs uppercase tracking-widest text-text-faint">
+                <span className="font-mono text-xs uppercase tracking-widest text-text-muted font-medium">
                   EDUCATION & EXPERIENCE
                 </span>
               </div>
@@ -100,7 +100,7 @@ export function ProfileJourneySection() {
                         <h4 className="font-display font-bold text-base sm:text-lg text-text-strong uppercase tracking-tight">
                           {item.title}
                         </h4>
-                        <span className="font-mono text-xs uppercase tracking-wider text-accent shrink-0">
+                        <span className="font-mono text-xs uppercase tracking-wider text-accent-text font-semibold shrink-0">
                           {item.period}
                         </span>
                       </div>

@@ -383,7 +383,7 @@ export function ChatWidget() {
                   {assistantStatus === "live" ? (
                     <span
                       data-testid="chat-status-badge"
-                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full font-mono text-[9px] font-semibold tracking-wider uppercase border border-accent/40 bg-accent-chip-bg text-accent shrink-0"
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full font-mono text-[9px] font-semibold tracking-wider uppercase border border-accent/40 bg-accent-chip-bg text-accent-text shrink-0"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                       LIVE
@@ -498,7 +498,7 @@ export function ChatWidget() {
                     {/* 1. Guardrail Bubble (no_data / out_of_scope) */}
                     {isGuardrail && (
                       <div className="rounded-2xl rounded-tl-xs p-3.5 border border-accent/40 bg-accent-chip-bg/30 text-text-secondary leading-relaxed shadow-xs">
-                        <div className="flex items-center gap-1.5 text-accent font-mono text-[10px] font-semibold tracking-wider uppercase mb-1.5">
+                        <div className="flex items-center gap-1.5 text-accent-text font-mono text-[10px] font-semibold tracking-wider uppercase mb-1.5">
                           <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                           <span>
                             {msg.status === "out_of_scope"
@@ -514,13 +514,13 @@ export function ChatWidget() {
                     {/* 2. Rate Limited Bubble */}
                     {isRateLimited && (
                       <div className="rounded-2xl rounded-tl-xs p-3.5 border border-accent/30 bg-accent-chip-bg/20 text-text-secondary leading-relaxed shadow-xs">
-                        <div className="flex items-center gap-1.5 text-accent font-mono text-[10px] font-semibold tracking-wider uppercase mb-1.5">
+                        <div className="flex items-center gap-1.5 text-accent-text font-mono text-[10px] font-semibold tracking-wider uppercase mb-1.5">
                           <Clock className="w-3.5 h-3.5 shrink-0" />
                           <span>RATE LIMIT EXCEEDED</span>
                         </div>
                         <p>{msg.text}</p>
                         {msg.retryAfterSeconds ? (
-                          <p className="font-mono text-[11px] text-accent mt-2 font-medium">
+                          <p className="font-mono text-[11px] text-accent-text mt-2 font-medium">
                             Please wait {msg.retryAfterSeconds} seconds before sending another message.
                           </p>
                         ) : null}

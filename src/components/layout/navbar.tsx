@@ -50,6 +50,20 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  // Cleanly reset/close mobile menu when resizing to desktop width (>= 768px) per Item 31
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isOpen]);
+
   const handleLinkClick = () => {
     setIsOpen(false);
   };
