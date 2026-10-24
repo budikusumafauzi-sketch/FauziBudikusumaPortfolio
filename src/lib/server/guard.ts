@@ -120,8 +120,10 @@ const PRIVATE_DATA_PATTERNS: RegExp[] = [
 /** Clearly off-topic general queries. */
 const OFF_TOPIC_PATTERNS: RegExp[] = [
   /\brecipe\b/i,
+  /\bresep\b/i,
   /\bcooking\b/i,
   /\bweather\b.*\bin\b/i,
+  /\bcuaca\b/i,
   /\bhoroscope\b/i,
   /\bhoroskop\b/i,
   /\bwho\s+will\s+win\b/i,

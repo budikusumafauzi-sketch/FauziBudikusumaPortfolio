@@ -208,7 +208,7 @@ export async function generateGroundedAnswer(
     }
 
     const controller = new AbortController();
-    const candidateTimeoutMs = Math.min(remainingMs, 4000);
+    const candidateTimeoutMs = Math.min(remainingMs, 7500);
     const timeoutId = setTimeout(() => controller.abort(), candidateTimeoutMs);
 
     try {
