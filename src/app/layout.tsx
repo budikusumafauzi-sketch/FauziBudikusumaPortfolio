@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { LanguageProvider } from "@/lib/i18n/context";
 import { Navbar } from "@/components/layout/navbar";
 import { OpeningOverlay } from "@/components/layout/opening-overlay";
 import { Footer } from "@/components/layout/footer";
@@ -42,18 +43,20 @@ export default function RootLayout({
       className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body id="top" className="min-h-screen bg-bg-page text-text-primary antialiased selection:bg-accent selection:text-white">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <OpeningOverlay />
-          <Navbar />
-          {children}
-          <Footer />
-          <ChatWidget />
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <OpeningOverlay />
+            <Navbar />
+            {children}
+            <Footer />
+            <ChatWidget />
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

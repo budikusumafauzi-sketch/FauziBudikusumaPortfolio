@@ -1,22 +1,34 @@
+"use client";
+
 import * as React from "react";
 import { Container, SectionHeader, Card, Chip } from "@/components/ui/primitives";
 import { profileData } from "@/data/profile";
 import { journeyData } from "@/data/journey";
+import { useLanguage } from "@/lib/i18n/context";
 import { CheckCircle2 } from "lucide-react";
 
 export function ProfileJourneySection() {
+  const { t } = useLanguage();
+
   const principles = [
-    "Rigorous network reliability and structured routing topology",
-    "Clean, maintainable full-stack code with strict typed contracts",
-    "Continuous automation and defense-in-depth infrastructure mindset",
+    t.profileJourney.principle1,
+    t.profileJourney.principle2,
+    t.profileJourney.principle3,
   ];
+
+  const getJourneyDesc = (id: string, fallback: string) => {
+    if (id.includes("amikom")) return t.profileJourney.journeyDescriptions.amikom;
+    if (id.includes("kominfo")) return t.profileJourney.journeyDescriptions.kominfo;
+    if (id.includes("smk")) return t.profileJourney.journeyDescriptions.smk;
+    return fallback;
+  };
 
   return (
     <section id="profile" className="scroll-mt-24 py-16 sm:py-20">
       <Container>
         <SectionHeader
-          title="Profile & Journey"
-          descriptor="BACKGROUND & EXPERTISE"
+          title={t.profileJourney.title}
+          descriptor={t.profileJourney.descriptor}
           className="mb-12"
         />
 
@@ -27,22 +39,25 @@ export function ProfileJourneySection() {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
-                    SYS // OVERVIEW
+                    SYS // {t.profileJourney.overviewTag}
                   </span>
-                  <Chip variant="accent">VERIFIED PROFILE</Chip>
+                  <Chip variant="accent">{t.common.verified} PROFILE</Chip>
                 </div>
 
                 <h3 className="font-display font-bold text-2xl text-text-strong uppercase tracking-tight mb-4">
                   Engineering Foundations
                 </h3>
 
+                <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-4">
+                  {t.profileJourney.summaryP1}
+                </p>
                 <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-6">
-                  {profileData.summary}
+                  {t.profileJourney.summaryP2}
                 </p>
 
                 <div className="border-t border-border-default/80 pt-6 my-6">
                   <h4 className="font-mono text-xs uppercase tracking-widest text-text-muted mb-4 font-semibold">
-                    OPERATIONAL PRINCIPLES:
+                    {t.profileJourney.principlesTag}
                   </h4>
                   <ul className="space-y-3">
                     {principles.map((principle, index) => (
@@ -71,7 +86,7 @@ export function ProfileJourneySection() {
                   Chronological Journey
                 </h3>
                 <span className="font-mono text-xs uppercase tracking-widest text-text-muted font-medium">
-                  EDUCATION & EXPERIENCE
+                  {t.profileJourney.timelineTitle}
                 </span>
               </div>
 
@@ -112,7 +127,7 @@ export function ProfileJourneySection() {
 
                       {/* Description */}
                       <p className="text-text-secondary text-sm leading-relaxed mb-4">
-                        {item.description}
+                        {getJourneyDesc(item.id, item.description)}
                       </p>
 
                       {/* Item Tags / Chips */}

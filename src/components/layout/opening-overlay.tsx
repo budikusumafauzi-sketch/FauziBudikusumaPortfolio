@@ -4,10 +4,12 @@ import * as React from "react";
 import Image from "next/image";
 import { CornerFrame } from "@/components/ui/primitives";
 import { siteConfig } from "@/data/site-config";
+import { useLanguage } from "@/lib/i18n/context";
 
 const emptySubscribe = () => () => {};
 
 export function OpeningOverlay() {
+  const { t } = useLanguage();
   const isAlreadyOpened = React.useSyncExternalStore(
     emptySubscribe,
     () => {
@@ -95,7 +97,7 @@ export function OpeningOverlay() {
 
         {/* Subtitle in JetBrains Mono per C-05 */}
         <p className="font-mono text-xs sm:text-sm uppercase tracking-widest text-text-secondary mt-3 max-w-md">
-          {siteConfig.role}
+          {t.overlay.subtitle}
         </p>
 
         {/* Animated Progress Bar */}
@@ -106,7 +108,7 @@ export function OpeningOverlay() {
         {/* Status Line with Pulsing Crimson Marker */}
         <div className="flex items-center justify-center gap-2 font-mono text-[11px] sm:text-xs text-text-muted uppercase tracking-wider mt-4">
           <span className="h-2 w-2 rounded-full bg-accent animate-pulse" aria-hidden="true" />
-          <span>LAUNCHING WORKSPACE…</span>
+          <span>{t.overlay.status.replace(/^[•\s]+/, '')}</span>
         </div>
       </div>
 
@@ -114,12 +116,12 @@ export function OpeningOverlay() {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full pt-4">
         <div className="rounded-md border border-border-default bg-surface-card/60 px-3 py-1.5">
           <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-text-muted">
-            DISCIPLINE // 01 PERSONAL PORTFOLIO
+            {t.overlay.discipline}
           </span>
         </div>
         <div>
           <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-text-muted">
-            © 2026 • ALL RIGHTS RESERVED
+            {t.overlay.copyright}
           </span>
         </div>
       </div>

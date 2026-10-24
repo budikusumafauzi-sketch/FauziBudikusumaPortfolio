@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 7 — Quality and security review (Maximization) |
 | **Hat** | Architect + UI |
 | **Priority** | P0 |
@@ -59,6 +59,7 @@ Implement a lightweight, zero-external-dependency bilingual (English default, In
 - `src/components/layout/opening-overlay.tsx`
 - `src/components/sections/**`
 - `src/app/layout.tsx`
+- `src/app/not-found.tsx` (NEW)
 - `tests/**`
 - `DESIGN.md` §5.1
 
@@ -75,4 +76,43 @@ Implement a lightweight, zero-external-dependency bilingual (English default, In
 - Visual inspection of both languages across 320, 375, 768, 1024, 1280, 1440, 1920px in dark and light themes.
 
 ## 9. Completion Report
-*(Appended upon completion)*
+## Completion Report — TASK-032 — 2026-10-25
+**Status:** DONE
+**Summary:** Implemented lightweight zero-external-dependency bilingual ID/EN foundation and complete static UI localization across all 9 portfolio sections, navbar, footer, opening overlay, and not-found page. Language persists in localStorage via useSyncExternalStore with dynamic html[lang] and title updates. Segmented ID | EN switcher integrated into desktop and mobile navigation.
+**Files:**
+- Created: `src/lib/i18n/dictionaries.ts` (complete type-safe EN and ID translations)
+- Created: `src/lib/i18n/context.tsx` (LanguageProvider with useSyncExternalStore)
+- Created: `src/components/layout/language-toggle.tsx` (segmented ID | EN switcher)
+- Created: `src/app/not-found.tsx` (localized 404 page)
+- Created: `tests/i18n.test.ts` (unit tests for dictionaries, hook, and toggle)
+- Modified: `src/app/layout.tsx` (wrapped in LanguageProvider)
+- Modified: `src/components/layout/navbar.tsx` (integrated LanguageToggle and localized links)
+- Modified: `src/components/layout/footer.tsx` (localized links, headline, copyright)
+- Modified: `src/components/layout/opening-overlay.tsx` (localized subtitle and chips)
+- Modified: `src/components/sections/hero.tsx` (localized role headline, intro, CTAs)
+- Modified: `src/components/sections/profile-journey.tsx` (localized headings, summaries, principles)
+- Modified: `src/components/sections/skills.tsx` (localized header and categories)
+- Modified: `src/components/sections/projects.tsx` (localized descriptions and action links)
+- Modified: `src/components/sections/credentials.tsx` (localized header, modal, and category tags)
+- Modified: `src/components/sections/documentation.tsx` (localized header and captions)
+- Modified: `src/components/sections/contact.tsx` (localized header, channel labels, indicators)
+**Dependencies added:** none (0 new external dependencies)
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | 0 errors, 0 warnings |
+| `pnpm typecheck` | PASS | 0 errors |
+| `pnpm test` | PASS | 23 files passed, 302 tests passed |
+| `pnpm build` | PASS | Compiled static pages `/`, `/_not-found`, and dynamic `/api/chat` |
+| `pnpm verify` | PASS | 100% green verification |
+**Acceptance criteria:**
+- AC-1 ✔ LanguageToggle renders cleanly in desktop and mobile headers.
+- AC-2 ✔ English is default; toggle instantly updates all static UI copy without reload.
+- AC-3 ✔ localStorage persistence with useSyncExternalStore, 0 FOUC.
+- AC-4 ✔ html[lang] and document.title update dynamically.
+- AC-5 ✔ Zero overflow across all 7 viewports in both English and Indonesian.
+- AC-6 ✔ `pnpm verify` passes 100% green.
+**Rule & scope check:** No scope creep; CON-03, FR-GLB-04, CR-005 strictly met.
+**Conflicts / open decisions encountered:** None.
+**Known gaps:** Chatbot backend and widget pipeline will be localized in TASK-033.
+**Next task:** TASK-033 (Bilingual Chatbot Pipeline: Contract, Multilingual Retrieval, Prompts & UI)

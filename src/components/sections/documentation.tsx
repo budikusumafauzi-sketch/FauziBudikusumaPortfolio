@@ -6,8 +6,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Container, SectionHeader, IconButton } from "@/components/ui/primitives";
 import { galleryData } from "@/data/gallery";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/context";
 
 export function DocumentationSection() {
+  const { t } = useLanguage();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
@@ -46,8 +48,8 @@ export function DocumentationSection() {
         {/* Section Header with Carousel Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <SectionHeader
-            title="Field Documentation"
-            descriptor="PRACTICAL EXPERIENCE & LAB OPERATIONS"
+            title={t.documentation.title}
+            descriptor={t.documentation.descriptor}
             className="mb-0"
           />
 
@@ -105,7 +107,7 @@ export function DocumentationSection() {
 
                     {/* Verified Caption */}
                     <p className="text-white/85 text-xs sm:text-[13px] leading-relaxed line-clamp-2">
-                      {item.caption}
+                      {(t.documentation.captions as Record<string, string>)[`img${idx + 1}`] || item.caption}
                     </p>
                   </div>
                 </div>

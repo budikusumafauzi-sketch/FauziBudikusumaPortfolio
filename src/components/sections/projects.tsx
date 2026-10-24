@@ -1,16 +1,21 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { Container, SectionHeader, Card } from "@/components/ui/primitives";
 import { projectsData } from "@/data/projects";
 import { ExternalLink, Lock } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/context";
 
 export function ProjectsSection() {
+  const { t } = useLanguage();
+
   return (
     <section id="projects" className="scroll-mt-24 py-16 sm:py-20">
       <Container>
         <SectionHeader
-          title="Selected Projects"
-          descriptor="SOFTWARE ARCHITECTURE & NETWORK SYSTEMS"
+          title={t.projects.title}
+          descriptor={t.projects.descriptor}
           className="mb-12"
         />
 
@@ -18,6 +23,7 @@ export function ProjectsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {projectsData.map((project) => {
             const isPublic = project.repoVisibility === "PUBLIC" && project.repoUrl;
+            const projectSummary = t.projects.descriptions[project.id] || project.summary;
 
             return (
               <Card
@@ -43,7 +49,7 @@ export function ProjectsSection() {
 
                   {/* Description */}
                   <p className="text-text-secondary text-sm leading-relaxed mb-5 line-clamp-3">
-                    {project.summary}
+                    {projectSummary}
                   </p>
 
                   {/* Technology Chips */}
@@ -68,13 +74,13 @@ export function ProjectsSection() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-accent-text hover:text-accent transition-colors"
                     >
-                      <span>GitHub Repository</span>
+                      <span>{t.projects.viewRepo}</span>
                       <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                   ) : (
                     <div className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-text-muted">
                       <Lock className="h-3.5 w-3.5" />
-                      <span>Private repository</span>
+                      <span>{t.projects.privateRepo}</span>
                     </div>
                   )}
 

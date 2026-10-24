@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { Container, SectionHeader, Card } from "@/components/ui/primitives";
 import { contactsData } from "@/data/contacts";
 import { Mail, ArrowUpRight, Award } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/context";
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -30,6 +33,8 @@ function InstagramIcon({ className }: { className?: string }) {
 }
 
 export function ContactSection() {
+  const { t } = useLanguage();
+
   const getIcon = (type: string) => {
     switch (type) {
       case "email":
@@ -51,8 +56,8 @@ export function ContactSection() {
     <section id="contact" className="scroll-mt-24 py-16 sm:py-20">
       <Container>
         <SectionHeader
-          title="Direct Channels"
-          descriptor="COMMUNICATION & PROFESSIONAL INQUIRIES"
+          title={t.contact.title}
+          descriptor={t.contact.descriptor}
           className="mb-10"
         />
 
@@ -61,12 +66,14 @@ export function ContactSection() {
           {contactsData.map((channel) => {
             const isExternal = channel.href.startsWith("http");
             const isCredly = channel.type === "credly";
+            const channelLabel = (t.contact.channels as Record<string, string>)[channel.type] || channel.label;
+
             return (
               <a
                 key={channel.id}
                 href={channel.href}
                 {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                aria-label={`${channel.label}: ${channel.displayText}`}
+                aria-label={`${channelLabel}: ${channel.displayText}`}
                 className={`group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl ${
                   isCredly ? "sm:col-span-2 lg:col-span-1" : ""
                 }`}
@@ -83,7 +90,7 @@ export function ContactSection() {
 
                     {/* Channel Label */}
                     <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted block mb-1.5 font-semibold">
-                      {channel.label}
+                      {channelLabel}
                     </span>
 
                     {/* Channel Value with Ellipsis without Mid-Syllable Breaks (CR-003) */}
@@ -97,8 +104,8 @@ export function ContactSection() {
 
                   {/* Verified Indicator */}
                   <div className="mt-4 pt-3 border-t border-border-default/60 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-text-muted">
-                    <span>CHANNEL // 0{channel.position + 1}</span>
-                    <span className="text-text-faint">VERIFIED</span>
+                    <span>{t.common.channel} {"//"} 0{channel.position + 1}</span>
+                    <span className="text-text-faint">{t.common.verified}</span>
                   </div>
                 </Card>
               </a>

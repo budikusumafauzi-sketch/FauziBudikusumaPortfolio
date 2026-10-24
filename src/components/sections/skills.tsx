@@ -1,14 +1,19 @@
+"use client";
+
 import * as React from "react";
 import { Container, SectionHeader } from "@/components/ui/primitives";
 import { skillsData } from "@/data/skills";
+import { useLanguage } from "@/lib/i18n/context";
 
 export function SkillsSection() {
+  const { t } = useLanguage();
+
   return (
     <section id="skills" className="scroll-mt-24 py-16 sm:py-20 overflow-hidden">
       <Container>
         <SectionHeader
-          title="Technical Stack"
-          descriptor="LANGUAGES, FRAMEWORKS & INFRASTRUCTURE"
+          title={t.skills.title}
+          descriptor={t.skills.descriptor}
           className="mb-10"
         />
 
@@ -86,7 +91,13 @@ export function SkillsSection() {
 
         {/* Categories Summary Footer */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-center">
-          {["Languages", "Frontend", "Backend & API", "Database & Caching", "DevOps & Tools"].map((cat) => (
+          {[
+            t.skills.groups.languages,
+            t.skills.groups.frontend,
+            t.skills.groups.backend,
+            t.skills.groups.database,
+            t.skills.groups.devops,
+          ].map((cat) => (
             <span
               key={cat}
               className="font-mono text-[11px] uppercase tracking-wider text-text-muted px-3 py-1 rounded-full border border-border-default/60 bg-surface-card/40"

@@ -6,11 +6,33 @@ import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/data/site-config";
 import { Container, IconButton } from "@/components/ui/primitives";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { LanguageToggle } from "@/components/layout/language-toggle";
+import { useLanguage } from "@/lib/i18n/context";
 
 export function Navbar() {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = React.useState(false);
   const menuButtonRef = React.useRef<HTMLButtonElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
+
+  const getNavLabel = (href: string, fallback: string) => {
+    switch (href) {
+      case "#home":
+        return t.nav.overview;
+      case "#profile":
+        return t.nav.profile;
+      case "#projects":
+        return t.nav.projects;
+      case "#credentials":
+        return t.nav.credentials;
+      case "#documentation":
+        return t.nav.documentation;
+      case "#contact":
+        return t.nav.contact;
+      default:
+        return fallback;
+    }
+  };
 
   // Close menu on Escape and return focus
   React.useEffect(() => {
@@ -75,7 +97,7 @@ export function Navbar() {
         <a
           href="#home"
           className="group flex items-center gap-3 transition-opacity hover:opacity-90 focus-visible:rounded-md"
-          aria-label="Fauzi Budikusuma — Scroll to top"
+          aria-label={t.nav.brandAria}
         >
           <div className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg border border-border-default bg-surface-card p-1.5 transition-colors group-hover:border-accent">
             <Image
@@ -92,14 +114,14 @@ export function Navbar() {
               {siteConfig.name}
             </span>
             <span className="font-mono text-[9px] sm:text-[10px] tracking-widest uppercase text-text-muted">
-              PORTFOLIO
+              {t.nav.portfolio}
             </span>
           </div>
         </a>
 
         {/* Desktop Navigation Links */}
         <nav
-          className="hidden md:flex items-center gap-6 lg:gap-8"
+          className="hidden md:flex items-center gap-5 lg:gap-7"
           aria-label="Primary navigation"
         >
           {siteConfig.navItems.map((item) => (
@@ -108,19 +130,21 @@ export function Navbar() {
               href={item.href}
               className="text-sm font-medium text-text-secondary transition-colors hover:text-text-strong focus-visible:rounded"
             >
-              {item.label}
+              {getNavLabel(item.href, item.label)}
             </a>
           ))}
           <div className="h-4 w-px bg-border-default" aria-hidden="true" />
+          <LanguageToggle />
           <ThemeToggle />
         </nav>
 
-        {/* Mobile Navigation Controls */}
+        {/* Mobile Navigation Controls: ThemeToggle, then LanguageToggle, then Menu Button */}
         <div className="flex md:hidden items-center gap-2">
           <ThemeToggle />
+          <LanguageToggle />
           <IconButton
             ref={menuButtonRef}
-            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={isOpen ? t.nav.closeMenuAria : t.nav.openMenuAria}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
             onClick={() => setIsOpen(!isOpen)}
@@ -145,7 +169,7 @@ export function Navbar() {
                 onClick={handleLinkClick}
                 className="flex items-center rounded-md px-3 py-3 text-base font-medium text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-strong focus-visible:rounded"
               >
-                {item.label}
+                {getNavLabel(item.href, item.label)}
               </a>
             ))}
           </nav>

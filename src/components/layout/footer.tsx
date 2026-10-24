@@ -1,18 +1,21 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/primitives";
 import { ArrowUp, MapPin } from "lucide-react";
-
-const CURRENT_YEAR = 2026;
+import { useLanguage } from "@/lib/i18n/context";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   const navLinks = [
-    { href: "#home", label: "Overview" },
-    { href: "#profile", label: "Profile" },
-    { href: "#projects", label: "Projects" },
-    { href: "#credentials", label: "Credentials" },
-    { href: "#documentation", label: "Documentation" },
-    { href: "#contact", label: "Contact" },
+    { href: "#home", label: t.nav.overview },
+    { href: "#profile", label: t.nav.profile },
+    { href: "#projects", label: t.nav.projects },
+    { href: "#credentials", label: t.nav.credentials },
+    { href: "#documentation", label: t.nav.documentation },
+    { href: "#contact", label: t.nav.contact },
   ];
 
   return (
@@ -37,16 +40,16 @@ export function Footer() {
             </div>
 
             <p className="font-mono text-xs text-accent-text uppercase tracking-wider font-semibold mb-2">
-              SOFTWARE DEVELOPMENT &amp; NETWORK ENGINEER
+              {t.hero.headline}
             </p>
 
             <div className="flex items-center gap-1.5 text-xs text-text-muted">
               <MapPin className="h-3.5 w-3.5 text-text-muted" />
-              <span>Yogyakarta, Indonesia</span>
+              <span>{t.footer.location}</span>
             </div>
           </div>
 
-          {/* Quick Anchor Links (C-02: 5 items matching Navbar) */}
+          {/* Quick Anchor Links (C-02: 6 items matching Navbar) */}
           <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-6 sm:gap-8">
             {navLinks.map((link) => (
               <a
@@ -62,18 +65,18 @@ export function Footer() {
           {/* Back to Top Button (DS-03: placed cleanly inside footer layout to avoid chat launcher collision) */}
           <a
             href="#top"
-            aria-label="Back to top"
+            aria-label={t.footer.backToTopAria}
             className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border-default bg-surface-card hover:border-accent hover:text-accent text-xs font-mono uppercase tracking-wider text-text-secondary transition-colors"
           >
-            <span>Top</span>
+            <span>{t.footer.top}</span>
             <ArrowUp className="h-3.5 w-3.5" />
           </a>
         </div>
 
         {/* Bottom Bar: Copyright & System Notice */}
         <div className="border-t border-border-default/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-text-muted">
-          <p>© {CURRENT_YEAR} FAUZI BUDIKUSUMA. ALL RIGHTS RESERVED.</p>
-          <p className="text-text-muted">ENGINEERED FOR RESILIENCE &amp; PERFORMANCE</p>
+          <p>{t.footer.copyright.toUpperCase()}</p>
+          <p className="text-text-muted">{t.footer.tagline2.toUpperCase()}</p>
         </div>
       </Container>
     </footer>

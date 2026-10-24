@@ -7,8 +7,10 @@ import { Container, SectionHeader, Card, IconButton, Chip } from "@/components/u
 import { certificationsData } from "@/data/certifications";
 import { CertificationItem } from "@/data/schemas";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/context";
 
 export function CredentialsSection() {
+  const { t } = useLanguage();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
@@ -88,8 +90,8 @@ export function CredentialsSection() {
       <Container>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <SectionHeader
-            title="Credentials & Certifications"
-            descriptor="PROFESSIONAL VALIDATION & EXCELLENCE"
+            title={t.credentials.title}
+            descriptor={t.credentials.descriptor}
             className="mb-0"
           />
 
@@ -148,7 +150,7 @@ export function CredentialsSection() {
                         <div className="absolute inset-0 bg-bg-page/40 opacity-0 group-hover/btn:opacity-100 transition-opacity flex items-center justify-center">
                           <span className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-text-strong bg-bg-page/90 px-3 py-1.5 rounded border border-border-default">
                             <Maximize2 className="h-3.5 w-3.5 text-accent" />
-                            <span>View Scan</span>
+                            <span>{t.credentials.viewCredential}</span>
                           </span>
                         </div>
                       </button>
@@ -185,8 +187,8 @@ export function CredentialsSection() {
 
                   {/* Card Bottom: Category */}
                   <div className="border-t border-border-default/80 pt-3 mt-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-text-muted">
-                    <span>CATEGORY // {cert.category}</span>
-                    <span className="text-text-muted">VERIFIED</span>
+                    <span>{t.credentials.category} {"//"} {cert.category}</span>
+                    <span className="text-text-muted">{t.common.verified}</span>
                   </div>
                 </Card>
               </div>
@@ -214,7 +216,7 @@ export function CredentialsSection() {
                   ref={closeButtonRef}
                   type="button"
                   onClick={closeModal}
-                  aria-label="Close certificate preview"
+                  aria-label={t.credentials.closeModal}
                   className="rounded-full bg-surface-card p-2 text-text-secondary hover:text-text-primary hover:bg-surface-raised focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
                 >
                   <X className="h-6 w-6" />
