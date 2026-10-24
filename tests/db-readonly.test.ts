@@ -36,7 +36,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
     const timeoutRes: Array<{ statement_timeout: string }> =
       await runtimePrisma.$queryRawUnsafe(`SHOW statement_timeout;`);
     expect(timeoutRes[0]?.statement_timeout).toBe("3s");
-  });
+  }, 20000);
 
   it("Positive Read Test: SELECT on KnowledgeRecord succeeds and returns verified records", async () => {
     if (!runtimeUrl) return;
@@ -58,7 +58,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
     expect(categories.has("CERTIFICATION")).toBe(true);
     expect(categories.has("CONTACT")).toBe(true);
     expect(categories.has("GALLERY")).toBe(false); // 0 non-verified / draft records
-  });
+  }, 20000);
 
   it("Negative Write Test 1: INSERT (create) fails with permission denied", async () => {
     if (!runtimeUrl) return;

@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-24 |
-| Current phase | **6 — Chatbot UI and integration (Phase 6 complete — Waiting for Gate G6 owner approval)** |
-| Waiting for | Owner approval of Gate G6 package to proceed to Phase 7 |
-| Last completed task | TASK-023 — Chatbot UI: launcher, panel and states |
-| Next task | TASK-024 — Accessibility and responsive audit (Phase 7) |
+| Current phase | **7 — Quality and security review (Phase 7 complete — Gate G7 PASSED; HARD STOP before Phase 8)** |
+| Waiting for | Owner review and instruction to initiate Phase 8 (`TASK-026` Deployment) |
+| Last completed task | TASK-025 — Security and dependency review (and TASK-024) |
+| Next task | TASK-026 — Service eligibility check and deployment (Phase 8 — Deployment) |
 | Blockers | None |
-| Last verified commit | `6a91348` (TASK-023: implement floating chatbot UI, all 9 interaction states, and page resilience integration) |
+| Last verified commit | `430ea0e` (TASK-024: accessibility, responsive, contrast, and component audit) |
 
 ## 2. Phases and gates
 
@@ -28,8 +28,8 @@
 | 3 | Static portfolio sections | 008–016 | G3 | **OWNER** | `DONE` |
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `DONE` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `DONE` |
-| 6 | Chatbot UI and integration | 023 | G6 | **OWNER** | `READY_FOR_REVIEW` |
-| 7 | Quality and security review | 024–025 | G7 | AUTO | `TODO` |
+| 6 | Chatbot UI and integration | 023 | G6 | **OWNER** | `DONE` |
+| 7 | Quality and security review | 024–025 | G7 | AUTO | `DONE` |
 | 8 | Deployment and final acceptance | 026–027 | G8 | **OWNER** | `TODO` |
 
 Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work listed in `WORKFLOW.md` §3.3 may proceed.
@@ -61,8 +61,8 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [021](tasks/TASK-021-gemini-integration-and-failures.md) | Gemini integration and failure handling | 5 | P0 | `DONE` | TASK-020 |
 | [022](tasks/TASK-022-chatbot-security-tests.md) | Chatbot security and abuse tests | 5 | P0 | `DONE` | TASK-021 |
 | [023](tasks/TASK-023-chatbot-ui.md) | Chatbot UI: launcher, panel and states | 6 | P0 | `DONE` | TASK-022 and Gate G3 passed; decision C-09 |
-| [024](tasks/TASK-024-accessibility-responsive-audit.md) | Accessibility and responsive audit | 7 | P0 | `TODO` | TASK-023 |
-| [025](tasks/TASK-025-security-dependency-review.md) | Security and dependency review | 7 | P0 | `TODO` | TASK-023 |
+| [024](tasks/TASK-024-accessibility-responsive-audit.md) | Accessibility and responsive audit | 7 | P0 | `DONE` | TASK-023 |
+| [025](tasks/TASK-025-security-dependency-review.md) | Security and dependency review | 7 | P0 | `DONE` | TASK-023 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | TASK-024, TASK-025; Gate G7 |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 
