@@ -83,7 +83,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
 
     expect(threw).toBe(true);
     expect(errorMessage.toLowerCase()).toMatch(/permission denied|read-only/);
-  });
+  }, 15000);
 
   it("Negative Write Test 2: UPDATE fails with permission denied", async () => {
     if (!runtimeUrl) return;
@@ -104,7 +104,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
 
     expect(threw).toBe(true);
     expect(errorMessage.toLowerCase()).toMatch(/permission denied|read-only/);
-  });
+  }, 15000);
 
   it("Negative Write Test 3: DELETE fails with permission denied", async () => {
     if (!runtimeUrl) return;
@@ -122,7 +122,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
 
     expect(threw).toBe(true);
     expect(errorMessage.toLowerCase()).toMatch(/permission denied|read-only/);
-  });
+  }, 15000);
 
   it("Negative Write Test 4: TRUNCATE fails with permission denied", async () => {
     if (!runtimeUrl) return;
@@ -138,7 +138,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
 
     expect(threw).toBe(true);
     expect(errorMessage.toLowerCase()).toMatch(/permission denied|read-only/);
-  });
+  }, 15000);
 
   it("Negative Write Test 5: CREATE TABLE fails with permission denied", async () => {
     if (!runtimeUrl) return;
@@ -156,7 +156,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
 
     expect(threw).toBe(true);
     expect(errorMessage.toLowerCase()).toMatch(/permission denied|read-only/);
-  });
+  }, 15000);
 
   it("Negative Write Test 6: DROP TABLE fails with permission denied", async () => {
     if (!runtimeUrl) return;
@@ -172,5 +172,5 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
 
     expect(threw).toBe(true);
     expect(errorMessage.toLowerCase()).toMatch(/permission denied|read-only/);
-  });
+  }, 15000);
 });

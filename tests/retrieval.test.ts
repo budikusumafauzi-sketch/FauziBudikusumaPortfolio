@@ -92,6 +92,14 @@ describe('detectIntentCategories', () => {
     expect(cats).toContain('CONTACT');
   });
 
+  it('maps Indonesian intent terms to categories (CR-005b)', () => {
+    expect(detectIntentCategories('apa keahlian fauzi')).toContain('SKILL');
+    expect(detectIntentCategories('proyek apa saja yang dibangun')).toContain('PROJECT');
+    expect(detectIntentCategories('daftar sertifikat dan kredensial')).toContain('CERTIFICATION');
+    expect(detectIntentCategories('bagaimana cara hubungi fauzi')).toContain('CONTACT');
+    expect(detectIntentCategories('siapa itu fauzi budikusuma')).toContain('PROFILE');
+  });
+
   it('returns empty array for nonsense query', () => {
     const cats = detectIntentCategories('xyzqrst blahrgh flurble');
     expect(cats).toHaveLength(0);

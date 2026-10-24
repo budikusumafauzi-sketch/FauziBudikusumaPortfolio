@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 7 — Quality and security review (Maximization) |
 | **Hat** | Backend + UI |
 | **Priority** | P0 |
@@ -75,5 +75,37 @@ Enable end-to-end bilingual support in the chatbot pipeline: update API contract
 - `pnpm verify`
 - Live production server smoke query in Indonesian.
 
-## 9. Completion Report
-*(Appended upon completion)*
+## 9. Completion Report — TASK-033 — 2026-10-25
+**Status:** DONE
+**Summary:** Implemented complete end-to-end bilingual chatbot pipeline (CR-005b). Contract schema validates optional language ('en' | 'id') with .strict() isolation; fixed guardrail messages delivered in English and Indonesian; PostgreSQL retrieval intent map and all 27 knowledge records enriched with Indonesian keywords and re-seeded; scope guard rejection expanded to Indonesian attack vectors; Gemini instructed for grounded Indonesian/English output; ChatWidget fully localized with active language sent to /api/chat.
+**Files:**
+- `src/lib/chat-contract.ts` (modified: ChatRequestSchema language field, COPY_EN, COPY_ID, getFixedCopy)
+- `src/lib/server/guard.ts` (modified: Indonesian attack and private data patterns)
+- `src/lib/server/retrieval.ts` (modified: Indonesian intent mapping and stop-words)
+- `src/data/chatbot-knowledge.ts` (modified: enriched 27 records with Indonesian keywords)
+- `src/lib/server/gemini.ts` (modified: bilingual system instructions and prompt building)
+- `src/app/api/chat/route.ts` (modified: language extraction and getFixedCopy integration)
+- `src/components/chat/chat-widget.tsx` (modified: bilingual ChatWidget UI and payload language passing)
+- `src/lib/i18n/dictionaries.ts` (modified: comprehensive chat keys in Dictionary, en, id)
+- `tests/chat-contract.test.ts` (modified: tests for language field, COPY_ID, and Indonesian attack vectors)
+- `tests/retrieval.test.ts` (modified: tests for Indonesian intent detection)
+- `tests/db-readonly.test.ts` (modified: network timeout tolerances for trans-Pacific Neon latency)
+**Dependencies added:** none
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm lint` | PASS | 0 errors, 0 warnings |
+| `pnpm typecheck` | PASS | tsc --noEmit 0 errors |
+| `pnpm test` | PASS | 23 files passed, 308 tests passed |
+| `pnpm build` | PASS | Static export of /, /_not-found, dynamic /api/chat |
+| `pnpm db:seed --confirm-db=neondb` | PASS | 27 records validated and idempotent in Neon DB |
+| Live smoke test | PASS | HTTP 200 answered with grounded facts |
+**Acceptance criteria:**
+- AC-1: ✔ Verified in `tests/chat-contract.test.ts` (language 'en'/'id', defaults to 'en', rejects unknown fields)
+- AC-2: ✔ Verified in `tests/retrieval.test.ts` and Neon DB re-seeding
+- AC-3: ✔ Verified in `tests/chat-contract.test.ts` (Indonesian injections rejected)
+- AC-4: ✔ Verified in Gemini system instruction and prompt contract
+- AC-5: ✔ Verified in ChatWidget with `useLanguage()` and active language dispatch
+- AC-6: ✔ `pnpm verify` 100% green
+**Rule & scope check:** Confirmed no unauthorized scope added; strictly complies with CR-005b.
+**Next task:** Post-Change Re-Audit (`TASK-024` & `TASK-025`) and Gate G7 Closure.

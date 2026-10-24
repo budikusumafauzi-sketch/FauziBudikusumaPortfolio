@@ -12,11 +12,11 @@
 |---|---|
 | Date | 2026-10-25 |
 | Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005)** |
-| Waiting for | Execution of authorized Change Requests (TASK-033 -> Re-Audit TASK-024/025 -> Gate G7) |
-| Last completed task | TASK-032 — Bilingual ID/EN foundation & static UI localization (CR-005a) |
-| Next task | TASK-033 — Bilingual chatbot pipeline & localized UI (CR-005b) |
+| Waiting for | Post-Change Re-Audit across 7 Viewports × 2 Themes × 2 Languages and Gate G7 Closure |
+| Last completed task | TASK-033 — Bilingual chatbot pipeline & localized UI (CR-005b) |
+| Next task | Post-Change Re-Audit (TASK-024 & TASK-025 re-run) and Gate G7 Closure |
 | Blockers | None |
-| Last verified commit | pending (TASK-032) |
+| Last verified commit | pending (TASK-033) |
 
 ## 2. Phases and gates
 
@@ -68,7 +68,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [031](tasks/TASK-031-credly-contact-channel-and-typography.md) | Credly profile contact card & typography refinement (CR-003) | 7 | P0 | `DONE` | TASK-030 |
 | [028](tasks/TASK-028-gemini-chatbot-reliability.md) | Gemini chatbot reliability & production stabilization (CR-004) | 7 | P0 | `DONE` | TASK-031 |
 | [032](tasks/TASK-032-bilingual-ui-localization.md) | Bilingual ID/EN foundation & static UI localization (CR-005a) | 7 | P0 | `DONE` | TASK-028 |
-| [033](tasks/TASK-033-bilingual-chatbot-pipeline.md) | Bilingual chatbot pipeline & localized UI (CR-005b) | 7 | P0 | `TODO` | TASK-032 |
+| [033](tasks/TASK-033-bilingual-chatbot-pipeline.md) | Bilingual chatbot pipeline & localized UI (CR-005b) | 7 | P0 | `DONE` | TASK-032 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 

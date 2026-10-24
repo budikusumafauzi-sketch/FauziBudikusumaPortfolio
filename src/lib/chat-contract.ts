@@ -83,6 +83,7 @@ export const ChatRequestSchema = z
         s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim(),
       )
       .refine((s) => s.length >= 1, 'Message must not be empty after sanitization'),
+    language: z.enum(['en', 'id']).optional().default('en'),
   })
   .strict(); // ← rejects unknown fields (AC-2)
 
@@ -138,7 +139,7 @@ export type ChatResponse = z.infer<typeof ChatResponseSchema>;
 
 // ─── Fixed visitor copy (constants — never AI-generated, R-039) ───────────────
 
-export const COPY = {
+export const COPY_EN = {
   no_data:
     "I only have access to Fauzi's approved public portfolio data, and that information isn't available there.",
   out_of_scope:
@@ -151,3 +152,23 @@ export const COPY = {
   too_large: 'Request body is too large.',
   unsupported_media_type: 'Only application/json requests are accepted.',
 } as const satisfies Record<string, string>;
+
+export const COPY_ID = {
+  no_data:
+    'Saya hanya memiliki akses ke data portofolio publik terverifikasi Fauzi, dan informasi tersebut tidak tersedia di dalamnya.',
+  out_of_scope:
+    'Saya hanya dapat menjawab pertanyaan seputar portofolio publik Fauzi, sehingga saya tidak dapat membantu permintaan tersebut.',
+  unavailable:
+    'Asisten untuk sementara waktu tidak tersedia. Bagian portofolio lainnya tetap berfungsi normal — silakan coba kembali beberapa saat lagi.',
+  rate_limited: 'Terlalu banyak pertanyaan dalam waktu singkat. Harap tunggu sejenak dan coba lagi.',
+  invalid_request: `Harap masukkan pertanyaan antara 1 hingga ${MAX_MESSAGE_LENGTH} karakter.`,
+  error: 'Terjadi kendala teknis. Silakan coba kembali nanti.',
+  too_large: 'Ukuran data permintaan terlalu besar.',
+  unsupported_media_type: 'Hanya permintaan bertipe application/json yang diterima.',
+} as const satisfies Record<string, string>;
+
+export const COPY = COPY_EN;
+
+export function getFixedCopy(key: keyof typeof COPY_EN, lang: 'en' | 'id' = 'en'): string {
+  return lang === 'id' ? COPY_ID[key] : COPY_EN[key];
+}

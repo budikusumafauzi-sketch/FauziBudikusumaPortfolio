@@ -123,16 +123,21 @@ export interface Dictionary {
     statusLive: string;
     statusUnavailable: string;
     subtitle: string;
-    starters: {
-      projects: string;
-      skills: string;
-      education: string;
-      contact: string;
-    };
+    welcome: string;
+    suggestedQuestions: string;
+    starters: string[];
     placeholder: string;
     disclaimer: string;
     sendAria: string;
-    launcherAria: string;
+    launcherAriaOpen: string;
+    launcherAriaClosed: string;
+    closeAria: string;
+    verifiedSources: string;
+    retrieving: string;
+    scopeGuard: string;
+    portfolioGuard: string;
+    rateLimitExceeded: string;
+    serviceNotice: string;
   };
   notFound: {
     title: string;
@@ -284,16 +289,28 @@ export const dictionaries: Record<Language, Dictionary> = {
       statusLive: "LIVE",
       statusUnavailable: "UNAVAILABLE",
       subtitle: "Answers strictly from verified profile data",
-      starters: {
-        projects: "What projects has he built?",
-        skills: "Skills & networking background",
-        education: "Education and certifications",
-        contact: "How to contact Fauzi?",
-      },
+      welcome:
+        "Hello! I am Fauzi's AI Assistant. I can answer questions about Fauzi Budikusuma's software development, network engineering projects, verified credentials, and professional background strictly using verified portfolio records.",
+      suggestedQuestions: "Suggested questions:",
+      starters: [
+        "What is Fauzi's professional background?",
+        "What technical skills and tools does Fauzi use?",
+        "Tell me about Fauzi's selected projects.",
+        "What certifications and internship experience does Fauzi have?",
+        "How can I contact Fauzi directly?",
+      ],
       placeholder: "Ask a question about Fauzi…",
-      disclaimer: "Answers are grounded strictly in Fauzi's verified public records.",
-      sendAria: "Send message",
-      launcherAria: "Open AI Assistant chat panel",
+      disclaimer: "Plain text only · Grounded in PostgreSQL records",
+      sendAria: "Send question",
+      launcherAriaOpen: "Close Fauzi's AI Assistant",
+      launcherAriaClosed: "Open Fauzi's AI Assistant",
+      closeAria: "Close AI Assistant",
+      verifiedSources: "Verified Portfolio Sources:",
+      retrieving: "Retrieving verified portfolio records…",
+      scopeGuard: "SCOPE GUARDRAIL ENFORCED",
+      portfolioGuard: "PORTFOLIO GUARDRAIL",
+      rateLimitExceeded: "RATE LIMIT EXCEEDED",
+      serviceNotice: "SERVICE NOTICE",
     },
     notFound: {
       title: "PAGE NOT FOUND",
@@ -443,16 +460,28 @@ export const dictionaries: Record<Language, Dictionary> = {
       statusLive: "AKTIF",
       statusUnavailable: "TIDAK TERSEDIA",
       subtitle: "Menjawab secara ketat berdasarkan data profil terverifikasi",
-      starters: {
-        projects: "Proyek apa saja yang telah dibangun?",
-        skills: "Latar belakang keahlian & jaringan",
-        education: "Pendidikan dan sertifikasi",
-        contact: "Bagaimana cara menghubungi Fauzi?",
-      },
+      welcome:
+        "Halo! Saya Asisten AI Fauzi. Saya dapat menjawab pertanyaan seputar pengembangan perangkat lunak, teknik jaringan, sertifikasi terverifikasi, dan latar belakang profesional Fauzi Budikusuma secara ketat menggunakan data portofolio publik terverifikasi.",
+      suggestedQuestions: "Pertanyaan yang disarankan:",
+      starters: [
+        "Apa latar belakang profesional Fauzi?",
+        "Keahlian teknis dan perangkat apa yang dikuasai Fauzi?",
+        "Ceritakan proyek pilihan yang dibangun Fauzi.",
+        "Sertifikasi dan pengalaman magang apa yang dimiliki Fauzi?",
+        "Bagaimana cara menghubungi Fauzi secara langsung?",
+      ],
       placeholder: "Tanyakan tentang Fauzi…",
-      disclaimer: "Jawaban bersumber secara ketat dari data publik terverifikasi Fauzi.",
-      sendAria: "Kirim pesan",
-      launcherAria: "Buka panel obrolan Asisten AI",
+      disclaimer: "Teks polos saja · Bersumber dari data PostgreSQL",
+      sendAria: "Kirim pertanyaan",
+      launcherAriaOpen: "Tutup Asisten AI Fauzi",
+      launcherAriaClosed: "Buka Asisten AI Fauzi",
+      closeAria: "Tutup Asisten AI",
+      verifiedSources: "Sumber Portofolio Terverifikasi:",
+      retrieving: "Mengambil data portofolio terverifikasi…",
+      scopeGuard: "PEMBATAS CAKUPAN DITERAPKAN",
+      portfolioGuard: "PEMBATAS PORTOFOLIO",
+      rateLimitExceeded: "BATAS PERMINTAAN TERLAMPAUI",
+      serviceNotice: "PEMBERITAHUAN LAYANAN",
     },
     notFound: {
       title: "HALAMAN TIDAK DITEMUKAN",

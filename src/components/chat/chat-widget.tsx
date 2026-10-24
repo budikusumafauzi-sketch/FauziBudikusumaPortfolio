@@ -16,6 +16,7 @@ import {
   type ChatResponse,
   type Source,
 } from "@/lib/chat-contract";
+import { useLanguage } from "@/lib/i18n/context";
 
 /**
  * Project-owned static welcome copy introducing Fauzi's AI Assistant.
@@ -74,6 +75,7 @@ const getStorageSnapshot = () => {
 const getServerStorageSnapshot = () => true;
 
 export function ChatWidget() {
+  const { language, t } = useLanguage();
   const [isOpen, setIsOpen] = React.useState(false);
   const hasOpenedBefore = React.useSyncExternalStore(
     subscribeStorage,
@@ -203,7 +205,7 @@ export function ChatWidget() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: validText }),
+        body: JSON.stringify({ message: validText, language }),
       });
 
       const retryAfterHeader = res.headers.get("Retry-After");
@@ -376,7 +378,7 @@ export function ChatWidget() {
               <div className="flex flex-col min-w-0">
                 <div className="flex items-center gap-2">
                   <h2 className="font-display font-semibold text-sm text-text-strong truncate">
-                    Fauzi&apos;s AI Assistant
+                    {t.chat.title}
                   </h2>
 
                   {/* Honest Status Badge (C-09 / AC-2) */}
@@ -386,7 +388,7 @@ export function ChatWidget() {
                       className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full font-mono text-[9px] font-semibold tracking-wider uppercase border border-accent/40 bg-accent-chip-bg text-accent-text shrink-0"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                      LIVE
+                      {t.chat.statusLive || "LIVE"}
                     </span>
                   ) : (
                     <span
@@ -394,14 +396,14 @@ export function ChatWidget() {
                       className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full font-mono text-[9px] font-semibold tracking-wider uppercase border border-border-default bg-surface-raised text-text-muted shrink-0"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-text-muted" />
-                      Unavailable
+                      {t.chat.statusUnavailable || "Unavailable"}
                     </span>
                   )}
                 </div>
 
                 {/* Subtitle */}
                 <p className="font-mono text-[10px] text-text-muted truncate">
-                  Answers strictly from verified profile data
+                  {t.chat.subtitle || "Answers strictly from verified profile data"}
                 </p>
               </div>
             </div>
@@ -411,7 +413,7 @@ export function ChatWidget() {
               ref={closeButtonRef}
               type="button"
               onClick={handleClosePanel}
-              aria-label="Close AI Assistant"
+              aria-label={t.chat.closeAria || "Close AI Assistant"}
               className="w-10 h-10 flex items-center justify-center rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-raised transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent shrink-0"
             >
               <X className="w-5 h-5" />
@@ -437,17 +439,17 @@ export function ChatWidget() {
                 />
               </div>
               <div className="rounded-2xl rounded-tl-xs px-3.5 py-2.5 border border-border-default bg-surface-raised/90 text-text-secondary leading-relaxed shadow-xs">
-                {WELCOME_MESSAGE}
+                {t.chat.welcome || WELCOME_MESSAGE}
               </div>
             </div>
 
             {/* Interactive Starter Prompt Chips */}
             <div className="pt-1 pb-2">
               <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 px-1">
-                Suggested questions:
+                {t.chat.suggestedQuestions || "Suggested questions:"}
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {STARTER_PROMPT_CHIPS.map((chip) => (
+                {(t.chat.starters || STARTER_PROMPT_CHIPS).map((chip) => (
                   <button
                     key={chip}
                     type="button"
@@ -502,8 +504,8 @@ export function ChatWidget() {
                           <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                           <span>
                             {msg.status === "out_of_scope"
-                              ? "SCOPE GUARDRAIL ENFORCED"
-                              : "PORTFOLIO GUARDRAIL"}
+                              ? (t.chat.scopeGuard || "SCOPE GUARDRAIL ENFORCED")
+                              : (t.chat.portfolioGuard || "PORTFOLIO GUARDRAIL")}
                           </span>
                         </div>
                         {/* Plain text rendering */}
@@ -516,12 +518,14 @@ export function ChatWidget() {
                       <div className="rounded-2xl rounded-tl-xs p-3.5 border border-accent/30 bg-accent-chip-bg/20 text-text-secondary leading-relaxed shadow-xs">
                         <div className="flex items-center gap-1.5 text-accent-text font-mono text-[10px] font-semibold tracking-wider uppercase mb-1.5">
                           <Clock className="w-3.5 h-3.5 shrink-0" />
-                          <span>RATE LIMIT EXCEEDED</span>
+                          <span>{t.chat.rateLimitExceeded || "RATE LIMIT EXCEEDED"}</span>
                         </div>
                         <p>{msg.text}</p>
                         {msg.retryAfterSeconds ? (
                           <p className="font-mono text-[11px] text-accent-text mt-2 font-medium">
-                            Please wait {msg.retryAfterSeconds} seconds before sending another message.
+                            {language === "id"
+                              ? `Harap tunggu ${msg.retryAfterSeconds} detik sebelum mengirim pesan berikutnya.`
+                              : `Please wait ${msg.retryAfterSeconds} seconds before sending another message.`}
                           </p>
                         ) : null}
                       </div>
@@ -532,7 +536,7 @@ export function ChatWidget() {
                       <div className="rounded-2xl rounded-tl-xs p-3.5 border border-border-default bg-surface-raised text-text-secondary leading-relaxed shadow-xs">
                         <div className="flex items-center gap-1.5 text-text-muted font-mono text-[10px] font-semibold tracking-wider uppercase mb-1.5">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                          <span>SERVICE NOTICE</span>
+                          <span>{t.chat.serviceNotice || "SERVICE NOTICE"}</span>
                         </div>
                         <p>{msg.text}</p>
                       </div>
@@ -548,7 +552,7 @@ export function ChatWidget() {
                         {msg.sources && msg.sources.length > 0 && (
                           <div className="mt-3 pt-2.5 border-t border-border-default/60 flex flex-col gap-1.5">
                             <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider">
-                              Verified Portfolio Sources:
+                              {t.chat.verifiedSources || "Verified Portfolio Sources:"}
                             </span>
                             <div className="flex flex-wrap gap-1.5">
                               {msg.sources.map((src) => (
@@ -592,7 +596,7 @@ export function ChatWidget() {
                     <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" />
                   </span>
                   <span className="font-mono text-[11px]">
-                    Retrieving verified portfolio records…
+                    {t.chat.retrieving || "Retrieving verified portfolio records…"}
                   </span>
                 </div>
               </div>
@@ -612,15 +616,15 @@ export function ChatWidget() {
                   onChange={(e) => setInputValue(e.target.value)}
                   maxLength={MAX_MESSAGE_LENGTH}
                   disabled={isLoading}
-                  placeholder="Ask a question about Fauzi…"
-                  aria-label="Ask a question about Fauzi"
+                  placeholder={t.chat.placeholder || "Ask a question about Fauzi…"}
+                  aria-label={t.chat.placeholder || "Ask a question about Fauzi"}
                   className="w-full h-11 pl-3.5 pr-12 rounded-xl border border-border-default bg-surface-card text-xs sm:text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent disabled:opacity-50 transition-colors"
                 />
 
                 <button
                   type="submit"
                   disabled={isLoading || inputValue.trim().length === 0}
-                  aria-label="Send question"
+                  aria-label={t.chat.sendAria || "Send question"}
                   className="absolute right-1.5 w-8 h-8 rounded-lg bg-accent hover:bg-accent-hover text-white flex items-center justify-center transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   <Send className="w-4 h-4" />
@@ -630,7 +634,7 @@ export function ChatWidget() {
               {/* Character Counter */}
               <div className="flex justify-between items-center px-1">
                 <span className="font-mono text-[10px] text-text-muted">
-                  Plain text only · Grounded in PostgreSQL records
+                  {t.chat.disclaimer || "Plain text only · Grounded in PostgreSQL records"}
                 </span>
                 <span className="font-mono text-[10px] text-text-muted">
                   {inputValue.length}/{MAX_MESSAGE_LENGTH}
@@ -650,7 +654,7 @@ export function ChatWidget() {
         onClick={handleToggle}
         aria-expanded={isOpen}
         aria-controls="fauzi-chat-panel"
-        aria-label={isOpen ? "Close Fauzi's AI Assistant" : "Open Fauzi's AI Assistant"}
+        aria-label={isOpen ? (t.chat.launcherAriaOpen || "Close Fauzi's AI Assistant") : (t.chat.launcherAriaClosed || "Open Fauzi's AI Assistant")}
         className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-accent bg-surface-card shadow-lg hover:shadow-accent/20 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         {/* Inner high-contrast tile */}

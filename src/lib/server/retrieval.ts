@@ -53,8 +53,9 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
   // Profile / general
   {
     terms: [
-      'who', 'about', 'siapa', 'profile', 'summary', 'focus', 'describe', 'overview',
-      'background', 'tentang', 'latar', 'belakang', 'fauzi', 'budikusuma',
+      'who', 'about', 'siapa', 'siapakah', 'profile', 'summary', 'focus', 'describe', 'overview',
+      'background', 'tentang', 'tentangnya', 'latar', 'belakang', 'latar belakang', 'biodata',
+      'profil', 'fauzi', 'budikusuma', 'fauzi budikusuma',
     ],
     categories: ['PROFILE'],
   },
@@ -63,7 +64,7 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
     terms: [
       'education', 'study', 'university', 'school', 'degree', 'college', 'campus',
       'kuliah', 'sekolah', 'kampus', 'pendidikan', 'sarjana', 'diploma', 'amikom',
-      'seyegan', 'smk', 'yogyakarta',
+      'seyegan', 'smk', 'yogyakarta', 'jurusan', 'prodi', 'program studi', 'lulusan', 'akademik',
     ],
     categories: ['EDUCATION'],
   },
@@ -72,7 +73,7 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
     terms: [
       'experience', 'work', 'intern', 'internship', 'job', 'career', 'employment',
       'pengalaman', 'magang', 'kerja', 'kominfo', 'dinas', 'helpdesk', 'help desk',
-      'supervisor',
+      'supervisor', 'pekerjaan', 'karir', 'riwayat',
     ],
     categories: ['EXPERIENCE'],
   },
@@ -80,8 +81,9 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
   {
     terms: [
       'skill', 'technology', 'stack', 'language', 'tool', 'framework', 'tech',
-      'keahlian', 'teknologi', 'bahasa', 'mikrotik', 'linux', 'network', 'programming',
-      'software', 'hardware',
+      'keahlian', 'kemampuan', 'keterampilan', 'kompetensi', 'teknologi', 'bahasa',
+      'bahasa pemrograman', 'mikrotik', 'linux', 'network', 'networking', 'programming',
+      'software', 'hardware', 'alat', 'peralatan',
     ],
     categories: ['SKILL'],
   },
@@ -89,7 +91,8 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
   {
     terms: [
       'project', 'built', 'repository', 'repo', 'github', 'app', 'application',
-      'proyek', 'aplikasi', 'sentinel', 'developed', 'created', 'made',
+      'proyek', 'aplikasi', 'sentinel', 'developed', 'created', 'made', 'karya',
+      'portofolio', 'portfolio', 'repositori', 'sistem', 'buatan',
     ],
     categories: ['PROJECT'],
   },
@@ -98,7 +101,8 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
     terms: [
       'certificate', 'certification', 'credential', 'award', 'license', 'course',
       'sertifikat', 'sertifikasi', 'mtcna', 'bnsp', 'google', 'cybersecurity',
-      'pkl', 'training', 'credly', 'badge', 'badges', 'lencana',
+      'pkl', 'training', 'credly', 'badge', 'badges', 'lencana', 'akreditasi',
+      'lisensi', 'ujian kompetensi',
     ],
     categories: ['CERTIFICATION'],
   },
@@ -107,6 +111,7 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
     terms: [
       'contact', 'email', 'linkedin', 'instagram', 'github', 'reach', 'connect',
       'kontak', 'hubungi', 'sosial', 'media', 'social', 'credly', 'badge',
+      'surel', 'kirim pesan', 'menghubungi',
     ],
     categories: ['CONTACT'],
   },
@@ -123,10 +128,10 @@ const STOP_WORDS = new Set([
   'was', 'we', 'were', 'what', 'when', 'where', 'which', 'who',
   'will', 'with', 'you', 'your',
   // Indonesian stop words
-  'ada', 'adalah', 'apa', 'apakah', 'bisa', 'dan', 'dengan', 'di',
+  'ada', 'adalah', 'apa', 'apakah', 'bagaimana', 'gimana', 'bisa', 'dan', 'dengan', 'di',
   'dari', 'dia', 'hal', 'ini', 'itu', 'juga', 'ke', 'lain', 'lebih',
   'mereka', 'pada', 'punya', 'saya', 'seperti', 'sudah', 'tidak',
-  'untuk', 'yang',
+  'untuk', 'yang', 'kapan', 'dimana', 'kenapa', 'mengapa', 'saja',
 ]);
 
 /** Tokens whose short length should be kept (programming languages etc.). */

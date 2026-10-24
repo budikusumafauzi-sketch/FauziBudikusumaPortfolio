@@ -20,6 +20,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import {
   ChatRequestSchema,
   COPY,
+  getFixedCopy,
   MAX_BODY_BYTES,
   type ChatResponse,
 } from '@/lib/chat-contract';
@@ -91,7 +92,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return json({ status: 'invalid_request', answer: COPY.invalid_request }, 400);
     }
 
-    const { message } = validated.data;
+    const { message, language = 'en' } = validated.data;
 
     // ── Layer 6: Scope / injection guard ───────────────────────────────────────
     const guardResult = checkGuard(message);
@@ -100,7 +101,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       if (process.env.NODE_ENV !== 'test') {
         console.log(guardResult.logCode ?? 'chat.guard');
       }
-      return json({ status: 'out_of_scope', answer: COPY.out_of_scope }, 200);
+      return json({ status: 'out_of_scope', answer: getFixedCopy('out_of_scope', language) }, 200);
     }
 
     // ── Layer 7: Bounded knowledge retrieval ──────────────────────────────────
@@ -112,26 +113,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       if (process.env.NODE_ENV !== 'test') {
         console.error('chat.db_error');
       }
-      return json({ status: 'unavailable', answer: COPY.unavailable }, 503);
+      return json({ status: 'unavailable', answer: getFixedCopy('unavailable', language) }, 503);
     }
 
     // Short-circuit with no_data (0 Gemini calls) when 0 records match
     if (records.length === 0) {
-      return json({ status: 'no_data', answer: COPY.no_data }, 200);
+      return json({ status: 'no_data', answer: getFixedCopy('no_data', language) }, 200);
     }
 
     // ── Layer 8: Grounded generation via Gemini ───────────────────────────────
     const facts = buildContext(records);
-    const geminiResult = await generateGroundedAnswer(facts, message);
+    const geminiResult = await generateGroundedAnswer(facts, message, undefined, language);
 
     if (!geminiResult.success) {
       if (process.env.NODE_ENV !== 'test') {
         console.error(geminiResult.logCode);
       }
       if (geminiResult.status === 'no_data') {
-        return json({ status: 'no_data', answer: COPY.no_data }, 200);
+        return json({ status: 'no_data', answer: getFixedCopy('no_data', language) }, 200);
       }
-      return json({ status: 'unavailable', answer: COPY.unavailable }, 503);
+      return json({ status: 'unavailable', answer: getFixedCopy('unavailable', language) }, 503);
     }
 
     const sources = records.map((r) => ({
