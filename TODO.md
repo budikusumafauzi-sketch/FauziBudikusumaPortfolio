@@ -16,7 +16,7 @@
 | Last completed task | TASK-023 — Chatbot UI: launcher, panel and states |
 | Next task | TASK-024 — Accessibility and responsive audit (Phase 7) |
 | Blockers | None |
-| Last verified commit | `2375643` (TASK-023: implement floating chatbot UI, all 9 interaction states, and page resilience integration) |
+| Last verified commit | `6a91348` (TASK-023: implement floating chatbot UI, all 9 interaction states, and page resilience integration) |
 
 ## 2. Phases and gates
 
