@@ -7,6 +7,7 @@ const CURRENT_YEAR = 2026;
 
 export function Footer() {
   const navLinks = [
+    { href: "#home", label: "Overview" },
     { href: "#profile", label: "Profile" },
     { href: "#projects", label: "Projects" },
     { href: "#credentials", label: "Credentials" },

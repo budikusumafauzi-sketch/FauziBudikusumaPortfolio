@@ -20,6 +20,7 @@ export const siteConfig: SiteConfig = {
   description:
     "Personal portfolio and verified interactive showcase of Fauzi Budikusuma — Software Development & Network Engineer.",
   navItems: [
+    { label: "Overview", href: "#home" },
     { label: "Profile & Journey", href: "#profile" },
     { label: "Projects", href: "#projects" },
     { label: "Credentials", href: "#credentials" },

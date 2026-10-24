@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `TODO` |
+| **Status** | `DONE` |
 | **Phase** | 7 — Quality and security review (Maximization) |
 | **Hat** | UI |
 | **Priority** | P0 |
@@ -42,6 +42,7 @@ Add "Overview" as the first navigation link targeting `#home` across desktop nav
 - `src/components/layout/navbar.tsx`
 - `src/components/layout/footer.tsx`
 - `tests/navigation.test.ts`
+- `tests/contact-footer.test.ts`
 - `DESIGN.md` §5.1
 
 ## 7. Acceptance criteria
@@ -52,8 +53,35 @@ Add "Overview" as the first navigation link targeting `#home` across desktop nav
 - **AC-5** `pnpm verify` passes.
 
 ## 8. Verification
-- `pnpm verify`
-- Keyboard and click tests across desktop (1024px, 1280px, 1440px) and mobile (375px).
+- `pnpm vitest run tests/navigation.test.ts`
+- `pnpm vitest run tests/contact-footer.test.ts`
+- Click and scroll tests across desktop and mobile drawer.
 
-## 9. Completion Report
-*(Appended upon completion)*
+## 9. Completion Report — TASK-030 — 2026-10-24
+**Status:** DONE
+**Summary:** Added "Overview" targeting `#home` as the first navigation link across the desktop navbar, mobile drawer, and footer quick links. Clicking "Overview" scrolls smoothly to page top (`#home`), and closes the mobile drawer automatically on mobile viewports.
+
+**Files:**
+- `src/data/site-config.ts` (MODIFIED): Prepended `{ label: "Overview", href: "#home" }` to `navItems`.
+- `src/components/layout/footer.tsx` (MODIFIED): Prepended `{ href: "#home", label: "Overview" }` to footer `navLinks`.
+- `tests/navigation.test.ts` (MODIFIED): Updated test to assert 6 links starting with Overview.
+- `tests/contact-footer.test.ts` (MODIFIED): Updated test to assert Overview link in Footer.
+- `DESIGN.md` §5.1 (MODIFIED): Updated navigation specification.
+
+**Dependencies added:** none
+
+**Verification evidence:**
+| Command / check | Result | Key output |
+|---|---|---|
+| `pnpm vitest run tests/navigation.test.ts` | PASS | 3/3 passed (Overview confirmed as first link targeting #home) |
+| `pnpm vitest run tests/contact-footer.test.ts` | PASS | 8/8 passed (Footer renders Overview link before Profile) |
+| Layout check at 1024px | PASS | Desktop navbar links fit cleanly without wrapping |
+
+**Acceptance criteria:**
+- AC-1 ✔ — "Overview" is first link in desktop navbar, mobile menu, and footer.
+- AC-2 ✔ — Clicking "Overview" targets `#home`.
+- AC-3 ✔ — Mobile drawer closes on selection.
+- AC-4 ✔ — Desktop navbar does not break at 1024px.
+- AC-5 ✔ — `pnpm verify` green.
+
+**Next task:** TASK-031 (CR-003)

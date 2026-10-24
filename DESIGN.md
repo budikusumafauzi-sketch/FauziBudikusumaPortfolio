@@ -151,9 +151,8 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 ### 5.1 Navbar (DS-NAV) — refs 3, 5, 6, 7; decisions C-01, C-02
 - Sticky, translucent/blur-free solid bar with a hairline bottom border; same page background tone.
 - Left: **monogram in a rounded bordered square** + wordmark "FAUZI BUDIKUSUMA" with small mono "PORTFOLIO" beneath. (Whether the nav monogram is the logo SVG or the letters "FB" in text is OPEN DS-02.)
-- Center/right desktop: text links (Inter, medium, secondary color; hover → brighter). Theme toggle (bordered square with moon in dark / sun in light — icon shows the **current** theme in the exports; set a clear accessible name + `aria-pressed`/label that states the action).
-- **The ID/EN switch shown in the exports is not implemented if C-01 is approved as recommended.**
-- Mobile: hamburger opens a drawer/menu; focus trap not required unless it covers the page, but Escape + close-on-select + focus return are required (FR-NAV-03). Menu design is **not depicted** in the PNGs → derive from tokens and flag for owner review (DS-06).
+- Center/right desktop: text links starting with "Overview" targeting `#home` (CR-002) followed by Profile & Journey, Projects, Credentials, Documentation, Contact (Inter, medium, secondary color; hover → brighter). Segmented ID/EN language toggle (CR-005) placed adjacent to theme toggle. Theme toggle (bordered square with moon in dark / sun in light — icon shows the **current** theme in the exports; set a clear accessible name + `aria-pressed`/label that states the action).
+- Mobile: hamburger opens a drawer/menu listing "Overview" first; focus trap not required unless it covers the page, but Escape + close-on-select + focus return are required (FR-NAV-03). Menu design is derived from tokens (DS-06).
 - Anchor offset = measured navbar height + small buffer so headings are never covered.
 
 ### 5.2 Opening overlay (DS-OPN) — ref 1

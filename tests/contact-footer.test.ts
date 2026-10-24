@@ -50,8 +50,9 @@ describe("Footer Component", () => {
     expect(html).toContain("logo-fb.png");
   });
 
-  it("renders 5 quick navigation anchor links matching Navbar (C-02)", () => {
+  it("renders quick navigation anchor links starting with Overview (CR-002)", () => {
     const html = renderToString(React.createElement(Footer));
+    expect(html).toContain('href="#home"');
     expect(html).toContain('href="#profile"');
     expect(html).toContain('href="#projects"');
     expect(html).toContain('href="#credentials"');

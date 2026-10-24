@@ -9,8 +9,9 @@ describe("Navigation & Site Config (TASK-006 / C-02)", () => {
     expect(ThemeToggle).toBeDefined();
   });
 
-  it("strictly defines the 5 approved C-02 navigation links", () => {
+  it("strictly defines the approved navigation links starting with Overview (CR-002)", () => {
     const expectedLabels = [
+      "Overview",
       "Profile & Journey",
       "Projects",
       "Credentials",
@@ -21,6 +22,7 @@ describe("Navigation & Site Config (TASK-006 / C-02)", () => {
     expect(siteConfig.navItems.map((item) => item.label)).toEqual(expectedLabels);
 
     const expectedHrefs = [
+      "#home",
       "#profile",
       "#projects",
       "#credentials",

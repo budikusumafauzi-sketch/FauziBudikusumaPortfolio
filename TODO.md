@@ -16,7 +16,7 @@
 | Last completed task | TASK-029 — Permanent Full-Color Hero Portrait (CR-001) |
 | Next task | TASK-030 — "Overview" navigation link to top (CR-002) |
 | Blockers | None |
-| Last verified commit | `TASK-029` pending commit |
+| Last verified commit | `8254721` (TASK-029: make hero portrait permanently full color without hover dependency) |
 
 ## 2. Phases and gates
 
