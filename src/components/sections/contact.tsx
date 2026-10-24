@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container, SectionHeader, Card } from "@/components/ui/primitives";
 import { contactsData } from "@/data/contacts";
-import { Mail, ArrowUpRight } from "lucide-react";
+import { Mail, ArrowUpRight, Award } from "lucide-react";
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -40,6 +40,8 @@ export function ContactSection() {
         return <GitHubIcon className="h-5 w-5 text-accent" />;
       case "instagram":
         return <InstagramIcon className="h-5 w-5 text-accent" />;
+      case "credly":
+        return <Award className="h-5 w-5 text-accent" />;
       default:
         return <Mail className="h-5 w-5 text-accent" />;
     }
@@ -54,19 +56,22 @@ export function ContactSection() {
           className="mb-10"
         />
 
-        {/* 4 Cards Grid: 4 columns on desktop, 2x2 on tablet/mobile (AC-5) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* 5 Cards Grid: 5 columns on desktop, 2x2 + 1 full-width on tablet, 1 column on mobile (CR-003) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           {contactsData.map((channel) => {
             const isExternal = channel.href.startsWith("http");
+            const isCredly = channel.type === "credly";
             return (
               <a
                 key={channel.id}
                 href={channel.href}
                 {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 aria-label={`${channel.label}: ${channel.displayText}`}
-                className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl"
+                className={`group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl ${
+                  isCredly ? "sm:col-span-2 lg:col-span-1" : ""
+                }`}
               >
-                <Card className="h-full flex flex-col justify-between p-5 sm:p-6 bg-surface-card transition-all duration-300 hover:border-accent hover:shadow-[0_0_24px_var(--color-accent-glow)]">
+                <Card className="h-full flex flex-col justify-between p-5 bg-surface-card transition-all duration-300 hover:border-accent hover:shadow-[0_0_24px_var(--color-accent-glow)]">
                   <div>
                     {/* Top Row: Icon & External Arrow */}
                     <div className="flex items-center justify-between mb-4">
@@ -81,8 +86,11 @@ export function ContactSection() {
                       {channel.label}
                     </span>
 
-                    {/* Channel Value with Full Word Wrapping to Prevent Truncation (AC-1) */}
-                    <p className="font-sans text-sm sm:text-base font-semibold text-text-strong break-all leading-snug">
+                    {/* Channel Value with Ellipsis without Mid-Syllable Breaks (CR-003) */}
+                    <p
+                      title={channel.displayText}
+                      className="font-sans text-xs sm:text-sm font-semibold text-text-strong truncate leading-snug group-hover:text-accent transition-colors"
+                    >
                       {channel.displayText}
                     </p>
                   </div>

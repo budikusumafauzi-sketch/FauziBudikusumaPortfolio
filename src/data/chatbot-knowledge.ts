@@ -287,12 +287,24 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
     if (contact.verification !== "VERIFIED" || !contact.approvedForPublic) continue;
 
     const slug = contact.type;
+    const extraKeywords =
+      contact.type === "credly"
+        ? ["credly", "badge", "digital-badge", "lencana", "sertifikasi-digital"]
+        : [];
     records.push({
       id: `contact:${slug}`,
       category: "CONTACT",
       title: `Direct Channel: ${contact.label}`,
       body: `Fauzi Budikusuma's approved contact channel via ${contact.label}: ${contact.displayText}.`,
-      keywords: sanitizeKeywords(["contact", "channel", "reach", "hire", contact.type, contact.label]),
+      keywords: sanitizeKeywords([
+        "contact",
+        "channel",
+        "reach",
+        "hire",
+        contact.type,
+        contact.label,
+        ...extraKeywords,
+      ]),
       url: contact.href,
       position: contactPos++,
       source: "contacts",

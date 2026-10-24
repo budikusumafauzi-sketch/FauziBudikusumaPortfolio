@@ -18,9 +18,9 @@ describe("Direct Contact Section", () => {
     expect(html).not.toMatch(/0[0-9]\s*\/\//);
   });
 
-  it("renders all 4 approved contact channels with verified links and text", () => {
+  it("renders all 5 approved contact channels with verified links and text (CR-003)", () => {
     const html = renderToString(React.createElement(ContactSection));
-    expect(contactsData.length).toBe(4);
+    expect(contactsData.length).toBe(5);
 
     for (const channel of contactsData) {
       expect(html).toContain(channel.displayText);

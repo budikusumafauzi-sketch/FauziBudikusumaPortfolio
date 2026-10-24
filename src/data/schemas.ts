@@ -78,7 +78,7 @@ export type GalleryItem = z.infer<typeof GalleryItemSchema>;
 
 // Contacts Schema
 export const ContactItemSchema = BaseItemSchema.extend({
-  type: z.enum(["email", "linkedin", "github", "instagram"]),
+  type: z.enum(["email", "linkedin", "github", "instagram", "credly"]),
   label: z.string().min(2).max(50),
   displayText: z.string().min(2).max(100),
   href: z.string().refine((val) => val.startsWith("mailto:") || val.startsWith("https://"), {

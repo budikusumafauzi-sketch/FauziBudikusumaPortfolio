@@ -10,13 +10,13 @@
 
 | Field | Value |
 |---|---|
-| Date | 2026-10-24 |
+| Date | 2026-10-25 |
 | Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005)** |
 | Waiting for | Execution of authorized Change Requests (TASK-029 -> TASK-030 -> TASK-031 -> TASK-028 -> TASK-032 -> TASK-033) |
-| Last completed task | TASK-029 — Permanent Full-Color Hero Portrait (CR-001) |
-| Next task | TASK-030 — "Overview" navigation link to top (CR-002) |
+| Last completed task | TASK-031 — Credly profile contact card & typography refinement (CR-003) |
+| Next task | TASK-028 — Gemini chatbot reliability & production stabilization (CR-004) |
 | Blockers | None |
-| Last verified commit | `8254721` (TASK-029: make hero portrait permanently full color without hover dependency) |
+| Last verified commit | `365cb9b` (TASK-030: add Overview navigation link to top across desktop navbar, mobile menu, and footer) |
 
 ## 2. Phases and gates
 
@@ -64,9 +64,9 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [024](tasks/TASK-024-accessibility-responsive-audit.md) | Accessibility and responsive audit | 7 | P0 | `DONE` | TASK-023 |
 | [025](tasks/TASK-025-security-dependency-review.md) | Security and dependency review | 7 | P0 | `DONE` | TASK-023 |
 | [029](tasks/TASK-029-permanent-full-color-hero-portrait.md) | Permanent full-color Hero portrait (CR-001) | 7 | P0 | `DONE` | TASK-024 |
-| [030](tasks/TASK-030-overview-navigation-link.md) | "Overview" navigation link to top (CR-002) | 7 | P0 | `TODO` | TASK-029 |
-| [031](tasks/TASK-031-credly-contact-channel-and-typography.md) | Credly profile contact card & typography refinement (CR-003) | 7 | P0 | `TODO` | TASK-030 |
-| [028](tasks/TASK-028-gemini-chatbot-reliability.md) | Gemini chatbot reliability & production stabilization (CR-004) | 7 | P0 | `TODO` | TASK-031 |
+| [030](tasks/TASK-030-overview-navigation-link.md) | "Overview" navigation link to top (CR-002) | 7 | P0 | `DONE` | TASK-029 |
+| [031](tasks/TASK-031-credly-contact-channel-and-typography.md) | Credly profile contact card & typography refinement (CR-003) | 7 | P0 | `DONE` | TASK-030 |
+| [028](tasks/TASK-028-gemini-chatbot-reliability.md) | Gemini chatbot reliability & production stabilization (CR-004) | 7 | P0 | `IN_PROGRESS` | TASK-031 |
 | [032](tasks/TASK-032-bilingual-ui-localization.md) | Bilingual ID/EN foundation & static UI localization (CR-005a) | 7 | P0 | `TODO` | TASK-028 |
 | [033](tasks/TASK-033-bilingual-chatbot-pipeline.md) | Bilingual chatbot pipeline & localized UI (CR-005b) | 7 | P0 | `TODO` | TASK-032 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |

@@ -127,7 +127,7 @@ Common to every item: `id` (slug), `verification` (`VERIFIED` | `DRAFT` | `NOT_P
 | `projects` | `title`, `summary`, `technologies[]`, `coverPath?`, `repoUrl?`, `repoVisibility` (`PUBLIC`/`PRIVATE`), `demoUrl?`, `status?`, `license?` (the last two only if verified — C-06), `linkStatus` (`VERIFIED`/`NOT_PROVIDED`/`UNDER_REVIEW`) |
 | `certifications` | `title`, `issuer`, `description?`, `issuedLabel?`, `imagePath` (full image), `credentialUrl?` |
 | `gallery` | `imagePath`, `alt`, `title?`, `caption?` (only if confirmed) |
-| `contacts` | `type` (`email`/`linkedin`/`github`/`instagram`), `label`, `displayText`, `href`, `approvedForPublic` (bool) |
+| `contacts` | `type` (`email`/`linkedin`/`github`/`instagram`/`credly`), `label`, `displayText`, `href`, `approvedForPublic` (bool) (5 records per CR-003) |
 | `site-config` | navigation entries (labels per C-02), `cvPath`, `cvDownloadName`, site metadata |
 
 ## 6. Validation responsibilities

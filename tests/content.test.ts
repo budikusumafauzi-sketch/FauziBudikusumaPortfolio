@@ -78,7 +78,7 @@ describe("Typed Content Modules & Zod Validation (TASK-008)", () => {
   });
 
   it("validates contact channels and confirms safe URL schemes", () => {
-    expect(contactsData.length).toBe(4);
+    expect(contactsData.length).toBe(5);
     contactsData.forEach((contact) => {
       expect(() => ContactItemSchema.parse(contact)).not.toThrow();
       if (contact.type === "email") {

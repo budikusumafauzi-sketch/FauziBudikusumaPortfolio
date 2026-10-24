@@ -41,4 +41,14 @@ export const contactsData: ContactItem[] = [
     href: "https://www.instagram.com/budikusuma._fauzi",
     approvedForPublic: true,
   }),
+  ContactItemSchema.parse({
+    id: "contact-credly",
+    verification: "VERIFIED",
+    position: 4,
+    type: "credly",
+    label: "Credly Profile",
+    displayText: "credly.com/users/fauzi-budikusuma",
+    href: "https://www.credly.com/users/fauzi-budikusuma.5538170c",
+    approvedForPublic: true,
+  }),
 ];

@@ -98,7 +98,7 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
     terms: [
       'certificate', 'certification', 'credential', 'award', 'license', 'course',
       'sertifikat', 'sertifikasi', 'mtcna', 'bnsp', 'google', 'cybersecurity',
-      'pkl', 'training',
+      'pkl', 'training', 'credly', 'badge', 'badges', 'lencana',
     ],
     categories: ['CERTIFICATION'],
   },
@@ -106,7 +106,7 @@ const INTENT_MAP: { terms: string[]; categories: string[] }[] = [
   {
     terms: [
       'contact', 'email', 'linkedin', 'instagram', 'github', 'reach', 'connect',
-      'kontak', 'hubungi', 'sosial', 'media', 'social',
+      'kontak', 'hubungi', 'sosial', 'media', 'social', 'credly', 'badge',
     ],
     categories: ['CONTACT'],
   },
