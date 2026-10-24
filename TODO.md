@@ -16,7 +16,7 @@
 | Last completed task | TASK-022 — Chatbot security and abuse tests |
 | Next task | TASK-023 — Chatbot UI: launcher, panel and states (Phase 6) |
 | Blockers | None |
-| Last verified commit | `pending` (TASK-021 & TASK-022 align Gemini 3.8 Flash SDK integration and enforce strict HTTP 200 live smoke test) |
+| Last verified commit | `c55d6b5` (TASK-021 & TASK-022 align Gemini 3.8 Flash SDK integration and enforce strict HTTP 200 live smoke test) |
 
 ## 2. Phases and gates
 
