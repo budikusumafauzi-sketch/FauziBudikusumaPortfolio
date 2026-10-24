@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-24 |
-| Current phase | **7 — Quality and security review (Phase 7 complete — Gate G7 PASSED; HARD STOP before Phase 8)** |
-| Waiting for | Owner review and instruction to initiate Phase 8 (`TASK-026` Deployment) |
-| Last completed task | TASK-025 — Security and dependency review (and TASK-024) |
-| Next task | TASK-026 — Service eligibility check and deployment (Phase 8 — Deployment) |
+| Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005)** |
+| Waiting for | Execution of authorized Change Requests (TASK-029 -> TASK-030 -> TASK-031 -> TASK-028 -> TASK-032 -> TASK-033) |
+| Last completed task | TASK-025 — Security and dependency review |
+| Next task | TASK-029 — Permanent Full-Color Hero Portrait (CR-001) |
 | Blockers | None |
-| Last verified commit | `430ea0e` (TASK-024: accessibility, responsive, contrast, and component audit) |
+| Last verified commit | `ebe5c45` (TASK-025: security headers, CSP, least-privilege DB and dependency review) |
 
 ## 2. Phases and gates
 
@@ -29,7 +29,7 @@
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `DONE` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `DONE` |
 | 6 | Chatbot UI and integration | 023 | G6 | **OWNER** | `DONE` |
-| 7 | Quality and security review | 024–025 | G7 | AUTO | `DONE` |
+| 7 | Quality and security review | 024, 025, 028–033 | G7 | AUTO | `IN_PROGRESS` |
 | 8 | Deployment and final acceptance | 026–027 | G8 | **OWNER** | `TODO` |
 
 Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work listed in `WORKFLOW.md` §3.3 may proceed.
@@ -63,7 +63,13 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [023](tasks/TASK-023-chatbot-ui.md) | Chatbot UI: launcher, panel and states | 6 | P0 | `DONE` | TASK-022 and Gate G3 passed; decision C-09 |
 | [024](tasks/TASK-024-accessibility-responsive-audit.md) | Accessibility and responsive audit | 7 | P0 | `DONE` | TASK-023 |
 | [025](tasks/TASK-025-security-dependency-review.md) | Security and dependency review | 7 | P0 | `DONE` | TASK-023 |
-| [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | TASK-024, TASK-025; Gate G7 |
+| [029](tasks/TASK-029-permanent-full-color-hero-portrait.md) | Permanent full-color Hero portrait (CR-001) | 7 | P0 | `TODO` | TASK-024 |
+| [030](tasks/TASK-030-overview-navigation-link.md) | "Overview" navigation link to top (CR-002) | 7 | P0 | `TODO` | TASK-029 |
+| [031](tasks/TASK-031-credly-contact-channel-and-typography.md) | Credly profile contact card & typography refinement (CR-003) | 7 | P0 | `TODO` | TASK-030 |
+| [028](tasks/TASK-028-gemini-chatbot-reliability.md) | Gemini chatbot reliability & production stabilization (CR-004) | 7 | P0 | `TODO` | TASK-031 |
+| [032](tasks/TASK-032-bilingual-ui-localization.md) | Bilingual ID/EN foundation & static UI localization (CR-005a) | 7 | P0 | `TODO` | TASK-028 |
+| [033](tasks/TASK-033-bilingual-chatbot-pipeline.md) | Bilingual chatbot pipeline & localized UI (CR-005b) | 7 | P0 | `TODO` | TASK-032 |
+| [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 
 ## 4. Open decisions that block work

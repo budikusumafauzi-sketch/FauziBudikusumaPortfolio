@@ -49,7 +49,7 @@ A **floating, profile-scoped AI chatbot** is available across the whole site. It
 Opening overlay · sticky navigation + mobile menu · Hero · Profile & Journey · Skills marquee (+ reduced-motion fallback) · Projects grid · Certifications carousel + image-only lightbox · Field Documentation gallery · Contact cards · Footer + Back to Top · dark/light themes with no wrong-theme flash · CV PDF download · floating chatbot (UI + `POST /api/chat`) · PostgreSQL knowledge records via Prisma · developer-run seed from project files · validation, best-effort rate limiting, safe errors · accessibility/responsive checks · deployment preparation.
 
 ### 4.2 Explicitly excluded from V1.0 (CONFIRMED — do not add without explicit owner approval)
-Admin/CMS dashboard · authentication, accounts, role UI · contact form or email-sending backend · project categories/filters/search/detail modals · AI features unrelated to verified portfolio facts · web search/browsing/unrestricted answers in the chatbot · pgvector / vector DB / embeddings / complex RAG · Redis or any cache service · MongoDB, MySQL, SQLite or any second database · Docker / Docker Compose as a requirement · paid domain/API/hosting/add-on or billing activation · analytics/tracking/third-party services not approved · skill percentages, fake stats, fake testimonials, fake URLs, invented credentials · extra pages or sections not listed here · **a language selector (see C-01)**.
+Admin/CMS dashboard · authentication, accounts, role UI · contact form or email-sending backend · project categories/filters/search/detail modals · AI features unrelated to verified portfolio facts · web search/browsing/unrestricted answers in the chatbot · pgvector / vector DB / embeddings / complex RAG · Redis or any cache service · MongoDB, MySQL, SQLite or any second database · Docker / Docker Compose as a requirement · paid domain/API/hosting/add-on or billing activation · analytics/tracking/third-party services not approved · skill percentages, fake stats, fake testimonials, fake URLs, invented credentials · extra pages or sections not listed here.
 
 A visual opportunity is **never** permission to add functionality. Useful ideas outside scope go to §14.3 (Future ideas), not into code.
 
@@ -59,7 +59,7 @@ A visual opportunity is **never** permission to add functionality. Useful ideas 
 |---|---|---|
 | CON-01 | Target build and operating cost **Rp0**, eligible free tiers only. A free-tier limit must produce a documented fallback or OPEN DECISION, never a hidden paid dependency. | CONFIRMED |
 | CON-02 | PostgreSQL is the **only** database. | CONFIRMED |
-| CON-03 | Primary UI language is **English**. | CONFIRMED |
+| CON-03 | Bilingual UI: **English** default with instantaneous **Indonesian** toggle via ID/EN switcher in navbar/mobile header (CR-005a/b, authorized by Owner). | CONFIRMED (CR-005) |
 | CON-04 | No assumption that a Google AI Pro/Antigravity subscription grants Gemini **API** quota. | CONFIRMED |
 | CON-05 | Public/runtime database access is **read-only**. | CONFIRMED |
 | CON-06 | All personal facts, URLs, certificates, statistics, links, achievements are owner-provided/verified. | CONFIRMED |
@@ -76,12 +76,12 @@ Visual details live in `DESIGN.md` (reference: `design/approved/`). Behavior liv
 | FR-GLB-01 | Section order follows the approved design: Opening → Nav → Hero → Profile & Journey → Skills → Projects → Credentials → Field Documentation → Direct Channels (Contact) → Footer; chatbot launcher persists. |
 | FR-GLB-02 | One page (App Router single route). No extra routes except `POST /api/chat` (proposed) and framework-required files. |
 | FR-GLB-03 | Static sections render from typed local data files (`src/data/`), **not** from the database (see `ARCHITECTURE.md` ADR-007). |
-| FR-GLB-04 | English-only UI copy; no language selector (pending C-01). |
+| FR-GLB-04 | Bilingual UI: English default with instantaneous Indonesian toggle via ID/EN switcher in navbar/mobile header; chatbot supports both languages (CR-005a/b). |
 
 ### 6.2 Navigation (see C-02)
 | ID | Requirement |
 |---|---|
-| FR-NAV-01 | Sticky top bar with monogram + wordmark ("FAUZI BUDIKUSUMA / PORTFOLIO"), section anchor links, dark/light toggle; mobile hamburger menu/drawer. |
+| FR-NAV-01 | Sticky top bar with monogram + wordmark ("FAUZI BUDIKUSUMA / PORTFOLIO"), section anchor links starting with "Overview" (targeting `#home`), ID/EN language toggle, dark/light toggle; mobile hamburger menu/drawer. |
 | FR-NAV-02 | Anchor links scroll to the target with an offset so the sticky bar never covers the heading. |
 | FR-NAV-03 | Mobile menu: keyboard operable, closes on Escape and on selection, has accessible labels, focus returns to the trigger on close. |
 | FR-NAV-04 | Theme toggle has an accessible name and exposes the current state. |
@@ -157,7 +157,7 @@ Visual details live in `DESIGN.md` (reference: `design/approved/`). Behavior liv
 ### 6.10 Contact and footer
 | ID | Requirement |
 |---|---|
-| FR-CNT-01 | Four cards: Email, LinkedIn, GitHub, Instagram — values verified by the owner and approved for publication (OD-11). |
+| FR-CNT-01 | Five cards: Email, LinkedIn, GitHub, Instagram, Credly Profile — values verified by the owner and approved for publication (OD-11, CR-003). |
 | FR-CNT-02 | Visible text must never truncate/clip (the light-mode export truncates; do not replicate). |
 | FR-CNT-03 | No contact form, no email backend. |
 | FR-FTR-01 | Footer: identity, short tagline, copyright, social links as approved, **Back to Top**. |
@@ -302,8 +302,8 @@ The blueprint says: the image governs **appearance**, the PRD governs **behavior
 
 | ID | Observation in `design/approved/` | Blueprint / PRD position | RECOMMENDED resolution | Blocks |
 |---|---|---|---|---|
-| **C-01** | **ID / EN language switch** in nav (all desktop and mobile exports); Indonesian strings appear ("Sertifikat Kompetensi", "KOMPETENSI"). | English-only UI; no internal language selector. | Remove the switch; keep English UI. Proper-noun certificate names stay as issued. | TASK-006 |
-| **C-02** | Nav links: *Profile & Journey, Projects, Credentials, Documentation, Contact* (+ theme + ID/EN). No Skills/Home link; Download CV is in the Hero, not the nav. Section headings: PROFILE & JOURNEY, SKILLS, PROJECTS, VERIFIED CREDENTIALS, FIELD DOCUMENTATION, DIRECT CHANNELS. | Blueprint nav: Home, About, Skills, Projects, Certifications, Gallery, Contact + Download CV control. | Follow the design's labels (appearance). Logo scrolls to top (Home). CV button stays in Hero only. Anchor IDs: `home`, `profile`, `skills`, `projects`, `credentials`, `documentation`, `contact`. | TASK-006, 009–015 |
+| **C-01** | **ID / EN language switch** in nav (all desktop and mobile exports); Indonesian strings appear ("Sertifikat Kompetensi", "KOMPETENSI"). | English-only UI; no internal language selector. | **RESOLVED (CR-005):** Bilingual UI implemented via segmented ID/EN switcher in navbar/mobile header. English default, Indonesian toggle, type-safe dictionary, 0 FOUC. | TASK-032, TASK-033 |
+| **C-02** | Nav links: *Profile & Journey, Projects, Credentials, Documentation, Contact* (+ theme + ID/EN). No Skills/Home link; Download CV is in the Hero, not the nav. Section headings: PROFILE & JOURNEY, SKILLS, PROJECTS, VERIFIED CREDENTIALS, FIELD DOCUMENTATION, DIRECT CHANNELS. | Blueprint nav: Home, About, Skills, Projects, Certifications, Gallery, Contact + Download CV control. | **RESOLVED (CR-002):** Added "Overview" link to `#home` as the first navigation item in desktop navbar, mobile menu, and footer. Anchor IDs: `home`, `profile`, `skills`, `projects`, `credentials`, `documentation`, `contact`. | TASK-030 |
 | **C-03** | Lightbox has a caption bar ("[MIKROTIK … MTCNA-2026] — VERIFIED CREDENTIAL PREVIEW", "CLOSE (ESC)") and footer text ("SHA-256 HASH VERIFIED // DIGITAL REPOSITORY SIGNED", "ACTIVE STATUS: VALID THROUGH 2026"). | Image + close control only; no metadata panel; no unverifiable claims. | Image-only + X close button (accessible name "Close certificate preview"). **Never** render hash/validity claims. | TASK-013 |
 | **C-04** | Skills tiles are **icon-only** generic glyphs (terminal, code, database, chip, network, hierarchy, laptop, cube, git-commit, shield, cloud, router…). Section label reads "TECHNOLOGY STACK // HOVER TO PAUSE", "STATUS: ACTIVE". | Icons **and labels**; only owner-confirmed skills; hover not the only path. | Keep icon-only tiles visually; expose names via visually-hidden list + `aria-label`; owner supplies icon→skill mapping. Owner may instead request visible labels. Decorative "STATUS: ACTIVE" omitted. | TASK-011 |
 | **C-05** | Headline: "SOFTWARE DEVELOPMENT & NETWORK ENGINEER" (dark desktop, opening) vs "SOFTWARE DEVELOPMENT" (mobile dark/light, light desktop). | Headline must be owner-approved; do not invent titles. | Use one owner-approved string everywhere. Owner must confirm that the "Network Engineer" wording is accurate. | TASK-007, 009 |
@@ -346,6 +346,11 @@ Owner answers are recorded here. **Shortcut:** the owner may reply *"Approve all
 |---|---|---|---|
 | Gate G0 Package | **APPROVED:** "Approve all RECOMMENDED in C-01..C-11 and OD-01..OD-13. Start Phase 1." All RECOMMENDED resolutions in §13 (C-01..C-11) and §14 (OD-01..OD-13) adopted. Modular placeholder fallback policy confirmed for missing photos (`public/images/placeholders/*`). Recommended defaults in `DESIGN.md` §13 (DS-01..DS-09) adopted. Phase 1 authorized. | 2026-10-22 | Architect (Antigravity) |
 | Gate G3 Package | **APPROVED:** "Approve Gate G3 static portfolio implementation. Start Phase 4." Static portfolio sections accepted, Phase 4 (PostgreSQL schema, deterministic builder, seed, and read-only runtime role) authorized. | 2026-10-23 | Builder (Antigravity) |
+| CR-001 (TASK-029) | **APPROVED:** "Make hero portrait permanently full color without hover dependency." Portrait renders natural full color by default across all themes and viewports. | 2026-10-24 | Owner Directive |
+| CR-002 (TASK-030) | **APPROVED:** "Add Overview navigation link to top across desktop navbar, mobile menu, and footer." Overview link targets `#home` as the first navigation item. | 2026-10-24 | Owner Directive |
+| CR-003 (TASK-031) | **APPROVED:** "Add 5th contact card for Credly profile, fix typography wrapping, and update knowledge records." URL extracted from verified intake file, 5-card layout balanced, seed updated. | 2026-10-24 | Owner Directive |
+| CR-004 (TASK-028) | **APPROVED:** "Resolve Gemini chatbot production timeouts, optimize latency, and stabilize live responses." Environment sanitized, fast Flash model prioritized, timeouts eliminated. | 2026-10-24 | Owner Directive |
+| CR-005 (TASK-032 & TASK-033) | **APPROVED:** "Implement bilingual ID/EN foundation, static UI localization, and multilingual chatbot pipeline." Type-safe dictionary, segmented ID/EN switch, bilingual retrieval, and prompts. | 2026-10-24 | Owner Directive |
 
 ## 16. Traceability (requirement group → tasks)
 Hero/Nav/Opening/Theme → TASK-004…007, 009 · Profile, Skills, Projects, Credentials, Gallery, Contact → TASK-010…015 · Data → TASK-008, 017, 018 · Chatbot backend → TASK-019…022 · Chatbot UI → TASK-023 · Quality/Security → TASK-024, 025 · Deployment/Acceptance → TASK-026, 027. Full table: `TODO.md`.
