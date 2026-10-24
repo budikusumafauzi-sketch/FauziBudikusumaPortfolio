@@ -92,7 +92,7 @@ export function HeroSection() {
                     fill
                     sizes="(max-width: 640px) 320px, (max-width: 1024px) 380px, 420px"
                     priority
-                    className="object-cover object-top filter grayscale contrast-105 hover:grayscale-0 transition-all duration-500"
+                    className="object-cover object-top transition-transform duration-500"
                   />
 
                   {/* Gradient Vignette */}

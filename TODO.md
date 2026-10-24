@@ -13,10 +13,10 @@
 | Date | 2026-10-24 |
 | Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005)** |
 | Waiting for | Execution of authorized Change Requests (TASK-029 -> TASK-030 -> TASK-031 -> TASK-028 -> TASK-032 -> TASK-033) |
-| Last completed task | TASK-025 — Security and dependency review |
-| Next task | TASK-029 — Permanent Full-Color Hero Portrait (CR-001) |
+| Last completed task | TASK-029 — Permanent Full-Color Hero Portrait (CR-001) |
+| Next task | TASK-030 — "Overview" navigation link to top (CR-002) |
 | Blockers | None |
-| Last verified commit | `ebe5c45` (TASK-025: security headers, CSP, least-privilege DB and dependency review) |
+| Last verified commit | `TASK-029` pending commit |
 
 ## 2. Phases and gates
 
@@ -63,7 +63,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [023](tasks/TASK-023-chatbot-ui.md) | Chatbot UI: launcher, panel and states | 6 | P0 | `DONE` | TASK-022 and Gate G3 passed; decision C-09 |
 | [024](tasks/TASK-024-accessibility-responsive-audit.md) | Accessibility and responsive audit | 7 | P0 | `DONE` | TASK-023 |
 | [025](tasks/TASK-025-security-dependency-review.md) | Security and dependency review | 7 | P0 | `DONE` | TASK-023 |
-| [029](tasks/TASK-029-permanent-full-color-hero-portrait.md) | Permanent full-color Hero portrait (CR-001) | 7 | P0 | `TODO` | TASK-024 |
+| [029](tasks/TASK-029-permanent-full-color-hero-portrait.md) | Permanent full-color Hero portrait (CR-001) | 7 | P0 | `DONE` | TASK-024 |
 | [030](tasks/TASK-030-overview-navigation-link.md) | "Overview" navigation link to top (CR-002) | 7 | P0 | `TODO` | TASK-029 |
 | [031](tasks/TASK-031-credly-contact-channel-and-typography.md) | Credly profile contact card & typography refinement (CR-003) | 7 | P0 | `TODO` | TASK-030 |
 | [028](tasks/TASK-028-gemini-chatbot-reliability.md) | Gemini chatbot reliability & production stabilization (CR-004) | 7 | P0 | `TODO` | TASK-031 |

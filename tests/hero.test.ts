@@ -27,8 +27,9 @@ describe("Hero Section (TASK-009 / FR-HRO / FR-CV)", () => {
     expect(html).toContain('href="#contact"');
   });
 
-  it("renders portrait with proper alt text", () => {
+  it("renders portrait with proper alt text and permanent full color (no grayscale)", () => {
     const html = renderToString(React.createElement(HeroSection));
     expect(html).toContain('alt="Fauzi Budikusuma — Formal Portrait"');
+    expect(html).not.toContain("grayscale");
   });
 });
