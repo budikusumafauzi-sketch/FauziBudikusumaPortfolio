@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-25 |
-| Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005)** |
-| Waiting for | Post-Change Re-Audit across 7 Viewports × 2 Themes × 2 Languages and Gate G7 Closure |
-| Last completed task | TASK-033 — Bilingual chatbot pipeline & localized UI (CR-005b) |
-| Next task | Post-Change Re-Audit (TASK-024 & TASK-025 re-run) and Gate G7 Closure |
-| Blockers | None |
-| Last verified commit | pending (TASK-033) |
+| Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005) — COMPLETED** |
+| Waiting for | Owner review of Phase 7 Maximization & Stabilization before Phase 8 (Gate G7 PASSED — HARD STOP) |
+| Last completed task | Post-Change Full Re-Audit (TASK-024 & TASK-025 re-run) & Gate G7 Closure |
+| Next task | TASK-026 — Service eligibility check and deployment (Phase 8 — pending Owner authorization) |
+| Blockers | None (HARD STOP before Phase 8) |
+| Last verified commit | `2ef34a1` |
 
 ## 2. Phases and gates
 
@@ -29,7 +29,7 @@
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `DONE` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `DONE` |
 | 6 | Chatbot UI and integration | 023 | G6 | **OWNER** | `DONE` |
-| 7 | Quality and security review | 024, 025, 028–033 | G7 | AUTO | `IN_PROGRESS` |
+| 7 | Quality and security review | 024, 025, 028–033 | G7 | AUTO | `PASSED` |
 | 8 | Deployment and final acceptance | 026–027 | G8 | **OWNER** | `TODO` |
 
 Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work listed in `WORKFLOW.md` §3.3 may proceed.
@@ -127,6 +127,20 @@ Full text, recommendations and owner-answer log: `PRD.md` §13 (C-xx), §14.1 (O
 | Create the PostgreSQL database (Neon candidate) and place `MIGRATION_DATABASE_URL` in the local `.env` | TASK-017 |
 | Create an unbilled Gemini API key and place `GEMINI_API_KEY` in the local `.env` | TASK-021 |
 | Create/connect the GitHub repository and hosting account; enter production env vars in the dashboard | TASK-026 |
+
+### 5.4 Review Indonesian Translations (CR-005a / CR-005b — DRAFT for Owner Inspection)
+| Section | English Source (Default) | Indonesian Translation (Draft) | Status |
+|---|---|---|---|
+| **Common** | Download CV · Contact Me · Back to top | Unduh CV · Hubungi Saya · Kembali ke atas | DRAFT |
+| **Nav** | Overview · Profile & Journey · Skills · Projects · Credentials · Documentation · Direct Channels | Ringkasan · Profil & Perjalanan · Keahlian · Proyek · Sertifikasi · Dokumentasi · Kontak | DRAFT |
+| **Hero** | Formal Portrait · Software Development & Network Engineering Undergraduate | Potret Formal · Mahasiswa S1 Informatika & Rekayasa Jaringan Komputer | DRAFT |
+| **Profile** | Background & Expertise · Operational Principles · Technical Philosophy · Academic & Field Journey | Latar Belakang & Keahlian · Prinsip Operasional · Filosofi Teknis · Perjalanan Akademik & Lapangan | DRAFT |
+| **Skills** | Technical Stack · Languages · Frontend · Backend & API · Database & Caching · DevOps & Tools | Tumpukan Teknologi · Bahasa Pemrograman · Antarmuka · Backend & API · Basis Data & Caching · DevOps & Alat | DRAFT |
+| **Projects** | Selected Projects · In Development · Completed · Private repository | Proyek Pilihan · Dalam Pengembangan · Selesai · Repositori privat | DRAFT |
+| **Credentials** | Credentials & Certifications · Verified Accreditation · Issued by · View Credential | Sertifikasi & Kredensial · Akreditasi Terverifikasi · Diterbitkan oleh · Lihat Sertifikat | DRAFT |
+| **Documentation** | Field Documentation · Swipe hint | Dokumentasi Lapangan · GESER ↔ | DRAFT |
+| **Contact** | Direct Communication Channels · Direct Email · LinkedIn Profile · GitHub Repositories · Instagram Activity · Credly Profile | Saluran Komunikasi Langsung · Email Langsung · Profil LinkedIn · Repositori GitHub · Aktivitas Instagram · Profil Credly | DRAFT |
+| **Chatbot** | Fauzi's AI Assistant · LIVE · UNAVAILABLE · Answers strictly from verified profile data · Plain text only · Grounded in PostgreSQL records | Asisten AI Fauzi · AKTIF · TIDAK TERSEDIA · Menjawab secara ketat berdasarkan data profil terverifikasi · Teks polos saja · Bersumber dari data PostgreSQL | DRAFT |
 
 ## 6. Parking lot
 Out-of-scope ideas are **not** tracked here; they go to `PRD.md` §14.3.
