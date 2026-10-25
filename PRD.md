@@ -220,7 +220,7 @@ Facts seen in the approved designs are listed as **DESIGN-OBSERVED / DRAFT** to 
 
 | Item | Location (future) | Design-observed value | State |
 |---|---|---|---|
-| Site monogram/logo | `public/assets/brand/logo-monogram.svg` | "FB" monogram (opening shows a metallic FB emblem) | `[OWNER TO PROVIDE]` file |
+| Site monogram/logo | `public/assets/brand/logo-fb.png` | "FB" monogram / emblem (from `LOGO FB.png`; used in Navbar, Opening Overlay, and site icons: `icon.png`, `apple-icon.png`, `favicon.ico`) | VERIFIED (CR-006, 2026-10-25) |
 | Chatbot icon | `public/assets/brand/chatbot-icon.svg` | Headset-bot icon | `[OWNER TO PROVIDE]` file |
 | Portrait | `public/assets/profile/profile-portrait.webp` | Formal portrait, dark suit, red tie | `[OWNER TO PROVIDE]` file |
 | Full name | `src/data/profile.ts` | Fauzi Budikusuma | DRAFT |
@@ -351,6 +351,11 @@ Owner answers are recorded here. **Shortcut:** the owner may reply *"Approve all
 | CR-003 (TASK-031) | **APPROVED:** "Add 5th contact card for Credly profile, fix typography wrapping, and update knowledge records." URL extracted from verified intake file, 5-card layout balanced, seed updated. | 2026-10-24 | Owner Directive |
 | CR-004 (TASK-028) | **APPROVED:** "Resolve Gemini chatbot production timeouts, optimize latency, and stabilize live responses." Environment sanitized, fast Flash model prioritized, timeouts eliminated. | 2026-10-24 | Owner Directive |
 | CR-005 (TASK-032 & TASK-033) | **APPROVED:** "Implement bilingual ID/EN foundation, static UI localization, and multilingual chatbot pipeline." Type-safe dictionary, segmented ID/EN switch, bilingual retrieval, and prompts. | 2026-10-24 | Owner Directive |
+| CR-006 (TASK-034) | **APPROVED:** "Use LOGO FB.png as the browser tab favicon." High-resolution site icons (`icon.png`, `apple-icon.png`, `favicon.ico`) generated from `LOGO FB.png` and served via Next.js metadata. | 2026-10-25 | Owner Directive |
+| CR-007 (TASK-035) | **APPROVED:** "Direct the email contact card to Gmail compose in a new tab (instead of mailto: opening Outlook) and eliminate all text truncation (...) across all contact cards." Direct Gmail compose web URL, natural delimiter wrapping, and zero ellipsis truncation across all 5 contact cards. | 2026-10-25 | Owner Directive |
+| CR-008 (TASK-036) | **APPROVED:** "Add 1 logo (Next.js) to the Technical Stack marquee and ensure high-contrast visibility for all skill tiles in both dark and light themes." Next.js official local asset integrated, verified skills updated to 35, and contrast enhanced for dark/light themes. | 2026-10-25 | Owner Directive |
+| CR-009 (TASK-037) | **APPROVED:** "Resolve chatbot slowness and first-attempt 'UNAVAILABLE' failures caused by chat.gemini_timeout (4x in terminal) and prisma:error Error in PostgreSQL connection: Error { kind: Closed, cause: None }." Fast Flash model, thinkingBudget: 0, 10-minute in-memory knowledge cache, stale-while-error resilience, connection error recovery, panel-open warm-up, and single transient retry. | 2026-10-25 | Owner Directive |
+| CR-010 (TASK-038) | **APPROVED:** "Enable the chatbot to accurately answer free-form visitor questions (not limited to starter chips) in Indonesian, English, or any visitor language using full verified knowledge context and server-validated structured citations." Full 40k-char verified knowledge context, strict 6-turn history, structured output schema, server citation validation, and multilingual natural language grounding. | 2026-10-25 | Owner Directive |
 
 ## 16. Traceability (requirement group → tasks)
 Hero/Nav/Opening/Theme → TASK-004…007, 009 · Profile, Skills, Projects, Credentials, Gallery, Contact → TASK-010…015 · Data → TASK-008, 017, 018 · Chatbot backend → TASK-019…022 · Chatbot UI → TASK-023 · Quality/Security → TASK-024, 025 · Deployment/Acceptance → TASK-026, 027. Full table: `TODO.md`.

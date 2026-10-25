@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-25 |
-| Current phase | **7 — Quality and security review (Phase 7 Maximization & Stabilization: CR-001..CR-005) — COMPLETED** |
-| Waiting for | Owner review of Phase 7 Maximization & Stabilization before Phase 8 (Gate G7 PASSED — HARD STOP) |
-| Last completed task | Post-Change Full Re-Audit (TASK-024 & TASK-025 re-run) & Gate G7 Closure |
-| Next task | TASK-026 — Service eligibility check and deployment (Phase 8 — pending Owner authorization) |
-| Blockers | None (HARD STOP before Phase 8) |
-| Last verified commit | `2ef34a1` |
+| Current phase | **7 — Quality and security review (Revision 2 & Optimization: CR-006..CR-010)** |
+| Waiting for | Execution of Revision 2 tasks (TASK-034..TASK-038) |
+| Last completed task | TASK-034 — Favicon from LOGO FB.png (CR-006) |
+| Next task | TASK-035 — Email to Gmail & Contact Text Truncation Fix (CR-007) |
+| Blockers | None |
+| Last verified commit | pending commit for TASK-034 |
 
 ## 2. Phases and gates
 
@@ -69,6 +69,11 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [028](tasks/TASK-028-gemini-chatbot-reliability.md) | Gemini chatbot reliability & production stabilization (CR-004) | 7 | P0 | `DONE` | TASK-031 |
 | [032](tasks/TASK-032-bilingual-ui-localization.md) | Bilingual ID/EN foundation & static UI localization (CR-005a) | 7 | P0 | `DONE` | TASK-028 |
 | [033](tasks/TASK-033-bilingual-chatbot-pipeline.md) | Bilingual chatbot pipeline & localized UI (CR-005b) | 7 | P0 | `DONE` | TASK-032 |
+| [034](tasks/TASK-034-favicon-brand-asset.md) | Favicon from LOGO FB.png (CR-006) | 7 | P0 | `DONE` | TASK-033 |
+| [035](tasks/TASK-035-email-gmail-contact-text-truncation.md) | Email to Gmail & zero contact text truncation (CR-007) | 7 | P0 | `TODO` | TASK-034 |
+| [036](tasks/TASK-036-nextjs-logo-skill-tiles-visibility.md) | Next.js logo in Technical Stack & tile contrast (CR-008) | 7 | P0 | `TODO` | TASK-035 |
+| [037](tasks/TASK-037-chatbot-reliability-cache-speed.md) | Chatbot reliability, in-memory cache & speed (CR-009) | 7 | P0 | `TODO` | TASK-036 |
+| [038](tasks/TASK-038-multilingual-qa-full-knowledge-citations.md) | Answer quality, multilingual free-form Q&A & structured citations (CR-010) | 7 | P0 | `TODO` | TASK-037 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 

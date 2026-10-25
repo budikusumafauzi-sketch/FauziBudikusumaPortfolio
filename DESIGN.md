@@ -258,7 +258,8 @@ Entrance: hero stagger only. Marquee: CSS loop, slow/pause on hover/focus. Carou
 | Certificate lightbox | natural ratio, **`contain`** | Never cropped |
 | Gallery | fixed card height, `cover` | Authentic photos only |
 | Skill tiles | square tile, icon `contain` | SVG preferred |
-| Logo | SVG | Real asset only |
+| Logo | PNG / SVG | Real asset (`LOGO FB.png` / `public/assets/brand/logo-fb.png`) |
+| Site icons & Favicon | 512×512 (`icon.png`), 180×180 (`apple-icon.png`), 32×32 (`favicon.ico`) | Generated from `LOGO FB.png` without distortion; crisp at 16/32px |
 Always reserve dimensions (`width/height` or aspect-ratio) to avoid layout shift. Placeholders (only when an approved fallback is allowed — OD-09): neutral surface + small icon, no fake content, never shipped at release (RULES R-016).
 Asset folders and naming: `ARCHITECTURE.md` §4.
 

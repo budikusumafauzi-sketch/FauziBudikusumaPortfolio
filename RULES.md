@@ -32,7 +32,7 @@ These rules protect **scope, truth, security, cost, data and design**. They over
 | R-014 | `verification` may be set to `VERIFIED` only after an explicit owner statement; the date is recorded in a comment. | Data diff + report |
 | R-015 | Repeated facts (dates, role names) MUST come from one data source and be identical everywhere. | Grep + UI check |
 | R-016 | A **release build MUST NOT contain** `DRAFT`, `NOT_PROVIDED`, `[OWNER TO PROVIDE]`, placeholder images, lorem ipsum, fake links or mock design content. | Release-gate script/grep (TASK-027) |
-| R-017 | UI language is English only; no language selector (pending C-01). | UI review |
+| R-017 | UI is bilingual (English default, Indonesian via the approved ID/EN switcher, C-01 resolved by owner CR-005); every visible UI string must exist in both languages. | UI & dictionary review |
 | R-018 | MUST NOT publish any contact detail or personal data the owner has not approved (OD-11). No private address, phone, ID/account numbers. | Contacts data `approvedForPublic` audit |
 | R-019 | No analytics, tracking pixels, or third-party embeds. | Network panel + dependency audit |
 
@@ -56,11 +56,11 @@ These rules protect **scope, truth, security, cost, data and design**. They over
 | ID | Rule | Detected by |
 |---|---|---|
 | R-030 | The chatbot answers only about approved public portfolio facts. No general knowledge, web search, browsing, or actions. | Prompt contract + tests |
-| R-031 | Gemini MUST NOT be called when no relevant verified record was retrieved, or when the scope guard matched. | Unit tests assert the SDK is not called |
+| R-031 | Gemini MUST NOT be called when the scope guard matched or the request is invalid. For every other valid question the model receives the complete verified knowledge set (bounded by the documented size cap) and MUST return a grounded structured answer; an answer without at least one valid citation of an existing record id MUST be replaced by the fixed no-data reply. | Unit test (spy) + citation validation test |
 | R-032 | The model gets **no tools**: no function calling, code execution, grounding/search, file access, or SQL. | SDK config review |
 | R-033 | Model output MUST be validated (non-empty, length-capped, finish reason ok, sanitized) before use; otherwise fall back. | Tests |
-| R-034 | No automatic retry loops against Gemini or the database. | Code review |
-| R-035 | Automated tests MUST mock Gemini. Live Gemini calls are limited to manual smoke tests (≤ 10 per task) to protect free quota. | Test code review |
+| R-034 | No retry loops against Gemini or the database. Exception (owner-approved): at most ONE re-attempt per request, only for transient failures (Gemini timeout/network/5xx/overloaded, malformed output; or a closed-connection error on the read-only DB query), never for 400/401/403/404/429, within the total request time budget. | Code review + unit tests |
+| R-035 | Automated tests MUST mock Gemini. Live Gemini calls are limited to 10 per task unless the task text states a higher owner-approved budget; stop at the first 429. | Test code review |
 | R-036 | The client MUST NOT be able to control retrieval parameters, table/column names, model, or generation settings. | Strict schema test |
 | R-037 | The AI is called only in response to an explicit visitor message — never at page load/build. | Network trace on load |
 | R-038 | The chat UI MUST NOT claim capabilities it lacks (booking, sending email, editing the site). | UI copy review |
@@ -133,7 +133,7 @@ These rules protect **scope, truth, security, cost, data and design**. They over
 | ID | Rule |
 |---|---|
 | R-090 | Commands run inside the project directory only. No `sudo`, no global installs, no system-wide configuration, no touching files outside the workspace. |
-| R-091 | **Forbidden command patterns** (also add to the IDE deny list — `AGENTS.md` §3.3): `rm -rf` on `/`, `~`, `*`, `..`, or any path outside the project · `git push --force` / `-f` / `--force-with-lease` · `git clean -x…` (may delete `.env`) · `git reset --hard` on a branch with unpushed work you did not create · `prisma migrate reset` · `prisma db push --force-reset` · `prisma db execute`/raw SQL against a non-development target without task authorization · `DROP DATABASE/SCHEMA`, `TRUNCATE` on non-disposable data · `vercel --prod` / any production deploy outside TASK-026 · `curl … | sh` / `wget … | sh` · `chmod -R 777` · printing env (`printenv`, `env`, `echo $SECRET`, `cat .env*`). |
+| R-091 | **Forbidden command patterns** (also add to the IDE deny list — `AGENTS.md` §3.3): `rm -rf` on `/`, `~`, `*`, `..`, or any path outside the project · `git push --force` / `-f` / `--force-with-lease` · `git clean -x…` (may delete `.env`) · `git reset --hard` on a branch with unpushed work you did not create · `prisma migrate reset` · `prisma db push --force-reset` · `prisma db execute`/raw SQL against a non-development target without task authorization · `DROP DATABASE/SCHEMA`, `TRUNCATE` on non-disposable data · `vercel --prod` / any production deploy outside TASK-026 · `curl … \| sh` / `wget … \| sh` · `chmod -R 777` · printing env (`printenv`, `env`, `echo $SECRET`, `cat .env*`). |
 | R-092 | MUST NOT try to bypass a deny list or sandbox (obfuscated commands, alternate shells, scripts that wrap a denied command). A denied command means "stop and report". |
 | R-093 | Git: commit locally at the end of each accepted task with a clear message (`TASK-0xx: summary`). MUST NOT commit secrets, `node_modules`, build output, or the `design/approved` working copies if the owner keeps them elsewhere. Pushing is allowed only to a non-default branch, or in TASK-026; never force-push. |
 | R-094 | New dependencies: only the approved stack plus dev-only support directly required by the task (types, test runner approved in OD-01, `tsx` for the seed). List every added package and why in the report. Runtime dependencies outside the approved stack are forbidden. |
