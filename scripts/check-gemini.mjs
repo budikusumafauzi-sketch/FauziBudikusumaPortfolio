@@ -25,7 +25,6 @@ const candidates = [
   'models/gemini-3.1-flash-lite',
   'models/gemini-3.1-flash-lite-preview',
   'models/gemini-flash-lite-latest',
-  'models/gemini-3.5-flash-lite',
   'models/gemini-3.8-flash',
 ];
 

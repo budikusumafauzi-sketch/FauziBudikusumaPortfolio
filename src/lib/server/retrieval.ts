@@ -244,48 +244,71 @@ const SCORE_FLOOR = 2;
  *
  * @param prisma Prisma client (read-only runtime credential).
  * @param query  Raw visitor query (will be normalized internally).
+ * @param cachedCandidates Optional pre-cached knowledge records (from in-memory cache).
  */
 export async function retrieveKnowledge(
   prisma: PrismaClient,
   query: string,
+  cachedCandidates?: Array<{
+    id: string;
+    category: string;
+    title: string;
+    body: string;
+    keywords: string[];
+    url: string | null;
+  }>,
 ): Promise<RetrievedRecord[]> {
   const normalized = normalizeQuery(query);
   const intentCategories = detectIntentCategories(normalized);
   const tokens = tokenize(normalized);
 
-  // Build the WHERE clause from server-derived values only (R-036, AC-5).
-  // Never pass raw user input as a DB parameter.
-  const categoryFilter =
-    intentCategories.length > 0
-      ? { category: { in: intentCategories as ('PROFILE' | 'EDUCATION' | 'EXPERIENCE' | 'SKILL' | 'PROJECT' | 'CERTIFICATION' | 'GALLERY' | 'CONTACT')[] } }
-      : {};
+  let candidates: Array<{
+    id: string;
+    category: string;
+    title: string;
+    body: string;
+    keywords: string[];
+    url: string | null;
+  }>;
 
-  const tokenFilters = tokens.map((token) => ({
-    OR: [
-      { title: { contains: token, mode: 'insensitive' as const } },
-      { keywords: { has: token } },
-      { body: { contains: token, mode: 'insensitive' as const } },
-    ],
-  }));
+  if (cachedCandidates && cachedCandidates.length > 0) {
+    // Score directly from in-memory cache — zero DB latency (0–1ms)
+    candidates = cachedCandidates;
+  } else {
+    // Fallback: bounded database query if cache is bypassed or not provided
+    const categoryFilter =
+      intentCategories.length > 0
+        ? { category: { in: intentCategories as ('PROFILE' | 'EDUCATION' | 'EXPERIENCE' | 'SKILL' | 'PROJECT' | 'CERTIFICATION' | 'GALLERY' | 'CONTACT')[] } }
+        : {};
 
-  // Single bounded query (AC-4: at most one DB query per request).
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const candidates = await (prisma as any).knowledgeRecord.findMany({
-    where: {
-      ...categoryFilter,
-      ...(tokenFilters.length > 0 ? { OR: tokenFilters } : {}),
-    },
-    take: RETRIEVAL_TAKE,
-    orderBy: [{ category: 'asc' }, { position: 'asc' }],
-    select: {
-      id: true,
-      category: true,
-      title: true,
-      body: true,
-      keywords: true,
-      url: true,
-    },
-  });
+    const tokenFilters = tokens.map((token) => ({
+      OR: [
+        { title: { contains: token, mode: 'insensitive' as const } },
+        { keywords: { has: token } },
+        { body: { contains: token, mode: 'insensitive' as const } },
+      ],
+    }));
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rows = await (prisma as any).knowledgeRecord.findMany({
+      where: {
+        ...categoryFilter,
+        ...(tokenFilters.length > 0 ? { OR: tokenFilters } : {}),
+      },
+      take: RETRIEVAL_TAKE,
+      orderBy: [{ category: 'asc' }, { position: 'asc' }],
+      select: {
+        id: true,
+        category: true,
+        title: true,
+        body: true,
+        keywords: true,
+        url: true,
+      },
+    });
+
+    candidates = rows as typeof candidates;
+  }
 
   if (candidates.length === 0) return [];
 

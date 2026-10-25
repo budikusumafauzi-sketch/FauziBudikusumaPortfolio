@@ -189,11 +189,11 @@ Visitor browser                              ← Zone E: untrusted
 | Max request body | 2 KB (2,048 bytes) |
 | Rate limit | 10 requests / minute / IP (sliding window, 60,000 ms) |
 | DB query timeout | 2 s (plus role-level `statement_timeout`) |
-| Gemini timeout | 8 s (total request budget ≤ 10 s — within host limit) |
+| Gemini timeout | 7 s per attempt, 14 s total request budget (initial attempt + at most 1 retry) |
 | Retrieved records (K) | ≤ 6 |
 | Context sent to Gemini | ≤ 4,000 characters; per-record body ≤ 600 |
-| Model output | `maxOutputTokens`: 300; answer cap 1,200 characters; temperature: 0.2 |
-| Retries | **0** (no loops that multiply quota use) |
+| Model output | `maxOutputTokens`: 300..512; answer cap 1,200 characters; temperature: 0.2; `thinkingBudget: 0` |
+| Retries | **At most 1** (strictly for transient failures per R-034; never for 400/401/403/404/429) |
 
 **Fixed visitor copy — RECOMMENDED** (stored as constants, not generated):
 - `no_data`: "I only have access to Fauzi's approved public portfolio data, and that information isn't available there."
@@ -276,11 +276,12 @@ If a secret is ever committed: treat it as compromised → rotate at the provide
 | Failure | Detect | Visitor sees | HTTP / status | Log code | Retry |
 |---|---|---|---|---|---|
 | `GEMINI_API_KEY` missing | env check at request time | `unavailable` copy | 503 `unavailable` | `chat.no_key` | none |
-| Gemini quota / 429 | SDK error class/status | `unavailable` copy | 503 | `chat.gemini_quota` | none; never request billing |
-| Gemini timeout | abort signal | `unavailable` | 503 | `chat.gemini_timeout` | none |
-| Gemini 5xx / network | SDK error | `unavailable` | 503 | `chat.gemini_error` | none |
-| Blocked / empty / malformed output | output validation | `unavailable` (or `no_data`) | 503 / 200 | `chat.bad_output` | none |
-| DB unreachable / timeout | Prisma error / app timeout | `unavailable` | 503 | `chat.db_error` | none |
+| Gemini quota / 429 | SDK error class/status | `unavailable` copy | 503 | `chat.gemini_quota` | none; never retry 429 |
+| Gemini timeout (transient) | abort signal | `unavailable` | 503 | `chat.gemini_timeout` | at most 1 retry with fallback model |
+| Gemini 5xx / network (transient) | SDK error | `unavailable` | 503 | `chat.gemini_network` / `chat.gemini_error` | at most 1 retry |
+| Blocked / empty / malformed output | output validation | `unavailable` (or `no_data`) | 503 / 200 | `chat.bad_output` | at most 1 retry if candidate empty |
+| DB idle closed connection | Neon serverless closure | handled via cache / retry | 200 or 503 | `chat.db_stale_fallback` / `chat.db_reconnect_retry` | 1 DB retry, or serve stale cache |
+| DB unreachable / timeout | Prisma error / app timeout | `unavailable` (if cache cold) | 503 | `chat.db_error` | none if stale cache unavailable |
 | `DATABASE_URL` missing | env check | `unavailable` | 503 | `chat.no_db` | none |
 | No matching records | empty/low-score result | `no_data` copy | 200 `no_data` | — | n/a |
 | Guard match / injection attempt | scope guard | `out_of_scope` copy | 200 | `chat.guard` | n/a |
@@ -295,18 +296,18 @@ The page itself never calls the chat API on load, so **none of these affect any 
 ## 11. Deployment, environment, and free-tier policy
 
 **Candidates (all subject to current-terms verification — OD-06, OD-07, OD-05):** Vercel Hobby (app + Route Handlers; historically personal/non-commercial — confirm a professional portfolio qualifies), Neon Free Tier (PostgreSQL), Gemini API free tier on an **unbilled** project, provider-supplied subdomain (no purchased domain). If any is ineligible: **do not switch plans, enable billing, or quietly substitute** — present a compliant free alternative and record an OPEN DECISION.
-- **OD-07 Verification Record (2026-10-23):** Neon Free Tier confirmed active. Plan: Free ($0/mo, Rp0). Limits: 1 project, up to 10 branches, 0.5 GiB storage, compute autosuspend after 5 minutes of inactivity. Connection pooling: built-in PgBouncer on port 5432 with `-pooler` hostname, requires `sslmode=require`. Direct connection: port 5432 without `-pooler`. Region: AWS `us-east-2` (Ohio). Prisma version: CLI `6.19.3`, client `@prisma/client@6.19.3`.
-- **OD-05 Verification Record (2026-10-23):** Gemini API free tier confirmed active on unbilled project ($0/mo, Rp0). SDK: `@google/genai@2.30.0`. Model identifier from owner intake snippet: `models/gemini-3.8-flash`. Free tier quotas: 15 RPM / 1M TPM / 1,500 RPD. Grounded chatbot requires 0 tools, 0 search, 0 retries, maxOutputTokens: 300..512.
+- **OD-07 Verification Record (2026-10-23):** Neon Free Tier confirmed active. Plan: Free ($0/mo, Rp0). Limits: 1 project, up to 10 branches, 0.5 GiB storage, compute autosuspend after 5 minutes of inactivity. Connection pooling: built-in PgBouncer on port 5432 with `-pooler` hostname, requires `sslmode=require`. Direct connection: port 5432 without `-pooler`. Region: AWS `us-east-2` (Ohio). Prisma version: CLI `6.19.3`, client `@prisma/client@6.19.3`. In-memory server cache with 10-minute TTL and stale-while-error fallback (TASK-037) shields the running site from idle connection drops.
+- **OD-05 Verification Record (2026-10-25):** Gemini API free tier confirmed active on unbilled project ($0/mo, Rp0). SDK: `@google/genai@2.30.0`. Primary model identifier: `models/gemini-3.1-flash-lite`, optional fallback model: `models/gemini-3.1-flash-lite-preview`. Free tier quotas: 15 RPM / 1M TPM / 1,500 RPD. Grounded chatbot requires 0 tools, 0 search, `thinkingBudget: 0`, maxOutputTokens: 300..512, at most 1 transient retry per R-034.
 
 **Environment variables (names RECOMMENDED — OD-04; values never in Markdown):**
 
 | Name | Secret? | Where it lives | Used by | Notes |
 |---|---|---|---|---|
 | `DATABASE_URL` | Yes | Local `.env` + hosting env | Runtime (Route Handler) | **Read-only role**; use the provider's pooled/serverless-appropriate string |
-| `MIGRATION_DATABASE_URL` | Yes | **Local `.env` only** | `prisma migrate`, `prisma/seed.ts` | Privileged role; never deployed with the site (Prisma ≥ 7 may place URLs in `prisma.config.ts` — follow current docs) |
+| `MIGRATION_DATABASE_URL` | Yes | **Local `.env` only** | `prisma migrate`, `prisma/seed.ts` | Privileged role; never deployed with the site |
 | `GEMINI_API_KEY` | Yes | Local `.env` + hosting env | Route Handler | Server-only; confirm name against the SDK |
-| `GEMINI_MODEL` | No | Local + hosting env | Route Handler | Avoids hard-coding a model that may change; value is OPEN (OD-05) |
-| Any limit overrides | No | Optional | Route Handler | Only if a task adds them |
+| `GEMINI_MODEL` | No | Local + hosting env | Route Handler | Primary fast Flash-Lite model (e.g. `models/gemini-3.1-flash-lite`) |
+| `GEMINI_FALLBACK_MODEL` | No | Optional | Route Handler | Model used on bounded single retry for transient failures (R-034) |
 
 `src/lib/env.ts` validates with Zod **lazily at request time**, so a missing variable yields a controlled 503, not a crashed page or failed build.
 
@@ -327,7 +328,7 @@ The page itself never calls the chat API on load, so **none of these affect any 
 | ADR-007 | **Static UI content from files; DB serves only the chatbot** | Site survives DB outage; build needs no DB; fewer queries. | Two representations of content → mitigated by deriving DB records from the same files (§6). |
 | ADR-008 | **Read-only runtime role + separate privileged role** | Prisma code alone is not a permission boundary; blast radius of a runtime bug is read-only. | Role grants must be re-applied after migrations that add tables (`SCHEMA.md` §8). |
 | ADR-009 | **In-memory IP rate limiting** | Free, no extra service. | Not shared across instances; resets on cold start — documented limitation; other bounds (length, timeout, output, DB limit) compensate. |
-| ADR-010 | **Gemini only on the server; no tools; no retries** | Keeps key private; prevents model-driven actions; prevents quota multiplication. | Quota exhaustion = chatbot temporarily off. |
+| ADR-010 | **Gemini on server; no tools; bounded single retry (R-034)** | Keeps key private; prevents model-driven actions; at most 1 retry strictly for transient failures (timeouts, 5xx, network drops, candidate empty). | Quota exhaustion (429) or client error (400) never retried. |
 | ADR-011 | **Keyword/category retrieval with a score floor** | Deterministic fallback before any AI call. | Tune with tests, not by adding infra. |
 | ADR-012 | **Skills in `.agents/skills/`** (Antigravity) instead of `.claude/skills/` | Owner's actual environment is Antigravity. | Legacy `.agent/skills/` is also supported by the IDE — verify the installed version (OD-13). |
 

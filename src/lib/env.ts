@@ -5,6 +5,7 @@ const ServerEnvSchema = z.object({
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
   GEMINI_MODEL: z.string().default('models/gemini-3.1-flash-lite'),
+  GEMINI_FALLBACK_MODEL: z.string().optional(),
 });
 
 export type ServerEnv = z.infer<typeof ServerEnvSchema>;
@@ -30,6 +31,10 @@ export function getServerEnv(): EnvValidationResult {
     .replace(/\r|\n/g, '')
     .replace(/^["']|["']$/g, '')
     .trim();
+  const rawFallback = (env['GEMINI_FALLBACK_MODEL'] || '')
+    .replace(/\r|\n/g, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
   const rawDb = (env['DATABASE_URL'] || '')
     .replace(/\r|\n/g, '')
     .replace(/^["']|["']$/g, '')
@@ -39,6 +44,7 @@ export function getServerEnv(): EnvValidationResult {
     DATABASE_URL: rawDb,
     GEMINI_API_KEY: rawApiKey,
     GEMINI_MODEL: rawModel || 'models/gemini-3.1-flash-lite',
+    GEMINI_FALLBACK_MODEL: rawFallback || undefined,
   });
 
   if (!parsed.success) {

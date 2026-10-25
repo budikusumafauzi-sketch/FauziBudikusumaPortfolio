@@ -109,6 +109,11 @@ export function ChatWidget() {
     } catch {
       // Safe fallback
     }
+
+    // Lightweight panel-open warm-up (Item 36, R-037: strictly 0 Gemini calls)
+    fetch("/api/chat?action=warmup").catch(() => {
+      // Silent warm-up error handling
+    });
   }, []);
 
   const handleToggle = React.useCallback(() => {

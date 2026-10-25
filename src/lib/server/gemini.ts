@@ -3,10 +3,17 @@ import { GoogleGenAI } from '@google/genai';
 import {
   GEMINI_MAX_OUTPUT_TOKENS,
   GEMINI_TEMPERATURE,
-  GEMINI_TIMEOUT_MS,
   ANSWER_MAX_CHARS,
 } from '@/lib/chat-contract';
 import { getServerEnv } from '@/lib/env';
+
+/**
+ * Timeout configuration:
+ * - 7,000ms per attempt
+ * - 14,000ms total request budget (initial attempt + at most 1 retry per R-034)
+ */
+export const PER_ATTEMPT_TIMEOUT_MS = 7_000;
+export const TOTAL_REQUEST_BUDGET_MS = 14_000;
 
 /**
  * Grounding system instruction — server constant, never built from user text.
@@ -58,8 +65,24 @@ export function sanitizeAnswer(raw: string): string {
 }
 
 export type GenerateAnswerResult =
-  | { success: true; answer: string }
-  | { success: false; status: 'unavailable' | 'no_data'; logCode: string };
+  | {
+      success: true;
+      answer: string;
+      aiMs?: number;
+      retryCount?: number;
+      modelUsed?: string;
+    }
+  | {
+      success: false;
+      status: 'unavailable' | 'no_data';
+      logCode: string;
+      aiMs?: number;
+      retryCount?: number;
+      modelUsed?: string;
+      errorClass?: string;
+      httpStatus?: number;
+      networkCauseCode?: string;
+    };
 
 /**
  * Classifies an error from the Gemini SDK into an operational log code.
@@ -104,9 +127,18 @@ export function classifyGeminiError(err: unknown, aborted: boolean): string {
   }
 
   if (
+    errorMessage.includes('404') ||
+    errorMessage.toLowerCase().includes('not found') ||
+    errorMessage.toLowerCase().includes('no longer available')
+  ) {
+    return 'chat.gemini_not_found';
+  }
+
+  if (
     errorMessage.toLowerCase().includes('fetch failed') ||
     errorMessage.toLowerCase().includes('enotfound') ||
     errorMessage.toLowerCase().includes('econnrefused') ||
+    errorMessage.toLowerCase().includes('econnreset') ||
     errorMessage.toLowerCase().includes('network')
   ) {
     return 'chat.gemini_network';
@@ -116,15 +148,65 @@ export function classifyGeminiError(err: unknown, aborted: boolean): string {
 }
 
 /**
+ * Determines whether an error is transient and eligible for at most ONE retry under R-034.
+ * Returns FALSE for hard client/permission errors (400, 401, 403, 404, 429).
+ */
+export function isTransientGeminiError(err: unknown, aborted: boolean): boolean {
+  if (aborted) return true;
+  const msg = err instanceof Error ? err.message : String(err);
+  const status =
+    typeof err === 'object' && err !== null && 'status' in err
+      ? Number((err as { status: unknown }).status)
+      : undefined;
+
+  // Strict non-retryable errors per R-034
+  if (status === 400 || status === 401 || status === 403 || status === 404 || status === 429) {
+    return false;
+  }
+  if (
+    msg.includes('400') ||
+    msg.includes('401') ||
+    msg.includes('403') ||
+    msg.includes('404') ||
+    msg.includes('429') ||
+    msg.includes('RESOURCE_EXHAUSTED') ||
+    msg.includes('API_KEY_INVALID') ||
+    msg.includes('PERMISSION_DENIED')
+  ) {
+    return false;
+  }
+
+  // Transient errors: timeouts, network glitches, 5xx, or model overloaded
+  if (
+    msg.toLowerCase().includes('timeout') ||
+    msg.toLowerCase().includes('aborted') ||
+    msg.toLowerCase().includes('fetch failed') ||
+    msg.toLowerCase().includes('econnreset') ||
+    msg.toLowerCase().includes('econnrefused') ||
+    msg.toLowerCase().includes('enotfound') ||
+    msg.toLowerCase().includes('network') ||
+    msg.toLowerCase().includes('500') ||
+    msg.toLowerCase().includes('502') ||
+    msg.toLowerCase().includes('503') ||
+    msg.toLowerCase().includes('504') ||
+    msg.toLowerCase().includes('unavailable') ||
+    msg.toLowerCase().includes('overloaded') ||
+    (status !== undefined && status >= 500)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Calls Gemini server-side with strict grounding, prompt layout, timeout and validation.
- * No tools, no search, no retries.
+ * Supports at most ONE retry for transient failures per R-034.
  *
- * Employs automatic model fallback across verified active models:
- * gemini-3.1-flash-lite -> gemini-3.1-flash-lite-preview -> GEMINI_MODEL -> gemini-flash-lite-latest -> gemini-3.5-flash-lite
- *
- * @param facts Delimited facts string built from verified PostgreSQL records.
+ * @param facts Delimited facts string built from verified records.
  * @param question Normalized visitor query.
  * @param clientOverride Optional injected GoogleGenAI client (for unit testing).
+ * @param language Target response language ('en' | 'id').
  */
 export async function generateGroundedAnswer(
   facts: string,
@@ -138,82 +220,49 @@ export async function generateGroundedAnswer(
       success: false,
       status: 'unavailable',
       logCode: envCheck.error ?? 'chat.no_key',
+      aiMs: 0,
+      retryCount: 0,
+      modelUsed: 'none',
     };
   }
 
-  const { GEMINI_API_KEY, GEMINI_MODEL } = envCheck.env;
+  const { GEMINI_API_KEY, GEMINI_MODEL, GEMINI_FALLBACK_MODEL } = envCheck.env;
   const ai = clientOverride ?? new GoogleGenAI({ apiKey: GEMINI_API_KEY });
   const prompt = buildPrompt(facts, question, language);
 
-  // If a mock client is supplied (e.g. in unit tests), execute single invocation directly.
-  if (clientOverride) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
-    try {
-      const response = await clientOverride.models.generateContent({
-        model: GEMINI_MODEL,
-        contents: prompt,
-        config: {
-          systemInstruction: SYSTEM_INSTRUCTION,
-          temperature: GEMINI_TEMPERATURE,
-          maxOutputTokens: GEMINI_MAX_OUTPUT_TOKENS,
-          abortSignal: controller.signal,
-        },
-      });
-      clearTimeout(timeoutId);
-
-      const candidate = response.candidates?.[0];
-      if (!candidate) {
-        return { success: false, status: 'unavailable', logCode: 'chat.gemini_empty' };
-      }
-
-      if (candidate.finishReason && candidate.finishReason !== 'STOP') {
-        if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'BLOCKLIST') {
-          return { success: false, status: 'unavailable', logCode: 'chat.gemini_denied' };
-        }
-      }
-
-      const rawText = response.text ?? '';
-      const sanitized = sanitizeAnswer(rawText);
-      if (!sanitized || sanitized.length === 0) {
-        return { success: false, status: 'unavailable', logCode: 'chat.gemini_empty' };
-      }
-
-      return { success: true, answer: sanitized };
-    } catch (err: unknown) {
-      clearTimeout(timeoutId);
-      const logCode = classifyGeminiError(err, controller.signal.aborted);
-      return { success: false, status: 'unavailable', logCode };
-    }
-  }
-
-  // Live execution: prioritize verified fast, active Flash-Lite models with zero quota issues.
-  const candidateModels = [
-    'models/gemini-3.1-flash-lite',
-    'models/gemini-3.1-flash-lite-preview',
-    GEMINI_MODEL,
-    'models/gemini-flash-lite-latest',
-    'models/gemini-3.5-flash-lite',
-    'models/gemini-3.8-flash',
-  ].filter((m, idx, arr) => Boolean(m) && arr.indexOf(m) === idx);
-
-  const deadline = Date.now() + GEMINI_TIMEOUT_MS;
+  const startTotal = Date.now();
+  const overallDeadline = startTotal + TOTAL_REQUEST_BUDGET_MS;
+  let retryCount = 0;
+  let lastModelUsed = GEMINI_MODEL;
   let lastLogCode = 'chat.gemini_error';
+  let lastErrorClass: string | undefined;
+  let lastHttpStatus: number | undefined;
+  let lastCauseCode: string | undefined;
 
-  for (let i = 0; i < candidateModels.length; i++) {
-    const model = candidateModels[i];
-    const remainingMs = deadline - Date.now();
-    if (remainingMs <= 500 && i > 0) {
+  // Maximum 2 attempts: initial (attempt 0) + at most ONE transient retry (attempt 1) per R-034
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const remainingMs = overallDeadline - Date.now();
+    if (remainingMs <= 500 && attempt > 0) {
       break;
     }
 
+    const currentModel =
+      attempt === 0
+        ? GEMINI_MODEL
+        : (GEMINI_FALLBACK_MODEL || GEMINI_MODEL);
+
+    lastModelUsed = currentModel;
+    if (attempt > 0) {
+      retryCount++;
+    }
+
+    const perAttemptBudget = Math.min(remainingMs, PER_ATTEMPT_TIMEOUT_MS);
     const controller = new AbortController();
-    const candidateTimeoutMs = Math.min(remainingMs, 7500);
-    const timeoutId = setTimeout(() => controller.abort(), candidateTimeoutMs);
+    const timeoutId = setTimeout(() => controller.abort(), perAttemptBudget);
 
     try {
       const response = await ai.models.generateContent({
-        model,
+        model: currentModel,
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
@@ -228,13 +277,22 @@ export async function generateGroundedAnswer(
       const candidate = response.candidates?.[0];
       if (!candidate) {
         lastLogCode = 'chat.gemini_empty';
-        continue;
+        if (attempt === 0 && remainingMs > PER_ATTEMPT_TIMEOUT_MS) {
+          continue; // Eligible for single retry
+        }
+        break;
       }
 
       if (candidate.finishReason && candidate.finishReason !== 'STOP') {
         if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'BLOCKLIST') {
-          lastLogCode = 'chat.gemini_denied';
-          continue;
+          return {
+            success: false,
+            status: 'unavailable',
+            logCode: 'chat.gemini_denied',
+            aiMs: Date.now() - startTotal,
+            retryCount,
+            modelUsed: currentModel,
+          };
         }
       }
 
@@ -242,18 +300,58 @@ export async function generateGroundedAnswer(
       const sanitized = sanitizeAnswer(rawText);
       if (!sanitized || sanitized.length === 0) {
         lastLogCode = 'chat.gemini_empty';
+        if (attempt === 0 && remainingMs > PER_ATTEMPT_TIMEOUT_MS) {
+          continue; // Eligible for single retry
+        }
+        break;
+      }
+
+      return {
+        success: true,
+        answer: sanitized,
+        aiMs: Date.now() - startTotal,
+        retryCount,
+        modelUsed: currentModel,
+      };
+    } catch (err: unknown) {
+      clearTimeout(timeoutId);
+      const isAborted = controller.signal.aborted;
+      lastLogCode = classifyGeminiError(err, isAborted);
+      lastErrorClass = err instanceof Error ? err.constructor.name : typeof err;
+      if (typeof err === 'object' && err !== null) {
+        if ('status' in err) {
+          lastHttpStatus = Number((err as { status: unknown }).status);
+        }
+        if ('cause' in err && typeof (err as { cause: unknown }).cause === 'object' && (err as { cause: { code?: string } }).cause?.code) {
+          lastCauseCode = (err as { cause: { code: string } }).cause.code;
+        }
+      }
+
+      const canRetry = attempt === 0 && isTransientGeminiError(err, isAborted) && (overallDeadline - Date.now() > 1000);
+
+      if (canRetry) {
+        if (process.env.NODE_ENV !== 'test') {
+          console.warn(`chat.gemini_transient_retry [model: ${currentModel}, reason: ${lastLogCode}]`);
+        }
+        // Small backoff before single retry
+        await new Promise((resolve) => setTimeout(resolve, 200));
         continue;
       }
 
-      return { success: true, answer: sanitized };
-    } catch (err: unknown) {
-      clearTimeout(timeoutId);
-      lastLogCode = classifyGeminiError(err, controller.signal.aborted);
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn(`[GEMINI] Model ${model} failed with ${lastLogCode}`);
-      }
+      // Hard error or retry already exhausted
+      break;
     }
   }
 
-  return { success: false, status: 'unavailable', logCode: lastLogCode };
+  return {
+    success: false,
+    status: 'unavailable',
+    logCode: lastLogCode,
+    aiMs: Date.now() - startTotal,
+    retryCount,
+    modelUsed: lastModelUsed,
+    errorClass: lastErrorClass,
+    httpStatus: lastHttpStatus,
+    networkCauseCode: lastCauseCode,
+  };
 }
