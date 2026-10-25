@@ -16,7 +16,7 @@
 | Last completed task | TASK-038 — Answer Quality, Multilingual Free-Form Q&A & Structured Citations (CR-010) |
 | Next task | TASK-026 — Service eligibility check and deployment |
 | Blockers | None |
-| Last verified commit | pending commit for TASK-038 |
+| Last verified commit | `c072212` |
 
 ## 2. Phases and gates
 
