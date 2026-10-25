@@ -16,7 +16,7 @@
 | Last completed task | TASK-037 — Chatbot Reliability, In-Memory Cache & Speed (CR-009) |
 | Next task | TASK-038 — Answer Quality, Multilingual Free-Form Q&A & Structured Citations (CR-010) |
 | Blockers | None |
-| Last verified commit | pending commit for TASK-037 |
+| Last verified commit | `11da9aa` |
 
 ## 2. Phases and gates
 
