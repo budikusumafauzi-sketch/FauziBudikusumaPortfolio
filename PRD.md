@@ -227,7 +227,7 @@ Facts seen in the approved designs are listed as **DESIGN-OBSERVED / DRAFT** to 
 | Headline | `src/data/profile.ts` | "Software Development & Network Engineer" (dark desktop/opening); "Software Development" (mobile + light) | OPEN (C-05) |
 | Summary / bio | `src/data/profile.ts` | Informatics student at Universitas AMIKOM Yogyakarta; TKJ (Computer & Network Engineering) graduate of SMK Negeri 1 Seyegan; Dinas Kominfo DIY experience | DRAFT |
 | Education / experience | `src/data/journey.ts` | AMIKOM (S.Kom, Informatics, 2026–2029 expected Apr 2029); Help Desk Supervisor (Internship), Dinas Kominfo DIY (2025); SMK Negeri 1 Seyegan, TKJ (2023–2026) incl. internship scores and competency result | DRAFT — wording differs between desktop/mobile (C-10) |
-| Skills | `src/data/skills.ts` | 13 icon tiles, **names not shown** in design | `[OWNER TO PROVIDE]` icon→skill mapping |
+| Skills (35) | `src/data/skills.ts` | 35 verified skills across 5 categories, including Next.js (local asset `public/assets/skills/nextjs.svg`) | VERIFIED (CR-008, 2026-10-25) |
 | Projects (6) | `src/data/projects.ts` | Sentinel; StackLab; Network Monitoring Dashboard; RNIC; Enterprise Data Center Network Simulation; Enterprise Network Lab (MikroTik CHR) | DRAFT; thumbnails `[OWNER TO PROVIDE]`; repo URLs `[OWNER TO PROVIDE]` |
 | Certifications (4) | `src/data/certifications.ts` | MikroTik MTCNA; Google Cybersecurity Professional Certificate; Google AI Essentials; Sertifikat Kompetensi (LAN implementation, BNSP/LSP) | DRAFT; full images `[OWNER TO PROVIDE]`; dates/IDs unverified |
 | Gallery (4) | `src/data/gallery.ts` | Academic symposium; hackathon build; tech workshop; lab infrastructure demo (**mock imagery/captions**) | `[OWNER TO PROVIDE]` real photos + captions |

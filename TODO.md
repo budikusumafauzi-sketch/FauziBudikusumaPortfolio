@@ -13,10 +13,10 @@
 | Date | 2026-10-25 |
 | Current phase | **7 — Quality and security review (Revision 2 & Optimization: CR-006..CR-010)** |
 | Waiting for | Execution of Revision 2 tasks (TASK-034..TASK-038) |
-| Last completed task | TASK-035 — Email to Gmail & Contact Text Truncation Fix (CR-007) |
-| Next task | TASK-036 — Next.js Logo in Technical Stack & Tile Visibility (CR-008) |
+| Last completed task | TASK-036 — Next.js Logo in Technical Stack & Tile Visibility (CR-008) |
+| Next task | TASK-037 — Chatbot Reliability, In-Memory Cache & Speed (CR-009) |
 | Blockers | None |
-| Last verified commit | pending commit for TASK-035 |
+| Last verified commit | pending commit for TASK-036 |
 
 ## 2. Phases and gates
 
@@ -71,7 +71,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [033](tasks/TASK-033-bilingual-chatbot-pipeline.md) | Bilingual chatbot pipeline & localized UI (CR-005b) | 7 | P0 | `DONE` | TASK-032 |
 | [034](tasks/TASK-034-favicon-brand-asset.md) | Favicon from LOGO FB.png (CR-006) | 7 | P0 | `DONE` | TASK-033 |
 | [035](tasks/TASK-035-email-gmail-contact-text-truncation.md) | Email to Gmail & zero contact text truncation (CR-007) | 7 | P0 | `DONE` | TASK-034 |
-| [036](tasks/TASK-036-nextjs-logo-skill-tiles-visibility.md) | Next.js logo in Technical Stack & tile contrast (CR-008) | 7 | P0 | `TODO` | TASK-035 |
+| [036](tasks/TASK-036-nextjs-logo-skill-tiles-visibility.md) | Next.js logo in Technical Stack & tile contrast (CR-008) | 7 | P0 | `DONE` | TASK-035 |
 | [037](tasks/TASK-037-chatbot-reliability-cache-speed.md) | Chatbot reliability, in-memory cache & speed (CR-009) | 7 | P0 | `TODO` | TASK-036 |
 | [038](tasks/TASK-038-multilingual-qa-full-knowledge-citations.md) | Answer quality, multilingual free-form Q&A & structured citations (CR-010) | 7 | P0 | `TODO` | TASK-037 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |

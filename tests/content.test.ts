@@ -38,12 +38,15 @@ describe("Typed Content Modules & Zod Validation (TASK-008)", () => {
     });
   });
 
-  it("validates all 34 skills with valid CDN URLs and groups", () => {
-    expect(skillsData.length).toBe(34);
+  it("validates all 35 skills with valid URLs or local asset paths and groups (CR-008)", () => {
+    expect(skillsData.length).toBe(35);
     const ids = new Set<string>();
     skillsData.forEach((skill) => {
       expect(() => SkillItemSchema.parse(skill)).not.toThrow();
-      expect(skill.iconUrl).toMatch(/^https:\/\//);
+      expect(skill.iconUrl).toMatch(/^(https:\/\/|\/assets\/skills\/)/);
+      if (skill.iconUrl.startsWith("/")) {
+        expect(fs.existsSync(path.resolve(process.cwd(), "public" + skill.iconUrl))).toBe(true);
+      }
       expect(ids.has(skill.id)).toBe(false);
       ids.add(skill.id);
     });

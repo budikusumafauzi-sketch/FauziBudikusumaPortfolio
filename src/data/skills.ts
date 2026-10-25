@@ -122,6 +122,16 @@ export const rawSkills: Array<Omit<SkillItem, "position"> & { position?: number 
     group: "Frontend",
     iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/chartjs/chartjs-plain.svg",
   },
+  {
+    id: "skill-nextjs",
+    // VERIFIED per Owner directive CR-008 on 2026-10-25
+    verification: "VERIFIED",
+    name: "Next.js",
+    group: "Frontend",
+    // Source URL from dokumen informasi/A. Desain dan aset visual/logo skills/link line 40:
+    // https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg
+    iconUrl: "/assets/skills/nextjs.svg",
+  },
   // Backend & API
   {
     id: "skill-fastapi",

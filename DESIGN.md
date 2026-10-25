@@ -175,8 +175,9 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 - Right card **Education & Experience Timeline** (+ "CHRONO" tag on mobile): vertical rail with dots (current item: crimson dot; others gray), entries with bold uppercase title, mono date range right-aligned, description, optional chips.
 - Copy differs between desktop and mobile in the exports (dates, role wording, truncated descriptions) — **single source in `src/data/journey.ts`**; never fork copy per breakpoint (PRD C-10).
 
-### 5.5 Skills marquee (DS-SKL) — refs 3, 5; decision C-04
-- Row of uniform **square bordered tiles** (icon only), equal spacing, edges fading/clipped (first tile appears dimmed at the left edge = scrolling in).
+### 5.5 Skills marquee (DS-SKL) — refs 3, 5; decision C-04; CR-008
+- Row of uniform **square bordered tiles** (icon only), equal spacing, edges fading/clipped (first tile appears dimmed at the left edge = scrolling in). Total of 35 verified skills across 5 categories, including Next.js (`public/assets/skills/nextjs.svg`).
+- Dual-Theme Visibility & Contrast Handling (CR-008): Monochrome and dark-fill icons (Next.js, GitHub, Rust, Flask, Fastify, Expo, Framer Motion, Prisma, SQLAlchemy) apply `dark:invert` so they appear crisp and high-contrast in both dark mode (white against dark surface) and light mode (black against light surface).
 - CSS-only infinite loop of a duplicated track; `aria-hidden` on the duplicate; one visually-hidden list of skill names for assistive tech; pause on hover/focus; **reduced motion → static wrapping grid**.
 - Icons: Lucide glyphs are acceptable for generic tiles; real technology logos only from owner-approved assets in `public/assets/skills/`.
 

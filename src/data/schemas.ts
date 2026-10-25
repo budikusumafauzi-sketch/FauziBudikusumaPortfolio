@@ -35,7 +35,10 @@ export type JourneyItem = z.infer<typeof JourneyItemSchema>;
 export const SkillItemSchema = BaseItemSchema.extend({
   name: z.string().min(1).max(50),
   group: z.enum(["Languages", "Frontend", "Backend & API", "Database & Caching", "DevOps & Tools"]),
-  iconUrl: z.string().url(),
+  iconUrl: z.string().refine(
+    (val) => val.startsWith("/") || val.startsWith("https://") || val.startsWith("http://"),
+    { message: "iconUrl must be a local asset path or valid URL" }
+  ),
   visibleLabel: z.string().min(1).max(50).optional(),
 });
 export type SkillItem = z.infer<typeof SkillItemSchema>;

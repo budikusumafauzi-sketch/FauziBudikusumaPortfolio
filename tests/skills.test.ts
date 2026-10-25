@@ -20,12 +20,16 @@ describe("Skills Section & Marquee (TASK-011 / FR-SKL / C-04)", () => {
     expect(html).not.toContain("02 //");
   });
 
-  it("contains an accessible screen-reader list with all 34 skills", () => {
+  it("contains an accessible screen-reader list with all 35 skills including Next.js (CR-008)", () => {
     const html = renderToString(React.createElement(SkillsSection));
+    expect(skillsData.length).toBe(35);
     expect(html).toContain('class="sr-only"');
     skillsData.forEach((skill) => {
       expect(html).toContain(skill.name);
     });
+    expect(html).toContain("Next.js");
+    expect(html).toContain('src="/assets/skills/nextjs.svg"');
+    expect(html).toContain("dark:invert");
   });
 
   it("marks duplicated track with aria-hidden='true' for seamless infinite loop without duplicate a11y announcements", () => {
