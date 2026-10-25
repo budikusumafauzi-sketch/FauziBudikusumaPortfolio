@@ -160,48 +160,63 @@ Visitor browser                              ← Zone E: untrusted
 
 **Request** (Zod `.strict()`; unknown keys rejected — the client can never pass table names, filters, SQL, or model parameters):
 ```json
-{ "message": "Which projects has Fauzi worked on?" }
+{
+  "message": "Which projects has Fauzi worked on?",
+  "language": "en",
+  "history": [
+    { "role": "user", "content": "Tell me about his background." },
+    { "role": "assistant", "content": "Fauzi is a software and network engineer." }
+  ]
+}
 ```
 **Response** (always visitor-safe; `answer` is always displayable plain text):
 ```json
-{ "status": "ok", "answer": "…", "retryAfterSeconds": 12 }
+{
+  "status": "answered",
+  "answer": "…",
+  "reply": "…",
+  "sources": [
+    { "slug": "project:sentinel", "title": "Sentinel — Network Security Monitoring Tool", "category": "PROJECT" }
+  ],
+  "retryAfterSeconds": 12
+}
 ```
-`retryAfterSeconds` appears only with `rate_limited`.
+`retryAfterSeconds` appears only with `rate_limited`. `sources` contains verified records cited by the model and validated by the server.
 
 | `status` | HTTP | When |
 |---|---|---|
-| `ok` | 200 | Grounded answer produced |
-| `no_data` | 200 | No relevant verified record (Gemini **not** called) |
+| `answered` / `ok` | 200 | Grounded answer produced with valid citations |
+| `no_data` | 200 | Question cannot be answered from verified facts or citations missing (R-031) |
 | `out_of_scope` | 200 | Deterministic scope guard matched (Gemini **not** called) |
-| `invalid_request` | 400 | Bad JSON / schema / empty / over-length message |
-| `too_large` | 413 | Body over limit |
+| `invalid_request` | 400 | Bad JSON / schema / unknown fields / empty / over-length / history > 6 |
+| `too_large` | 413 | Body over 6 KB limit |
 | `unsupported_media_type` | 415 | Not `application/json` |
-| *(method)* | 405 | Anything but POST; `Allow: POST` |
+| *(method)* | 405 | Anything but POST (except lightweight GET panel warmup) |
 | `rate_limited` | 429 | Over limit; `Retry-After` header |
 | `unavailable` | 503 | Missing key, quota/rate limit, Gemini/DB timeout or failure |
 | `error` | 500 | Unexpected exception |
 
-**Final limits — FINALIZED under OD-08 in TASK-019:**
+**Final limits — UPDATED under CR-009 / CR-010 (TASK-037 & TASK-038):**
 
 | Parameter | Final value |
 |---|---|
 | Max message length | 300 characters (trimmed, min 1) |
-| Max request body | 2 KB (2,048 bytes) |
+| Max request body | 6 KB (6,144 bytes) |
+| History | Optional array of at most 6 items `{ role: "user" \| "assistant", content: string (<= 300 chars) }` |
 | Rate limit | 10 requests / minute / IP (sliding window, 60,000 ms) |
-| DB query timeout | 2 s (plus role-level `statement_timeout`) |
+| DB query timeout | 2 s (plus role-level `statement_timeout`); 0 ms on cache hit (10-minute TTL) |
 | Gemini timeout | 7 s per attempt, 14 s total request budget (initial attempt + at most 1 retry) |
-| Retrieved records (K) | ≤ 6 |
-| Context sent to Gemini | ≤ 4,000 characters; per-record body ≤ 600 |
-| Model output | `maxOutputTokens`: 300..512; answer cap 1,200 characters; temperature: 0.2; `thinkingBudget: 0` |
+| Knowledge Context | Complete verified knowledge set (loadKnowledge(), ADR-013), hard capped at 40,000 characters |
+| Model output | Structured JSON schema `{ kind, answer, citations }`; `thinkingBudget: 0`; answer cap 1,200 characters |
 | Retries | **At most 1** (strictly for transient failures per R-034; never for 400/401/403/404/429) |
 
 **Fixed visitor copy — RECOMMENDED** (stored as constants, not generated):
-- `no_data`: "I only have access to Fauzi's approved public portfolio data, and that information isn't available there."
-- `out_of_scope`: "I can only answer questions about Fauzi's public portfolio, so I can't help with that request."
-- `unavailable`: "The assistant is temporarily unavailable. The rest of the portfolio works as usual — please try again later."
-- `rate_limited`: "Too many questions in a short time. Please wait a moment and try again."
-- `invalid_request`: "Please enter a question between 1 and 300 characters."
-- `error`: "Something went wrong. Please try again later."
+- `no_data`: "I only have access to Fauzi's approved public portfolio data, and that information isn't available there." / "Saya hanya memiliki akses ke data portofolio publik Fauzi yang telah diverifikasi, dan informasi tersebut tidak tersedia di sini."
+- `out_of_scope`: "I can only answer questions about Fauzi's public portfolio, so I can't help with that request." / "Saya hanya dapat menjawab pertanyaan seputar portofolio publik Fauzi, sehingga tidak dapat membantu permintaan tersebut."
+- `unavailable`: "The assistant is temporarily unavailable. The rest of the portfolio works as usual — please try again later." / "Asisten portofolio sedang tidak tersedia sementara. Bagian portofolio lainnya tetap berfungsi seperti biasa — silakan coba beberapa saat lagi."
+- `rate_limited`: "Too many questions in a short time. Please wait a moment and try again." / "Terlalu banyak pertanyaan dalam waktu singkat. Harap tunggu beberapa saat sebelum mengirim pesan lagi."
+- `invalid_request`: "Please enter a question between 1 and 300 characters." / "Silakan masukkan pertanyaan antara 1 dan 300 karakter."
+- `error`: "Something went wrong. Please try again later." / "Terjadi kesalahan pada sistem. Silakan coba beberapa saat lagi."
 
 ## 8. Chat request lifecycle
 
@@ -329,8 +344,9 @@ The page itself never calls the chat API on load, so **none of these affect any 
 | ADR-008 | **Read-only runtime role + separate privileged role** | Prisma code alone is not a permission boundary; blast radius of a runtime bug is read-only. | Role grants must be re-applied after migrations that add tables (`SCHEMA.md` §8). |
 | ADR-009 | **In-memory IP rate limiting** | Free, no extra service. | Not shared across instances; resets on cold start — documented limitation; other bounds (length, timeout, output, DB limit) compensate. |
 | ADR-010 | **Gemini on server; no tools; bounded single retry (R-034)** | Keeps key private; prevents model-driven actions; at most 1 retry strictly for transient failures (timeouts, 5xx, network drops, candidate empty). | Quota exhaustion (429) or client error (400) never retried. |
-| ADR-011 | **Keyword/category retrieval with a score floor** | Deterministic fallback before any AI call. | Tune with tests, not by adding infra. |
+| ADR-011 | **[SUPERSEDED by CR-010 / ADR-013] Keyword/category retrieval with a score floor** | Originally used to bound context before AI call. | **Superseded by Owner decision (CR-010, 2026-10-25):** Revisit condition met due to keyword matching limitations on natural visitor queries, typos, and cross-record questions. Replaced by `loadKnowledge()` full verified knowledge context with in-memory caching and structured citations. |
 | ADR-012 | **Skills in `.agents/skills/`** (Antigravity) instead of `.claude/skills/` | Owner's actual environment is Antigravity. | Legacy `.agent/skills/` is also supported by the IDE — verify the installed version (OD-13). |
+| ADR-013 | **Full verified knowledge context with in-memory caching and structured citations (CR-010 / TASK-038)** | The verified portfolio facts set is compact (27 records, ~7,400 chars, well below the 40,000-char cap). Passing the complete verified facts to Gemini Flash-Lite eliminates retrieval misses on natural visitor language, slang, typos, and multi-record queries while maintaining strict factual grounding. | Hard cap of 40,000 characters enforced at seed and in unit tests; in-memory server cache (10-minute TTL) shields database; server-side Zod validation of citations enforces R-031 (replacing reply with fixed `no_data` if citations are missing or invalid). |
 
 ## 13. Quality gates (commands finalized in TASK-003)
 

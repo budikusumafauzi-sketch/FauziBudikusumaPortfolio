@@ -194,15 +194,15 @@ Technical contract: `ARCHITECTURE.md` §6–§8. Data model: `SCHEMA.md`.
 | ID | Behavior |
 |---|---|
 | CB-01 | Scope: approved public portfolio facts only. Not a general assistant. |
-| CB-02 | Answers **only** from records retrieved for the current request; no outside knowledge. |
-| CB-03 | No relevant verified record → fixed, polite "not available in the portfolio" reply; **Gemini is not called**. |
+| CB-02 | Answers **only** from verified portfolio facts in context (loadKnowledge(), ADR-013); no outside knowledge. Structured JSON output with valid citation IDs required (R-031). |
+| CB-03 | No relevant verified record / unanswerable query → fixed, polite "not available in the portfolio" reply. If citations are empty or invalid, server replaces model response with fixed copy (R-031). |
 | CB-04 | Requests for private data (e.g. home address), secrets, system prompt, other users' data → polite scope refusal (see the "SCOPE GUARDRAIL" example in the design). |
 | CB-05 | Visitor text is untrusted: instructions inside it to override rules are ignored. Retrieved records are facts, not instructions. |
 | CB-06 | The model cannot run SQL, change records, read files, or call tools. |
 | CB-07 | Distinguishes known from unknown details; never guesses missing dates, titles, URLs. |
 | CB-08 | Plain-text answers; bounded length. |
 | CB-09 | Never called at page load; only on an explicit visitor message. |
-| CB-10 | Degrades gracefully: missing key, quota/rate limit, DB timeout, invalid input, over-limit input, unexpected error → controlled, visitor-safe messages (full matrix: `ARCHITECTURE.md` §10). |
+| CB-10 | Degrades gracefully: missing key, quota/rate limit, DB timeout, invalid input, over-limit input, transient Gemini error → bounded single retry per R-034, visitor-safe messages (full matrix: `ARCHITECTURE.md` §10). |
 | CB-11 | Starter chips and the welcome message are static copy owned by the project, not generated. |
 
 ## 8. Content and data rules
@@ -252,7 +252,7 @@ The authoritative tracked version lives in `TODO.md` §5; summary: logo, chatbot
 | NFR-PERF-02 | Only approved fonts/weights actually used (Plus Jakarta Sans, Inter, JetBrains Mono via `next/font`); no duplicate remote font requests. |
 | NFR-PERF-03 | Keep static sections server-rendered; client components only where interaction requires. |
 | NFR-PERF-04 | No animation/UI library beyond the approved stack; no redundant dependencies. |
-| NFR-PERF-05 | Gemini is called on demand only. DB queries bounded; never send all records to Gemini. |
+| NFR-PERF-05 | Gemini is called on demand only. Send the complete verified knowledge set bounded by the 40,000-char size cap (CR-010 / ADR-013). |
 | NFR-PERF-06 | Opening overlay lightweight; noncritical images lazy-loaded. |
 | NFR-A11Y-01 | Semantic landmarks, logical heading order, visible `:focus-visible`, accessible names for icon-only buttons, alt text, sufficient contrast in **both** themes. |
 | NFR-A11Y-02 | Keyboard access for nav, chat, carousels, modal; reduced-motion fallbacks for entrance, marquee, carousel effects; hover is never the only path to content/controls. |

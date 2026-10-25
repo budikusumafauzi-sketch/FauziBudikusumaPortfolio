@@ -187,8 +187,8 @@ ALTER ROLE portfolio_runtime SET default_transaction_read_only = on;  -- defense
 - If only one database is available, using dev-only commands against it is an **OPEN DECISION** that must be settled with the owner before TASK-017.
 - Keep Prisma Client and the migration tooling on the same version; follow current docs for datasource/URL configuration.
 
-## 10. Retrieval fields and query rationale
-Search uses `category` (intent), `title` (weight 3), `keywords` (weight 2), `body` (weight 1) with a score floor — see `ARCHITECTURE.md` §8.2. Queries are built **only** from server-derived tokens and enums; the client can never supply a table, column, filter or SQL fragment. Result sets are bounded (`take: 20`, then top K).
+## 10. Knowledge context and retrieval rationale (CR-010 / ADR-013)
+Per CR-010 and ADR-013, keyword-matching retrieval is replaced by `loadKnowledge()` backed by an in-memory server cache (10-minute TTL + stale-while-error). The entire set of verified records (~7,400 characters across 27 records) is provided in the reference facts context, strictly bounded by the hard cap of **40,000 characters** (`TOTAL_KNOWLEDGE_MAX_CHARS`). Both the seed script and unit tests enforce this cap prior to transaction. Grounded output is verified server-side via structured output schema and valid record citation IDs (R-031).
 
 ## 11. Schema decisions record (Resolved in TASK-017)
 | ID | Item | Status | Resolution |

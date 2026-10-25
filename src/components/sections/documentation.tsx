@@ -89,6 +89,7 @@ export function DocumentationSection() {
                     src={item.imagePath}
                     alt={item.alt}
                     fill
+                    unoptimized
                     sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 24vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />

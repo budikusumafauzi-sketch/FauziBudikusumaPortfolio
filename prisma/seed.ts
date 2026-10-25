@@ -5,6 +5,7 @@ import {
   KnowledgeRecordInputSchema,
   assertPrivacySafe,
 } from "../src/data/chatbot-knowledge";
+import { TOTAL_KNOWLEDGE_MAX_CHARS } from "../src/lib/chat-contract";
 
 interface TargetInfo {
   host: string;
@@ -61,11 +62,21 @@ export async function seed(options?: {
   const records = options?.recordsOverride ?? buildKnowledgeRecords();
   console.log(`[SEED VALIDATION] Validating ${records.length} records prior to transaction...`);
 
+  let totalKnowledgeChars = 0;
   for (const record of records) {
     KnowledgeRecordInputSchema.parse(record);
     assertPrivacySafe(record);
+    const serialized = `[${record.id}] ${record.category} | ${record.title}\n${record.body}${record.url ? `\nURL: ${record.url}` : ''}`;
+    totalKnowledgeChars += serialized.length + 5; // including separator '\n\n---\n\n'
   }
-  console.log(`[SEED VALIDATION] All ${records.length} records passed Zod & Privacy validation.`);
+  if (totalKnowledgeChars > TOTAL_KNOWLEDGE_MAX_CHARS) {
+    throw new Error(
+      `Seeding aborted: Serialized verified knowledge context (${totalKnowledgeChars} chars) exceeds hard limit of ${TOTAL_KNOWLEDGE_MAX_CHARS} characters.`,
+    );
+  }
+  console.log(
+    `[SEED VALIDATION] All ${records.length} records passed Zod & Privacy validation. Total context size: ${totalKnowledgeChars} / ${TOTAL_KNOWLEDGE_MAX_CHARS} chars.`
+  );
 
   // 2. Instantiate privileged PrismaClient
   const prisma = new PrismaClient({

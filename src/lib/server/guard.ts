@@ -161,17 +161,10 @@ export interface GuardResult {
 }
 
 /**
- * Evaluate a normalized (trimmed, lower-cased) visitor message against the
- * deterministic scope guard.
- *
- * Returns `{ blocked: true, logCode }` if caught, or `{ blocked: false }`.
- * Never calls Gemini or touches the database (R-031).
- *
- * @param message Raw or normalized message string.
+ * Evaluate a text string against pattern groups.
  */
-export function checkGuard(message: string): GuardResult {
-  // Normalize for pattern matching: Unicode NFKC, lowercase, collapse whitespace.
-  const normalized = message
+function evaluateText(text: string): GuardResult {
+  const normalized = text
     .normalize('NFKC')
     .toLowerCase()
     .replace(/\s+/g, ' ')
@@ -179,8 +172,41 @@ export function checkGuard(message: string): GuardResult {
 
   for (const { label, patterns } of ALL_PATTERN_GROUPS) {
     for (const pattern of patterns) {
-      if (pattern.test(normalized) || pattern.test(message)) {
+      if (pattern.test(normalized) || pattern.test(text)) {
         return { blocked: true, logCode: `chat.guard.${label}` };
+      }
+    }
+  }
+
+  return { blocked: false };
+}
+
+/**
+ * Evaluate a visitor message and optional conversation history turns against
+ * the deterministic scope guard (Item 48).
+ *
+ * Returns `{ blocked: true, logCode }` if caught, or `{ blocked: false }`.
+ * Never calls Gemini or touches the database (R-031).
+ *
+ * @param message Raw or normalized message string.
+ * @param history Optional conversation history turns.
+ */
+export function checkGuard(
+  message: string,
+  history?: Array<{ role: string; content: string }>,
+): GuardResult {
+  const msgResult = evaluateText(message);
+  if (msgResult.blocked) {
+    return msgResult;
+  }
+
+  if (history && Array.isArray(history)) {
+    for (const turn of history) {
+      if (turn && turn.content) {
+        const turnResult = evaluateText(turn.content);
+        if (turnResult.blocked) {
+          return { blocked: true, logCode: `${turnResult.logCode}.history` };
+        }
       }
     }
   }

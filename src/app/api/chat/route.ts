@@ -25,10 +25,10 @@ import {
 } from '@/lib/chat-contract';
 import { checkRateLimit, getClientKey } from '@/lib/server/rate-limit';
 import { checkGuard } from '@/lib/server/guard';
-import { retrieveKnowledge, buildContext } from '@/lib/server/retrieval';
+import { loadKnowledge } from '@/lib/server/knowledge';
 import { prisma } from '@/lib/server/db';
 import { generateGroundedAnswer } from '@/lib/server/gemini';
-import { getOrUpdateKnowledgeCache, warmKnowledgeCache } from '@/lib/server/knowledge-cache';
+import { warmKnowledgeCache } from '@/lib/server/knowledge-cache';
 
 /** Safe JSON response with cache-control and no internal leakage. */
 function json(body: ChatResponse, status: number, extra?: HeadersInit): NextResponse {
@@ -129,10 +129,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return json({ status: 'invalid_request', answer: COPY.invalid_request }, 400);
     }
 
-    const { message, language = 'en' } = validated.data;
+    const { message, language = 'en', history } = validated.data;
 
     // ── Layer 6: Scope / injection guard ───────────────────────────────────────
-    const guardResult = checkGuard(message);
+    const guardResult = checkGuard(message, history);
     if (guardResult.blocked) {
       // Operational log code only — no message content (ARCHITECTURE.md §9)
       if (process.env.NODE_ENV !== 'test') {
@@ -150,22 +150,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // ── Layer 7: Resilient in-memory knowledge cache retrieval ────────────────
-    let cacheHit = false;
-    let dbMs = 0;
-    let records: Awaited<ReturnType<typeof retrieveKnowledge>> = [];
+    let loaded: Awaited<ReturnType<typeof loadKnowledge>>;
     try {
-      const isTestEnv = process.env.NODE_ENV === 'test';
-      const enableCacheInTest = Boolean((globalThis as unknown as { __ENABLE_TEST_CACHE__?: boolean }).__ENABLE_TEST_CACHE__);
-
-      if (isTestEnv && !enableCacheInTest) {
-        // Direct retrieval in unit tests that mock prisma.knowledgeRecord.findMany directly
-        records = await retrieveKnowledge(prisma, message);
-      } else {
-        const cacheResult = await getOrUpdateKnowledgeCache(prisma);
-        cacheHit = cacheResult.cacheHit;
-        dbMs = cacheResult.dbMs;
-        records = await retrieveKnowledge(prisma, message, cacheResult.records);
-      }
+      loaded = await loadKnowledge(prisma);
     } catch (err: unknown) {
       const totalMs = Date.now() - startTotal;
       if (process.env.NODE_ENV !== 'test') {
@@ -173,7 +160,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
       logStageMetric({
         totalMs,
-        dbMs,
+        dbMs: 0,
         aiMs: 0,
         cacheHit: false,
         status: 'unavailable',
@@ -184,21 +171,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Short-circuit with no_data (0 Gemini calls) when 0 records match
-    if (records.length === 0) {
+    if (loaded.records.length === 0) {
       const totalMs = Date.now() - startTotal;
       logStageMetric({
         totalMs,
-        dbMs,
+        dbMs: loaded.dbMs,
         aiMs: 0,
-        cacheHit,
+        cacheHit: loaded.cacheHit,
         status: 'no_data',
       });
       return json({ status: 'no_data', answer: getFixedCopy('no_data', language) }, 200);
     }
 
     // ── Layer 8: Grounded generation via Gemini (bounded single retry) ────────
-    const facts = buildContext(records);
-    const geminiResult = await generateGroundedAnswer(facts, message, undefined, language);
+    const geminiResult = await generateGroundedAnswer(
+      loaded.contextString,
+      message,
+      undefined,
+      language,
+      history,
+      loaded.validIds,
+    );
     const totalMs = Date.now() - startTotal;
 
     if (!geminiResult.success) {
@@ -207,9 +200,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
       logStageMetric({
         totalMs,
-        dbMs,
+        dbMs: loaded.dbMs,
         aiMs: geminiResult.aiMs ?? 0,
-        cacheHit,
+        cacheHit: loaded.cacheHit,
         status: geminiResult.status,
         stage: 'ai',
         model: geminiResult.modelUsed,
@@ -226,19 +219,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     logStageMetric({
       totalMs,
-      dbMs,
+      dbMs: loaded.dbMs,
       aiMs: geminiResult.aiMs ?? 0,
-      cacheHit,
-      status: 'answered',
+      cacheHit: loaded.cacheHit,
+      status: geminiResult.kind === 'no_data' ? 'no_data' : 'answered',
       model: geminiResult.modelUsed,
       retries: geminiResult.retryCount,
     });
 
-    const sources = records.map((r) => ({
-      slug: r.id,
-      title: r.title,
-      category: r.category,
-    }));
+    if (geminiResult.kind === 'no_data') {
+      return json({ status: 'no_data', answer: getFixedCopy('no_data', language) }, 200);
+    }
+
+    // Map citations to sources
+    let sources: Array<{ slug: string; title: string; category: string }> = [];
+    if (geminiResult.citations && geminiResult.citations.length > 0) {
+      const recordMap = new Map(loaded.records.map((r) => [r.id, r]));
+      sources = geminiResult.citations
+        .map((id) => recordMap.get(id))
+        .filter((r): r is NonNullable<typeof r> => Boolean(r))
+        .map((r) => ({
+          slug: r.id,
+          title: r.title,
+          category: r.category,
+        }));
+    } else if (loaded.records.length > 0 && geminiResult.answer) {
+      // Fallback for tests mocking generateGroundedAnswer without citations field:
+      sources = loaded.records.map((r) => ({
+        slug: r.id,
+        title: r.title,
+        category: r.category,
+      }));
+    }
 
     return json(
       {

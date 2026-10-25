@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-25 |
-| Current phase | **7 — Quality and security review (Revision 2 & Optimization: CR-006..CR-010)** |
-| Waiting for | Execution of Revision 2 tasks (TASK-038) |
-| Last completed task | TASK-037 — Chatbot Reliability, In-Memory Cache & Speed (CR-009) |
-| Next task | TASK-038 — Answer Quality, Multilingual Free-Form Q&A & Structured Citations (CR-010) |
+| Current phase | **7 — Quality and security review (Revision 2 & Optimization: CR-006..CR-010 complete)** |
+| Waiting for | Owner final acceptance and Phase 8 deployment (`TASK-026`, `TASK-027`) |
+| Last completed task | TASK-038 — Answer Quality, Multilingual Free-Form Q&A & Structured Citations (CR-010) |
+| Next task | TASK-026 — Service eligibility check and deployment |
 | Blockers | None |
-| Last verified commit | `11da9aa` |
+| Last verified commit | pending commit for TASK-038 |
 
 ## 2. Phases and gates
 
@@ -73,7 +73,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [035](tasks/TASK-035-email-gmail-contact-text-truncation.md) | Email to Gmail & zero contact text truncation (CR-007) | 7 | P0 | `DONE` | TASK-034 |
 | [036](tasks/TASK-036-nextjs-logo-skill-tiles-visibility.md) | Next.js logo in Technical Stack & tile contrast (CR-008) | 7 | P0 | `DONE` | TASK-035 |
 | [037](tasks/TASK-037-chatbot-reliability-cache-speed.md) | Chatbot reliability, in-memory cache & speed (CR-009) | 7 | P0 | `DONE` | TASK-036 |
-| [038](tasks/TASK-038-multilingual-qa-full-knowledge-citations.md) | Answer quality, multilingual free-form Q&A & structured citations (CR-010) | 7 | P0 | `TODO` | TASK-037 |
+| [038](tasks/TASK-038-multilingual-qa-full-knowledge-citations.md) | Answer quality, multilingual free-form Q&A & structured citations (CR-010) | 7 | P0 | `DONE` | TASK-037 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 
@@ -145,7 +145,13 @@ Full text, recommendations and owner-answer log: `PRD.md` §13 (C-xx), §14.1 (O
 | **Credentials** | Credentials & Certifications · Verified Accreditation · Issued by · View Credential | Sertifikasi & Kredensial · Akreditasi Terverifikasi · Diterbitkan oleh · Lihat Sertifikat | DRAFT |
 | **Documentation** | Field Documentation · Swipe hint | Dokumentasi Lapangan · GESER ↔ | DRAFT |
 | **Contact** | Direct Communication Channels · Direct Email · LinkedIn Profile · GitHub Repositories · Instagram Activity · Credly Profile | Saluran Komunikasi Langsung · Email Langsung · Profil LinkedIn · Repositori GitHub · Aktivitas Instagram · Profil Credly | DRAFT |
-| **Chatbot** | Fauzi's AI Assistant · LIVE · UNAVAILABLE · Answers strictly from verified profile data · Plain text only · Grounded in PostgreSQL records | Asisten AI Fauzi · AKTIF · TIDAK TERSEDIA · Menjawab secara ketat berdasarkan data profil terverifikasi · Teks polos saja · Bersumber dari data PostgreSQL | DRAFT |
+### 5.5 Optional Supporting Facts for Chatbot (CR-010 / TASK-038)
+The following common visitor questions currently trigger the standard `no_data` fallback because they are not yet provided in `src/data/`:
+1. Current GPA / IPK at Universitas AMIKOM Yogyakarta (e.g. 3.xx)
+2. Professional salary expectations / rate card for full-time or freelance roles
+3. Official WhatsApp / business phone channel (if desired beyond Email/LinkedIn)
+4. Specific graduation month/year target
+5. Specific technical hobbies or open-source community contributions
 
 ## 6. Parking lot
 Out-of-scope ideas are **not** tracked here; they go to `PRD.md` §14.3.

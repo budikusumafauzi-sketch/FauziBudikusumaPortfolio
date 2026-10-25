@@ -7,13 +7,13 @@
  */
 import { z } from 'zod';
 
-// ─── Hard limits (OD-08 finalized in TASK-019) ───────────────────────────────
+// ─── Hard limits (OD-08 finalized in TASK-019, updated in TASK-038) ───────────────
 
 /** Maximum character length of a visitor message (trimmed). */
 export const MAX_MESSAGE_LENGTH = 300;
 
-/** Maximum request body size in bytes. */
-export const MAX_BODY_BYTES = 2048; // 2 KB
+/** Maximum request body size in bytes (increased to 6 KB in TASK-038 for history support). */
+export const MAX_BODY_BYTES = 6144; // 6 KB
 
 /** Rate limit: maximum requests per rolling window per IP. */
 export const RATE_LIMIT_MAX = 10;
@@ -28,10 +28,13 @@ export const RETRIEVAL_TOP_K = 6;
 export const RETRIEVAL_TAKE = 20;
 
 /** Maximum total characters sent to Gemini as context. */
-export const CONTEXT_MAX_CHARS = 4_000;
+export const CONTEXT_MAX_CHARS = 40_000;
+
+/** Total serialized verified knowledge hard cap (Item 42 / SCHEMA.md). */
+export const TOTAL_KNOWLEDGE_MAX_CHARS = 40_000;
 
 /** Maximum characters per individual record body sent to Gemini. */
-export const CONTEXT_RECORD_MAX_CHARS = 600;
+export const CONTEXT_RECORD_MAX_CHARS = 2_000;
 
 /** Maximum output tokens from Gemini. */
 export const GEMINI_MAX_OUTPUT_TOKENS = 512;
@@ -64,12 +67,28 @@ export const ChatStatusSchema = z.enum([
 ]);
 export type ChatStatus = z.infer<typeof ChatStatusSchema>;
 
-// ─── Request schema ────────────────────────────────────────────────────────────
+// ─── History & Request schemas ────────────────────────────────────────────────
+
+export const ChatMessageRoleSchema = z.enum(['user', 'assistant']);
+export type ChatMessageRole = z.infer<typeof ChatMessageRoleSchema>;
+
+export const ChatHistoryItemSchema = z
+  .object({
+    role: ChatMessageRoleSchema,
+    content: z
+      .string()
+      .trim()
+      .min(1, 'History turn content must not be empty')
+      .max(MAX_MESSAGE_LENGTH, `History turn content must be at most ${MAX_MESSAGE_LENGTH} characters`)
+      .transform((s) => s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim()),
+  })
+  .strict();
+export type ChatHistoryItem = z.infer<typeof ChatHistoryItemSchema>;
 
 /**
  * Strict Zod schema for POST /api/chat request body.
  * .strict() rejects any unknown keys — the client can NEVER pass
- * model, table names, filters, SQL, or extra parameters.
+ * model, table names, filters, SQL, or extra parameters (R-036).
  */
 export const ChatRequestSchema = z
   .object({
@@ -83,11 +102,21 @@ export const ChatRequestSchema = z
         s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim(),
       )
       .refine((s) => s.length >= 1, 'Message must not be empty after sanitization'),
-    language: z.enum(['en', 'id']).optional().default('en'),
+    language: z.enum(['id', 'en']).default('en'),
+    history: z.array(ChatHistoryItemSchema).max(6, 'At most 6 previous conversation turns allowed').optional(),
   })
-  .strict(); // ← rejects unknown fields (AC-2)
+  .strict(); // ← rejects unknown fields (AC-2, R-036)
 
 export type ChatRequest = z.infer<typeof ChatRequestSchema>;
+
+// ─── Structured model output schema (R-031, Item 47) ──────────────────────────
+
+export const StructuredChatOutputSchema = z.object({
+  kind: z.enum(['answer', 'greeting', 'no_data']),
+  answer: z.string(),
+  citations: z.array(z.string()),
+});
+export type StructuredChatOutput = z.infer<typeof StructuredChatOutputSchema>;
 
 // ─── Source record (verified portfolio reference) ─────────────────────────────
 

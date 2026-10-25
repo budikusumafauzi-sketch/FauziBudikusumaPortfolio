@@ -204,13 +204,32 @@ export function ChatWidget() {
     setInputValue("");
     setIsLoading(true);
 
+    // Extract history: up to last 6 valid user/assistant turns excluding error/service notices (Item 50)
+    const validHistoryTurns = messages
+      .filter((m) => {
+        if (m.role === "user") return true;
+        if (m.role === "assistant") {
+          return m.status === "answered" || m.status === "no_data" || m.status === "out_of_scope";
+        }
+        return false;
+      })
+      .slice(-6)
+      .map((m) => ({
+        role: m.role,
+        content: m.text.slice(0, 300),
+      }));
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: validText, language }),
+        body: JSON.stringify({
+          message: validText,
+          language,
+          history: validHistoryTurns.length > 0 ? validHistoryTurns : undefined,
+        }),
       });
 
       const retryAfterHeader = res.headers.get("Retry-After");
@@ -514,7 +533,7 @@ export function ChatWidget() {
                           </span>
                         </div>
                         {/* Plain text rendering */}
-                        <p>{msg.text}</p>
+                        <p className="whitespace-pre-line">{msg.text}</p>
                       </div>
                     )}
 
@@ -525,7 +544,7 @@ export function ChatWidget() {
                           <Clock className="w-3.5 h-3.5 shrink-0" />
                           <span>{t.chat.rateLimitExceeded || "RATE LIMIT EXCEEDED"}</span>
                         </div>
-                        <p>{msg.text}</p>
+                        <p className="whitespace-pre-line">{msg.text}</p>
                         {msg.retryAfterSeconds ? (
                           <p className="font-mono text-[11px] text-accent-text mt-2 font-medium">
                             {language === "id"
@@ -543,7 +562,7 @@ export function ChatWidget() {
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>{t.chat.serviceNotice || "SERVICE NOTICE"}</span>
                         </div>
-                        <p>{msg.text}</p>
+                        <p className="whitespace-pre-line">{msg.text}</p>
                       </div>
                     )}
 
@@ -551,7 +570,7 @@ export function ChatWidget() {
                     {!isGuardrail && !isRateLimited && !isUnavailable && !isError && (
                       <div className="rounded-2xl rounded-tl-xs px-3.5 py-2.5 border border-border-default bg-surface-card text-text-secondary leading-relaxed shadow-xs">
                         {/* Strict plain text rendering (AC-4) */}
-                        <p className="whitespace-pre-wrap">{msg.text}</p>
+                        <p className="whitespace-pre-line">{msg.text}</p>
 
                         {/* Verified Source Citations */}
                         {msg.sources && msg.sources.length > 0 && (

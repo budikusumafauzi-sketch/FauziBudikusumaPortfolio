@@ -12,6 +12,7 @@
     "test": "vitest run",
     "db:seed": "tsx prisma/seed.ts",
     "check:gemini": "node scripts/check-gemini.mjs",
+    "eval:chat": "node scripts/eval-chat.mjs",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"
   },
   "dependencies": {

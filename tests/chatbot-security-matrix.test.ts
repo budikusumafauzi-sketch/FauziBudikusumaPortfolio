@@ -121,6 +121,8 @@ describe('1. Grounded In-Scope Queries across Portfolio Domains', () => {
       // Mock Gemini returning grounded text
       const geminiSpy = vi.spyOn(geminiModule, 'generateGroundedAnswer').mockResolvedValue({
         success: true,
+        kind: 'answer',
+        citations: [`${tc.category.toLowerCase()}:test`],
         answer: `Fauzi Budikusuma verified facts for ${tc.category}: ${tc.recordTitle}.`,
       });
 
