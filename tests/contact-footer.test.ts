@@ -18,14 +18,30 @@ describe("Direct Contact Section", () => {
     expect(html).not.toMatch(/0[0-9]\s*\/\//);
   });
 
-  it("renders all 5 approved contact channels with verified links and text (CR-003)", () => {
+  it("renders all 5 approved contact channels with verified links and text (CR-003, CR-007)", () => {
     const html = renderToString(React.createElement(ContactSection));
     expect(contactsData.length).toBe(5);
 
     for (const channel of contactsData) {
-      expect(html).toContain(channel.displayText);
-      expect(html).toContain(`href="${channel.href}"`);
+      expect(html).toContain(`title="${channel.displayText}"`);
+      expect(html).toContain(`href="${channel.href.replaceAll("&", "&amp;")}"`);
     }
+  });
+
+  it("links email card directly to Gmail compose in a new tab with zero truncation (CR-007)", () => {
+    const html = renderToString(React.createElement(ContactSection));
+    const emailChannel = contactsData.find((c) => c.type === "email");
+    expect(emailChannel?.href).toContain("https://mail.google.com/mail/?view=cm");
+    expect(emailChannel?.href).toContain("budikusumafauzi%40gmail.com");
+
+    // Zero truncation or ellipsis classes
+    expect(html).not.toContain("truncate");
+    expect(html).not.toContain("line-clamp");
+    expect(html).not.toContain("break-all");
+
+    // Natural delimiter wrapping (<wbr/>)
+    expect(html).toContain("<wbr/>");
+    expect(html).toContain("overflow-wrap:anywhere");
   });
 
   it("adds target='_blank' and rel='noopener noreferrer' to external links", () => {

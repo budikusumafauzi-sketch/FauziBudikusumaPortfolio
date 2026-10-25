@@ -32,6 +32,26 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Renders text with natural line-break opportunities (<wbr />) inserted
+ * immediately after natural delimiter tokens: '@', '/', '.', and '-'.
+ * Avoids mid-word break-all while allowing clean multi-line wrapping for long handles.
+ */
+function formatWithBreakableDelimiters(text: string): React.ReactNode {
+  const parts = text.split(/([@/.-])/g);
+  return parts.map((part, index) => {
+    if (part === "@" || part === "/" || part === "." || part === "-") {
+      return (
+        <React.Fragment key={index}>
+          {part}
+          <wbr />
+        </React.Fragment>
+      );
+    }
+    return <React.Fragment key={index}>{part}</React.Fragment>;
+  });
+}
+
 export function ContactSection() {
   const { t } = useLanguage();
 
@@ -52,6 +72,16 @@ export function ContactSection() {
     }
   };
 
+  const getCardSpan = (index: number) => {
+    // Desktop: 3 cards top row (each col-span-2 = 6 cols total), 2 cards bottom row (each col-span-3 = 6 cols total)
+    // Tablet: 2 cols per row, 5th card spans 2 cols
+    // Mobile: 1 col
+    if (index < 3) {
+      return "sm:col-span-1 lg:col-span-2";
+    }
+    return index === 4 ? "sm:col-span-2 lg:col-span-3" : "sm:col-span-1 lg:col-span-3";
+  };
+
   return (
     <section id="contact" className="scroll-mt-24 py-16 sm:py-20">
       <Container>
@@ -61,22 +91,20 @@ export function ContactSection() {
           className="mb-10"
         />
 
-        {/* 5 Cards Grid: 5 columns on desktop, 2x2 + 1 full-width on tablet, 1 column on mobile (CR-003) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
-          {contactsData.map((channel) => {
+        {/* 5 Cards Grid: 3 cards top row + 2 cards bottom row on desktop (lg:grid-cols-6), 2 cols on tablet, 1 col on mobile (CR-007) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-5">
+          {contactsData.map((channel, index) => {
             const isExternal = channel.href.startsWith("http");
-            const isCredly = channel.type === "credly";
             const channelLabel = (t.contact.channels as Record<string, string>)[channel.type] || channel.label;
+            const ariaLabel = channel.type === "email" ? t.contact.emailAria : `${channelLabel}: ${channel.displayText}`;
 
             return (
               <a
                 key={channel.id}
                 href={channel.href}
                 {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                aria-label={`${channelLabel}: ${channel.displayText}`}
-                className={`group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl ${
-                  isCredly ? "sm:col-span-2 lg:col-span-1" : ""
-                }`}
+                aria-label={ariaLabel}
+                className={`group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl ${getCardSpan(index)}`}
               >
                 <Card className="h-full flex flex-col justify-between p-5 bg-surface-card transition-all duration-300 hover:border-accent hover:shadow-[0_0_24px_var(--color-accent-glow)]">
                   <div>
@@ -93,12 +121,12 @@ export function ContactSection() {
                       {channelLabel}
                     </span>
 
-                    {/* Channel Value with Ellipsis without Mid-Syllable Breaks (CR-003) */}
+                    {/* Channel Value with Zero Truncation & Natural Delimiter Wrapping (CR-007) */}
                     <p
                       title={channel.displayText}
-                      className="font-sans text-xs sm:text-sm font-semibold text-text-strong truncate leading-snug group-hover:text-accent transition-colors"
+                      className="font-sans text-xs sm:text-sm font-semibold text-text-strong leading-normal group-hover:text-accent transition-colors [overflow-wrap:anywhere]"
                     >
-                      {channel.displayText}
+                      {formatWithBreakableDelimiters(channel.displayText)}
                     </p>
                   </div>
 

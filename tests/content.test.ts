@@ -82,7 +82,7 @@ describe("Typed Content Modules & Zod Validation (TASK-008)", () => {
     contactsData.forEach((contact) => {
       expect(() => ContactItemSchema.parse(contact)).not.toThrow();
       if (contact.type === "email") {
-        expect(contact.href).toMatch(/^mailto:/);
+        expect(contact.href).toMatch(/^https:\/\/mail\.google\.com\/mail\/\?view=cm/);
       } else {
         expect(contact.href).toMatch(/^https:\/\//);
       }

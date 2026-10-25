@@ -101,6 +101,7 @@ export interface Dictionary {
   contact: {
     title: string;
     descriptor: string;
+    emailAria: string;
     channels: {
       email: string;
       linkedin: string;
@@ -267,6 +268,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     contact: {
       title: "Direct Channels",
       descriptor: "COMMUNICATION & PROFESSIONAL INQUIRIES",
+      emailAria: "Email Fauzi via Gmail (opens in a new tab)",
       channels: {
         email: "Direct Email",
         linkedin: "LinkedIn Profile",
@@ -438,6 +440,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     contact: {
       title: "Saluran Komunikasi",
       descriptor: "KOMUNIKASI & KERJASAMA PROFESIONAL",
+      emailAria: "Kirim email ke Fauzi lewat Gmail (membuka tab baru)",
       channels: {
         email: "Email Langsung",
         linkedin: "Profil LinkedIn",

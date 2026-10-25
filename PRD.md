@@ -157,8 +157,8 @@ Visual details live in `DESIGN.md` (reference: `design/approved/`). Behavior liv
 ### 6.10 Contact and footer
 | ID | Requirement |
 |---|---|
-| FR-CNT-01 | Five cards: Email, LinkedIn, GitHub, Instagram, Credly Profile — values verified by the owner and approved for publication (OD-11, CR-003). |
-| FR-CNT-02 | Visible text must never truncate/clip (the light-mode export truncates; do not replicate). |
+| FR-CNT-01 | Five cards: Email, LinkedIn, GitHub, Instagram, Credly Profile — values verified by the owner and approved for publication (OD-11, CR-003). Email card opens Gmail compose in a new tab (`https://mail.google.com/mail/?view=cm&fs=1&to=...`) rather than `mailto:` (CR-007). |
+| FR-CNT-02 | Visible text must never truncate/clip across viewports and themes (zero ellipsis `...`; natural delimiter wrapping at `@`, `/`, `.`, `-` via `<wbr>` and spacious grid layout; CR-007). |
 | FR-CNT-03 | No contact form, no email backend. |
 | FR-FTR-01 | Footer: identity, short tagline, copyright, social links as approved, **Back to Top**. |
 
@@ -337,7 +337,7 @@ The blueprint says: the image governs **appearance**, the PRD governs **behavior
 Every ACC item verified with recorded evidence **or** an owner-approved written exception, and owner sign-off at Gate G8.
 
 ### 14.3 Future ideas (parking lot — not implemented)
-*(none recorded yet; agents append ideas here instead of building them)*
+- **One-click "Copy email address" clipboard button:** A companion button on the Direct Email card that copies `budikusumafauzi@gmail.com` to the visitor's clipboard with temporary visual feedback (e.g. checkmark icon), as an alternative for visitors who do not use Gmail (CR-007 recommendation; not implemented in V1.0 per strict scope rules).
 
 ## 15. Decision log
 Owner answers are recorded here. **Shortcut:** the owner may reply *"Approve all RECOMMENDED"* to adopt every recommendation in §13–§14 at once.

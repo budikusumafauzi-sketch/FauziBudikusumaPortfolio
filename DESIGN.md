@@ -207,10 +207,10 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 - Card size: appears **fixed height** (≈ 320–350 export-px) with 4 across on desktop — finalize in TASK-014 by measurement. Mobile: horizontal swipe, `touch-action: pan-y`, partial next card visible.
 - Real photos only; alt text meaningful; captions only if owner-confirmed.
 
-### 5.10 Direct Channels / Contact (DS-CNT) — refs 3, 5, 6; CR-003
-- Desktop: 5 bordered cards in a row (`lg:grid-cols-5`): left icon (Lucide mail/LinkedIn/GitHub/Instagram/Award glyph), tiny mono label (EMAIL / LINKEDIN / GITHUB / INSTAGRAM / CREDLY PROFILE), value in semibold, arrow-up-right at right.
-- Tablet (`sm` / 768px): 2×2 grid (Email, LinkedIn, GitHub, Instagram) + 1 full-width card for Credly (`sm:col-span-2 lg:col-span-1`). Mobile (`320px`–`375px`): single column stack.
-- Typography: Values use structured display labels and clean ellipsis without awkward mid-syllable word breaking (CR-003). Never break words like `budikusu/ma` or `sk/etch`. Links open in a new tab with `rel="noopener noreferrer"`; email uses `mailto:`. All 5 channels verified and approved for publication.
+### 5.10 Direct Channels / Contact (DS-CNT) — refs 3, 5, 6; CR-003, CR-007
+- Grid Layout: Spacious 2-row layout on desktop/laptop (`lg:grid-cols-6` with 3 cards top row `lg:col-span-2` + 2 cards bottom row `lg:col-span-3`). Tablet (`sm` / 768px): 2-column grid (`sm:grid-cols-2`, with 5th card spanning 2 cols `sm:col-span-2`). Mobile (`320px`–`375px`): single spacious column stack (`grid-cols-1`). Card heights remain uniform (`h-full`).
+- Zero Truncation & Natural Delimiter Wrapping: No text truncation (`...`), no `text-overflow: ellipsis`, and no clipping across all viewports and themes. Multi-line wrapping occurs cleanly at natural delimiters (`@`, `/`, `.`, `-`) via programmatically inserted `<wbr />` elements without mid-word `break-all` (using `overflow-wrap: anywhere` as a safety net).
+- Direct Gmail Compose Action: The Direct Email card points to `https://mail.google.com/mail/?view=cm&fs=1&to=budikusumafauzi%40gmail.com` in a new tab (`target="_blank"`, `rel="noopener noreferrer"`) instead of `mailto:`. Displayed value remains the full email address `budikusumafauzi@gmail.com`. Bilingual accessible names provide clear screen-reader context: "Email Fauzi via Gmail (opens in a new tab)" / "Kirim email ke Fauzi lewat Gmail (membuka tab baru)".
 
 ### 5.11 Footer and Back to Top (DS-FTR) — refs 3, 5, 7
 - Left: bold name + bordered mono location chip ("YOGYAKARTA, ID" — owner-verify), tagline in two lines, small mono copyright. Mobile: centered stack.
