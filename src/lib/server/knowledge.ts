@@ -14,6 +14,7 @@ export interface LoadedKnowledge {
   charCount: number;
   dbMs: number;
   cacheHit: boolean;
+  source: 'cache' | 'db' | 'snapshot';
   stale?: boolean;
 }
 
@@ -59,8 +60,8 @@ export function buildFullKnowledgeContext(
 }
 
 /**
- * Loads the complete verified portfolio knowledge set backed by in-memory cache (10-minute TTL).
- * Replaces keyword-matching retrieval (Item 41, ADR-013).
+ * Loads the complete verified portfolio knowledge set backed by in-memory cache (12-hour TTL, SWR, snapshot fallback).
+ * Replaces keyword-matching retrieval (Item 41, ADR-013, ADR-015).
  */
 export async function loadKnowledge(
   client: PrismaClient = prisma,
@@ -73,6 +74,7 @@ export async function loadKnowledge(
   let records: CachedKnowledgeRecord[];
   let dbMs = 0;
   let cacheHit = false;
+  let source: 'cache' | 'db' | 'snapshot' = 'db';
   let stale = false;
 
   if (isTestEnv && !enableCacheInTest) {
@@ -91,11 +93,13 @@ export async function loadKnowledge(
     });
     dbMs = Date.now() - start;
     records = rows;
+    source = 'db';
   } else {
     const cacheRes = await getOrUpdateKnowledgeCache(client);
     records = cacheRes.records;
     dbMs = cacheRes.dbMs;
     cacheHit = cacheRes.cacheHit ?? false;
+    source = cacheRes.source ?? (cacheHit ? 'cache' : 'db');
     stale = cacheRes.stale ?? false;
   }
 
@@ -108,6 +112,7 @@ export async function loadKnowledge(
     charCount,
     dbMs,
     cacheHit,
+    source,
     stale,
   };
 }

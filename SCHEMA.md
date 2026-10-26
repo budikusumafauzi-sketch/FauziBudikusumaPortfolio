@@ -10,12 +10,13 @@
 
 | Data | Source of truth | Consumers |
 |---|---|---|
-| All portfolio content (text, links, order) | **`src/data/*.ts`** (typed modules, Zod-validated) — human-maintained, version-controlled | Server-rendered UI; seed |
+| All portfolio content (text, links, order) | **`src/data/*.ts`** (typed modules, Zod-validated) — human-maintained, version-controlled | Server-rendered UI; seed; snapshot |
 | Chatbot-searchable facts | **PostgreSQL `KnowledgeRecord`** — a **derived, one-way copy** of the VERIFIED content, written only by the trusted seed | `POST /api/chat` (read-only) |
+| Build-time facts snapshot | **`src/lib/server/knowledge.snapshot.json`** — content-identical derived artifact of `VERIFIED` records generated at `prebuild` (ADR-015) | Cold cache fallback during Neon compute wake-up |
 | Executable DB definition | `prisma/schema.prisma` + migrations | Prisma Client, migrations |
 | Images/CV | Files under `public/assets/` (DB stores **paths only**, never binaries) | UI |
 
-Flow (one direction only): `src/data/` → validate + keep `VERIFIED` → `prisma/seed.ts` (privileged, local) → PostgreSQL → read-only retrieval. **The database is never edited by hand, never written by the running site, and never read by the static sections** (ADR-007).
+Flow (one direction only): `src/data/` → validate + keep `VERIFIED` → `prisma/seed.ts` (privileged, local) → PostgreSQL → read-only retrieval (shielded by 12-hour SWR in-memory cache and `knowledge.snapshot.json` fallback, ADR-015). **The database is never edited by hand, never written by the running site, and never read by the static sections** (ADR-007).
 
 ## 2. Verification model (applies to every content record in `src/data/`)
 
@@ -187,8 +188,13 @@ ALTER ROLE portfolio_runtime SET default_transaction_read_only = on;  -- defense
 - If only one database is available, using dev-only commands against it is an **OPEN DECISION** that must be settled with the owner before TASK-017.
 - Keep Prisma Client and the migration tooling on the same version; follow current docs for datasource/URL configuration.
 
-## 10. Knowledge context and retrieval rationale (CR-010 / ADR-013)
-Per CR-010 and ADR-013, keyword-matching retrieval is replaced by `loadKnowledge()` backed by an in-memory server cache (10-minute TTL + stale-while-error). The entire set of verified records (~7,400 characters across 27 records) is provided in the reference facts context, strictly bounded by the hard cap of **40,000 characters** (`TOTAL_KNOWLEDGE_MAX_CHARS`). Both the seed script and unit tests enforce this cap prior to transaction. Grounded output is verified server-side via structured output schema and valid record citation IDs (R-031).
+## 10. Knowledge context, snapshot parity and retrieval rationale (CR-010 / CR-011 / ADR-013 / ADR-015)
+Per CR-010, CR-011, ADR-013, and ADR-015:
+- Retrieval uses `loadKnowledge()` backed by an in-memory **Stale-While-Revalidate (SWR) cache** (12-hour TTL) with asynchronous non-blocking background revalidation.
+- On cold server starts, the database query is raced against a **600ms timer**. If Neon PostgreSQL compute is asleep after idle (>600ms wake-up) or closed, the server immediately serves the build-time **`knowledge.snapshot.json`** (`source=snapshot`) while the background DB query wakes up.
+- Automated tests prove that `knowledge.snapshot.json` is content-identical to `buildKnowledgeRecords()` for all `VERIFIED` records.
+- Common starter-chip and identical 0-history questions are served in `< 150ms` from a 30-minute in-memory LRU Answer Cache (`answerCache=hit`, 0 AI calls).
+- The total verified knowledge context remains strictly bounded by the hard cap of **40,000 characters** (`TOTAL_KNOWLEDGE_MAX_CHARS`). Both the seed script and unit tests enforce this cap prior to transaction. Grounded output is verified server-side via structured output schema and valid record citation IDs (R-031).
 
 ## 11. Schema decisions record (Resolved in TASK-017)
 | ID | Item | Status | Resolution |

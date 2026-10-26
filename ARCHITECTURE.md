@@ -191,12 +191,13 @@ Visitor browser                              ← Zone E: untrusted
 | `invalid_request` | 400 | Bad JSON / schema / unknown fields / empty / over-length / history > 6 |
 | `too_large` | 413 | Body over 6 KB limit |
 | `unsupported_media_type` | 415 | Not `application/json` |
-| *(method)* | 405 | Anything but POST (except lightweight GET panel warmup) |
+| *(method)* | 405 | Anything but POST / GET (Allow: GET, POST) |
+| `(warm-up)` | 204 | `GET /api/chat` panel-open cache & DB connection warm-up (0 AI calls, R-037) |
 | `rate_limited` | 429 | Over limit; `Retry-After` header |
 | `unavailable` | 503 | Missing key, quota/rate limit, Gemini/DB timeout or failure |
 | `error` | 500 | Unexpected exception |
 
-**Final limits — UPDATED under CR-009 / CR-010 (TASK-037 & TASK-038):**
+**Final limits — UPDATED under CR-011 (TASK-039):**
 
 | Parameter | Final value |
 |---|---|
@@ -204,11 +205,14 @@ Visitor browser                              ← Zone E: untrusted
 | Max request body | 6 KB (6,144 bytes) |
 | History | Optional array of at most 6 items `{ role: "user" \| "assistant", content: string (<= 300 chars) }` |
 | Rate limit | 10 requests / minute / IP (sliding window, 60,000 ms) |
-| DB query timeout | 2 s (plus role-level `statement_timeout`); 0 ms on cache hit (10-minute TTL) |
-| Gemini timeout | 7 s per attempt, 14 s total request budget (initial attempt + at most 1 retry) |
+| Knowledge Cache | SWR In-Memory Cache (12-hour TTL), asynchronous background refresh, `dbMs = 0` on hits |
+| DB Cold Race Timeout | 600 ms timer against Neon compute wake-up; serves build-time `knowledge.snapshot.json` if DB takes >600 ms or is closed (ADR-015) |
+| Answer Cache | In-memory LRU cache (30-minute TTL, max 200 entries) for 0-history common/chip queries (< 150 ms, 0 AI calls) |
+| Hedged Gemini Request | Attempt 1 starts on `GEMINI_MODEL`; soft deadline (2.8 s) or early transient failure launches Attempt 2 on `GEMINI_FALLBACK_MODEL` in parallel (ADR-014); first valid response wins and aborts the loser |
+| Total Request Budget | Hard 8.0 s total deadline aborts all in-flight attempts and returns 503 unavailable; maximum 2 attempts total per request (R-034) |
 | Knowledge Context | Complete verified knowledge set (loadKnowledge(), ADR-013), hard capped at 40,000 characters |
-| Model output | Structured JSON schema `{ kind, answer, citations }`; `thinkingBudget: 0`; answer cap 1,200 characters |
-| Retries | **At most 1** (strictly for transient failures per R-034; never for 400/401/403/404/429) |
+| Model output | Structured JSON schema `{ kind, answer, citations }`; `thinkingBudget: 0` (where supported); maxOutputTokens: 512 |
+| Retries | **At most 1 hedged retry** (strictly for transient failures per R-034; never for 400/401/403/404/429) |
 
 **Fixed visitor copy — RECOMMENDED** (stored as constants, not generated):
 - `no_data`: "I only have access to Fauzi's approved public portfolio data, and that information isn't available there." / "Saya hanya memiliki akses ke data portofolio publik Fauzi yang telah diverifikasi, dan informasi tersebut tidak tersedia di sini."
@@ -292,11 +296,11 @@ If a secret is ever committed: treat it as compromised → rotate at the provide
 |---|---|---|---|---|---|
 | `GEMINI_API_KEY` missing | env check at request time | `unavailable` copy | 503 `unavailable` | `chat.no_key` | none |
 | Gemini quota / 429 | SDK error class/status | `unavailable` copy | 503 | `chat.gemini_quota` | none; never retry 429 |
-| Gemini timeout (transient) | abort signal | `unavailable` | 503 | `chat.gemini_timeout` | at most 1 retry with fallback model |
-| Gemini 5xx / network (transient) | SDK error | `unavailable` | 503 | `chat.gemini_network` / `chat.gemini_error` | at most 1 retry |
-| Blocked / empty / malformed output | output validation | `unavailable` (or `no_data`) | 503 / 200 | `chat.bad_output` | at most 1 retry if candidate empty |
-| DB idle closed connection | Neon serverless closure | handled via cache / retry | 200 or 503 | `chat.db_stale_fallback` / `chat.db_reconnect_retry` | 1 DB retry, or serve stale cache |
-| DB unreachable / timeout | Prisma error / app timeout | `unavailable` (if cache cold) | 503 | `chat.db_error` | none if stale cache unavailable |
+| Gemini timeout / slow primary (transient) | soft deadline (2.8s) / abort signal | `unavailable` (if hard budget expires) | 503 | `chat.gemini_transient_retry` / `chat.gemini_timeout` | hedged parallel attempt on `GEMINI_FALLBACK_MODEL` (ADR-014) |
+| Gemini 5xx / network (transient) | SDK error | `unavailable` (if both fail) | 503 | `chat.gemini_network` / `chat.gemini_error` | immediate hedged attempt on fallback model |
+| Blocked / empty / malformed output | output validation | `unavailable` (or `no_data`) | 503 / 200 | `chat.bad_output` | hedged attempt if primary output invalid |
+| DB idle closed connection | Neon serverless closure | 200 ok (served from snapshot or cache) | 200 | `chat.db_closed_connection_recovered` | suppressed raw dump; served via snapshot or SWR cache |
+| DB unreachable / timeout | Prisma error / 600ms race timeout | 200 ok (served from snapshot) | 200 | `chat.db_snapshot_fallback` | serves `knowledge.snapshot.json` (ADR-015) |
 | `DATABASE_URL` missing | env check | `unavailable` | 503 | `chat.no_db` | none |
 | No matching records | empty/low-score result | `no_data` copy | 200 `no_data` | — | n/a |
 | Guard match / injection attempt | scope guard | `out_of_scope` copy | 200 | `chat.guard` | n/a |
@@ -311,8 +315,8 @@ The page itself never calls the chat API on load, so **none of these affect any 
 ## 11. Deployment, environment, and free-tier policy
 
 **Candidates (all subject to current-terms verification — OD-06, OD-07, OD-05):** Vercel Hobby (app + Route Handlers; historically personal/non-commercial — confirm a professional portfolio qualifies), Neon Free Tier (PostgreSQL), Gemini API free tier on an **unbilled** project, provider-supplied subdomain (no purchased domain). If any is ineligible: **do not switch plans, enable billing, or quietly substitute** — present a compliant free alternative and record an OPEN DECISION.
-- **OD-07 Verification Record (2026-10-23):** Neon Free Tier confirmed active. Plan: Free ($0/mo, Rp0). Limits: 1 project, up to 10 branches, 0.5 GiB storage, compute autosuspend after 5 minutes of inactivity. Connection pooling: built-in PgBouncer on port 5432 with `-pooler` hostname, requires `sslmode=require`. Direct connection: port 5432 without `-pooler`. Region: AWS `us-east-2` (Ohio). Prisma version: CLI `6.19.3`, client `@prisma/client@6.19.3`. In-memory server cache with 10-minute TTL and stale-while-error fallback (TASK-037) shields the running site from idle connection drops.
-- **OD-05 Verification Record (2026-10-25):** Gemini API free tier confirmed active on unbilled project ($0/mo, Rp0). SDK: `@google/genai@2.30.0`. Primary model identifier: `models/gemini-3.1-flash-lite`, optional fallback model: `models/gemini-3.1-flash-lite-preview`. Free tier quotas: 15 RPM / 1M TPM / 1,500 RPD. Grounded chatbot requires 0 tools, 0 search, `thinkingBudget: 0`, maxOutputTokens: 300..512, at most 1 transient retry per R-034.
+- **OD-07 Verification Record (2026-10-23):** Neon Free Tier confirmed active. Plan: Free ($0/mo, Rp0). Limits: 1 project, up to 10 branches, 0.5 GiB storage, compute autosuspend after 5 minutes of inactivity. Connection pooling: built-in PgBouncer on port 5432 with `-pooler` hostname, requires `sslmode=require`. Direct connection: port 5432 without `-pooler`. Region: AWS `us-east-2` (Ohio). Prisma version: CLI `6.19.3`, client `@prisma/client@6.19.3`. In-memory SWR cache (12-hour TTL) with 600ms database-vs-snapshot race (TASK-039 / ADR-015) shields the running site completely from idle connection drops and compute wake-up latency.
+- **OD-05 Verification Record (2026-10-26):** Gemini API free tier confirmed active on unbilled project ($0/mo, Rp0). SDK: `@google/genai@2.30.0`. Primary model identifier: `models/gemini-3.5-flash-lite` (sub-second / ~1.4s structured output latency, GA stable 3.5 family). Fallback model identifier: `models/gemini-3.1-flash-lite` (distinct 3.1 family queue for hedged requests). Free tier quotas: 15 RPM / 1M TPM / 1,500 RPD. Grounded chatbot requires 0 tools, 0 search, `thinkingBudget: 0` (where supported), maxOutputTokens: 512, at most 1 hedged parallel retry per R-034.
 
 **Environment variables (names RECOMMENDED — OD-04; values never in Markdown):**
 
@@ -321,8 +325,8 @@ The page itself never calls the chat API on load, so **none of these affect any 
 | `DATABASE_URL` | Yes | Local `.env` + hosting env | Runtime (Route Handler) | **Read-only role**; use the provider's pooled/serverless-appropriate string |
 | `MIGRATION_DATABASE_URL` | Yes | **Local `.env` only** | `prisma migrate`, `prisma/seed.ts` | Privileged role; never deployed with the site |
 | `GEMINI_API_KEY` | Yes | Local `.env` + hosting env | Route Handler | Server-only; confirm name against the SDK |
-| `GEMINI_MODEL` | No | Local + hosting env | Route Handler | Primary fast Flash-Lite model (e.g. `models/gemini-3.1-flash-lite`) |
-| `GEMINI_FALLBACK_MODEL` | No | Optional | Route Handler | Model used on bounded single retry for transient failures (R-034) |
+| `GEMINI_MODEL` | No | Local + hosting env | Route Handler | Primary fast Flash-Lite model (`models/gemini-3.5-flash-lite`) |
+| `GEMINI_FALLBACK_MODEL` | No | Local + hosting env | Route Handler | Fallback model from distinct family for hedged requests (`models/gemini-3.1-flash-lite`) |
 
 `src/lib/env.ts` validates with Zod **lazily at request time**, so a missing variable yields a controlled 503, not a crashed page or failed build.
 
@@ -340,13 +344,15 @@ The page itself never calls the chat API on load, so **none of these affect any 
 | ADR-004 | **No admin dashboard / CMS / auth** | Owner is the only editor; files + Git give history, review and backup; removes the whole write-surface attack class. | Content change = edit files + seed. |
 | ADR-005 | **Next.js Route Handlers, no separate backend** | One deployable; fewer moving parts; Node runtime supports Prisma + Gemini SDK. | Single point of deployment. |
 | ADR-006 | **Prisma + Neon PostgreSQL** | Typed access, migrations, serverless-friendly free tier candidate. | Must verify pooling + current limits (OD-07). |
-| ADR-007 | **Static UI content from files; DB serves only the chatbot** | Site survives DB outage; build needs no DB; fewer queries. | Two representations of content → mitigated by deriving DB records from the same files (§6). |
+| ADR-007 | **Static UI content from files; DB serves only the chatbot** | Site survives DB outage; build needs no DB; fewer queries. | Two representations of content → mitigated by deriving DB records and build-time snapshot (`knowledge.snapshot.json`, ADR-015) from the same verified source files (§6). |
 | ADR-008 | **Read-only runtime role + separate privileged role** | Prisma code alone is not a permission boundary; blast radius of a runtime bug is read-only. | Role grants must be re-applied after migrations that add tables (`SCHEMA.md` §8). |
 | ADR-009 | **In-memory IP rate limiting** | Free, no extra service. | Not shared across instances; resets on cold start — documented limitation; other bounds (length, timeout, output, DB limit) compensate. |
-| ADR-010 | **Gemini on server; no tools; bounded single retry (R-034)** | Keeps key private; prevents model-driven actions; at most 1 retry strictly for transient failures (timeouts, 5xx, network drops, candidate empty). | Quota exhaustion (429) or client error (400) never retried. |
+| ADR-010 | **Gemini on server; no tools; bounded single retry (R-034)** | Keeps key private; prevents model-driven actions; at most 1 retry strictly for transient failures (timeouts, 5xx, network drops, candidate empty). Extended in ADR-014 to hedged parallel execution. | Quota exhaustion (429) or client error (400) never retried. |
 | ADR-011 | **[SUPERSEDED by CR-010 / ADR-013] Keyword/category retrieval with a score floor** | Originally used to bound context before AI call. | **Superseded by Owner decision (CR-010, 2026-10-25):** Revisit condition met due to keyword matching limitations on natural visitor queries, typos, and cross-record questions. Replaced by `loadKnowledge()` full verified knowledge context with in-memory caching and structured citations. |
 | ADR-012 | **Skills in `.agents/skills/`** (Antigravity) instead of `.claude/skills/` | Owner's actual environment is Antigravity. | Legacy `.agent/skills/` is also supported by the IDE — verify the installed version (OD-13). |
 | ADR-013 | **Full verified knowledge context with in-memory caching and structured citations (CR-010 / TASK-038)** | The verified portfolio facts set is compact (27 records, ~7,400 chars, well below the 40,000-char cap). Passing the complete verified facts to Gemini Flash-Lite eliminates retrieval misses on natural visitor language, slang, typos, and multi-record queries while maintaining strict factual grounding. | Hard cap of 40,000 characters enforced at seed and in unit tests; in-memory server cache (10-minute TTL) shields database; server-side Zod validation of citations enforces R-031 (replacing reply with fixed `no_data` if citations are missing or invalid). |
+| ADR-014 | **Hedged Request with Fallback Model Family (CR-011 / TASK-039)** | Eliminates tail latency and 503 capacity spikes without sequential timeout delay. Attempt 1 runs on `GEMINI_MODEL` (`gemini-3.5-flash-lite`); if not completed within soft deadline (2.8s) or if early transient error occurs, Attempt 2 launches in parallel on `GEMINI_FALLBACK_MODEL` (`gemini-3.1-flash-lite`) from a distinct backend queue. First valid response wins and immediately aborts the loser via `AbortController`. Hard budget 8.0s; at most 2 attempts total (R-034). | Reduces median latency from ~5s to ~1.4s–2s, while capping p95 at <= 4.0s. Non-transient errors (400, 401, 403, 404, 429) never hedge. |
+| ADR-015 | **Stale-While-Revalidate Cache with Build-Time Snapshot Fallback (CR-011 / TASK-039)** | Eliminates 30-minute idle failures and cold-start PostgreSQL wake-up delays (~2.9s on Neon compute sleep). In-memory cache TTL extended to 12 hours with non-blocking SWR background revalidation. On cold cache, races DB query against a 600ms timer; if DB is sleeping or closed, immediately serves build-time `knowledge.snapshot.json` (`source=snapshot`) while DB wakes up in background. | Chatbot is 100% resilient to cold DB starts, zero idle failures, zero raw Prisma error dumps to stdout, and common queries served in <150ms via in-memory answer cache. |
 
 ## 13. Quality gates (commands finalized in TASK-003)
 

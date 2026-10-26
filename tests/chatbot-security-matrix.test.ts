@@ -267,12 +267,19 @@ describe('5. Strict API Contract & Rate-Limiting Enforcement', () => {
     vi.spyOn(dbModule.prisma.knowledgeRecord, 'findMany').mockResolvedValue([] as any);
   });
 
-  it('rejects non-POST HTTP methods with 405 and Allow: POST header', async () => {
-    const methods = [GET, PUT, DELETE, PATCH];
-    for (const handler of methods) {
+  it('supports GET for warm-up returning 204 No Content', async () => {
+    const req = makeRequest(null, { method: 'GET' });
+    const res = await GET(req);
+    expect(res.status).toBe(204);
+    expect(res.headers.get('Allow')).toBe('GET, POST');
+  });
+
+  it('rejects unsupported HTTP methods with 405 and Allow header (Allow: GET, POST)', async () => {
+    const disallowedMethods = [PUT, DELETE, PATCH];
+    for (const handler of disallowedMethods) {
       const res = await handler();
       expect(res.status).toBe(405);
-      expect(res.headers.get('Allow')).toBe('POST');
+      expect(res.headers.get('Allow')).toBe('GET, POST');
     }
   });
 

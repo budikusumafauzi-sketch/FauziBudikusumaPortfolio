@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "pnpm snapshot:generate",
     "build": "next build",
     "start": "next start",
+    "snapshot:generate": "tsx scripts/generate-knowledge-snapshot.ts",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

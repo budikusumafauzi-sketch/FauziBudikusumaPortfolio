@@ -11,9 +11,24 @@ const globalForPrisma = globalThis as unknown as {
  */
 export function getPrismaClient(): PrismaClient {
   if (!globalForPrisma.prisma) {
-    globalForPrisma.prisma = new PrismaClient({
-      log: process.env.NODE_ENV === 'development' ? ['warn', 'error'] : ['error'],
+    const client = new PrismaClient({
+      log: [
+        { emit: 'event', level: 'error' },
+        { emit: 'event', level: 'warn' },
+      ],
     });
+
+    // Cleanly intercept closed-connection events to prevent raw unformatted dumps
+    client.$on('error', (e: { message?: string; target?: string }) => {
+      const msg = e.message ?? '';
+      if (msg.includes('Closed') || msg.includes('kind: Closed') || msg.includes('Connection closed')) {
+        console.warn(`[CHAT:DB] chat.db_closed_connection_recovered [target: ${e.target ?? 'pg_connection'}]`);
+      } else {
+        console.error(`[CHAT:DB] chat.db_error [target: ${e.target ?? 'unknown'}]`);
+      }
+    });
+
+    globalForPrisma.prisma = client;
   }
   return globalForPrisma.prisma;
 }

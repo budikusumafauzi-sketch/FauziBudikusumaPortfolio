@@ -22,45 +22,49 @@ const apiKey = extractEnv('GEMINI_API_KEY');
 const ai = new GoogleGenAI({ apiKey });
 
 const candidates = [
+  'models/gemini-3.5-flash-lite',
   'models/gemini-3.1-flash-lite',
-  'models/gemini-3.1-flash-lite-preview',
-  'models/gemini-flash-lite-latest',
-  'models/gemini-3.8-flash',
 ];
 
 const testPrompt = `=== REFERENCE FACTS (VERIFIED PORTFOLIO DATA) ===
 Fauzi Budikusuma holds the MikroTik Certified Network Associate (MTCNA) certification.
-He completed an IT Support and Networking internship at Dinas Komunikasi dan Informatika (Kominfo) Kota Bogor.
+He completed an IT Support and Networking internship at Dinas Komunikasi dan Informatika (Kominfo) DIY.
 === END REFERENCE FACTS ===
 
 === VISITOR QUESTION (UNTRUSTED INPUT) ===
 What certifications and internship experience does Fauzi Budikusuma have?
-=== END VISITOR QUESTION ===`;
+=== END VISITOR QUESTION ===
+
+Produce JSON conforming strictly to schema: {"kind": "answer"|"greeting"|"no_data", "answer": string, "citations": string[]}.`;
 
 async function testGrounded() {
-  console.log('[CHECK:GEMINI] Testing grounded prompt on lite candidates...');
+  console.log('[CHECK:GEMINI] Testing structured prompt on candidates...');
   for (const m of candidates) {
     const start = Date.now();
     try {
+      const config = {
+        systemInstruction: 'Answer strictly using verified facts in plain text.',
+        maxOutputTokens: 512,
+        temperature: 0.2,
+        responseMimeType: 'application/json',
+      };
+      if (m.includes('3.1') || m.includes('2.5') || m.includes('2.0')) {
+        config.thinkingConfig = { thinkingBudget: 0 };
+      }
       const res = await ai.models.generateContent({
         model: m,
         contents: testPrompt,
-        config: {
-          systemInstruction: 'Answer strictly using verified facts. Reply concisely in plain text.',
-          maxOutputTokens: 256,
-          temperature: 0.2,
-          thinkingConfig: { thinkingBudget: 0 },
-        },
+        config,
       });
       const latency = Date.now() - start;
       console.log(`\nModel: ${m} (${latency}ms)`);
       console.log('Result:\n', res.text?.trim());
-      break;
     } catch (e) {
       const latency = Date.now() - start;
-      console.log(`Model ${m} FAILED (${latency}ms):`, e.message?.slice(0, 80));
+      console.log(`\nModel ${m} FAILED (${latency}ms):`, e.message);
     }
   }
 }
+
 
 testGrounded();

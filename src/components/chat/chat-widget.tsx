@@ -86,12 +86,14 @@ export function ChatWidget() {
   const [messages, setMessages] = React.useState<MessageItem[]>([]);
   const [inputValue, setInputValue] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isSlowRequest, setIsSlowRequest] = React.useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
 
   const launcherRef = React.useRef<HTMLButtonElement>(null);
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const slowTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
   // Close Panel and Restore Focus (AC-5)
   const handleClosePanel = React.useCallback(() => {
@@ -110,8 +112,8 @@ export function ChatWidget() {
       // Safe fallback
     }
 
-    // Lightweight panel-open warm-up (Item 36, R-037: strictly 0 Gemini calls)
-    fetch("/api/chat?action=warmup").catch(() => {
+    // Lightweight key-less panel-open warm-up (R-037, AC-6: 0 Gemini calls)
+    fetch("/api/chat", { method: "GET" }).catch(() => {
       // Silent warm-up error handling
     });
   }, []);
@@ -203,6 +205,12 @@ export function ChatWidget() {
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
+    setIsSlowRequest(false);
+
+    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+    slowTimerRef.current = setTimeout(() => {
+      setIsSlowRequest(true);
+    }, 4000);
 
     // Extract history: up to last 6 valid user/assistant turns excluding error/service notices (Item 50)
     const validHistoryTurns = messages
@@ -356,7 +364,12 @@ export function ChatWidget() {
         },
       ]);
     } finally {
+      if (slowTimerRef.current) {
+        clearTimeout(slowTimerRef.current);
+        slowTimerRef.current = null;
+      }
       setIsLoading(false);
+      setIsSlowRequest(false);
     }
   };
 
@@ -613,15 +626,24 @@ export function ChatWidget() {
                     className="object-contain"
                   />
                 </div>
-                <div className="rounded-2xl rounded-tl-xs px-3.5 py-2.5 border border-border-default bg-surface-card text-text-muted flex items-center gap-2 shadow-xs">
-                  <span className="flex gap-1 items-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce [animation-delay:-0.3s]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce [animation-delay:-0.15s]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" />
-                  </span>
-                  <span className="font-mono text-[11px]">
-                    {t.chat.retrieving || "Retrieving verified portfolio records…"}
-                  </span>
+                <div className="rounded-2xl rounded-tl-xs px-3.5 py-2.5 border border-border-default bg-surface-card text-text-muted flex flex-col gap-1.5 shadow-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="flex gap-1 items-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce [animation-delay:-0.3s]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce [animation-delay:-0.15s]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" />
+                    </span>
+                    <span className="font-mono text-[11px]">
+                      {t.chat.retrieving || "Retrieving verified portfolio records…"}
+                    </span>
+                  </div>
+                  {isSlowRequest && (
+                    <span className="font-mono text-[10px] text-accent-text animate-pulse">
+                      {language === "id"
+                        ? "Membutuhkan waktu sedikit lebih lama — sedang menyiapkan jawaban terverifikasi..."
+                        : "Taking a little longer than usual — finalizing verified answer..."}
+                    </span>
+                  )}
                 </div>
               </div>
             )}

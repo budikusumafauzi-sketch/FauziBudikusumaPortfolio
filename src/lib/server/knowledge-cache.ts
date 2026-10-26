@@ -2,6 +2,8 @@ import 'server-only';
 import { type PrismaClient } from '@prisma/client';
 import { prisma } from './db';
 
+import snapshotRecords from './knowledge.snapshot.json';
+
 export interface CachedKnowledgeRecord {
   id: string;
   category: string;
@@ -15,12 +17,16 @@ export interface CachedKnowledgeRecord {
 export interface KnowledgeCacheResult {
   records: CachedKnowledgeRecord[];
   cacheHit: boolean;
+  source: 'cache' | 'db' | 'snapshot';
   dbMs: number;
   stale?: boolean;
 }
 
-/** 10 minutes cache TTL in milliseconds */
-export const KNOWLEDGE_CACHE_TTL_MS = 10 * 60 * 1000;
+/** 12 hours cache TTL in milliseconds (ADR-015) */
+export const KNOWLEDGE_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+
+/** Cold instance database load race timeout (ADR-015) */
+export const COLD_DB_RACE_TIMEOUT_MS = 600;
 
 interface CacheState {
   records: CachedKnowledgeRecord[] | null;
@@ -93,56 +99,85 @@ async function fetchRecordsFromDatabase(
 }
 
 /**
- * Retrieves knowledge records from in-memory cache (10-minute TTL).
- * If expired or cold, fetches from PostgreSQL and updates the cache.
- * If database query fails but existing cached records exist, serves stale records (stale-while-error).
+ * Retrieves knowledge records from in-memory cache (12-hour TTL).
+ * If in memory (fresh or stale), serves immediately (0ms db wait). Expired records trigger async background refresh.
+ * If cold, races DB against 600ms timer; falls back to build-time snapshot if DB is sleeping or closed (ADR-015).
  */
 export async function getOrUpdateKnowledgeCache(
   client: PrismaClient = prisma,
 ): Promise<KnowledgeCacheResult> {
   const state = getCacheState();
   const now = Date.now();
-  const isFresh = state.records !== null && now - state.cachedAt < KNOWLEDGE_CACHE_TTL_MS;
 
-  if (isFresh && state.records) {
+  // 1. SWR Cache Hit (Fresh or Stale): Serve in-memory immediately without waiting on DB
+  if (state.records && state.records.length > 0) {
+    const isFresh = now - state.cachedAt < KNOWLEDGE_CACHE_TTL_MS;
+    if (!isFresh) {
+      // Asynchronous background revalidation (non-blocking)
+      fetchRecordsFromDatabase(client)
+        .then((fetched) => {
+          state.records = fetched;
+          state.cachedAt = Date.now();
+        })
+        .catch(() => {
+          // Keep serving stale data
+        });
+    }
+
     return {
       records: state.records,
       cacheHit: true,
+      source: 'cache',
       dbMs: 0,
+      stale: !isFresh,
     };
   }
 
+  // 2. Cold Cache: Race PostgreSQL against short 600ms timer
   const startDb = Date.now();
-  try {
-    const fetched = await fetchRecordsFromDatabase(client);
-    state.records = fetched;
+  let timer: NodeJS.Timeout | undefined;
+
+  const timeoutPromise = new Promise<{ isTimeout: true }>((resolve) => {
+    timer = setTimeout(() => resolve({ isTimeout: true }), COLD_DB_RACE_TIMEOUT_MS);
+  });
+
+  const dbPromise = fetchRecordsFromDatabase(client)
+    .then((fetched) => ({ isTimeout: false as const, records: fetched, error: null }))
+    .catch((err: unknown) => ({ isTimeout: false as const, records: null, error: err }));
+
+  const outcome = await Promise.race([dbPromise, timeoutPromise]);
+  clearTimeout(timer);
+
+  if (!outcome.isTimeout && outcome.records && outcome.records.length > 0) {
+    state.records = outcome.records;
     state.cachedAt = Date.now();
-    const dbMs = Date.now() - startDb;
-
     return {
-      records: fetched,
+      records: outcome.records,
       cacheHit: false,
-      dbMs,
+      source: 'db',
+      dbMs: Date.now() - startDb,
     };
-  } catch (err: unknown) {
-    const dbMs = Date.now() - startDb;
-
-    // Stale-While-Error resilience: Serve existing cached records if available
-    if (state.records && state.records.length > 0) {
-      if (process.env.NODE_ENV !== 'test') {
-        console.warn('chat.db_stale_fallback');
-      }
-      return {
-        records: state.records,
-        cacheHit: true,
-        dbMs,
-        stale: true,
-      };
-    }
-
-    // Cold failure with no stale data available
-    throw err;
   }
+
+  // 3. 600ms timer fired first OR DB errored -> Immediately serve build-time snapshot
+  const snapshot = snapshotRecords as CachedKnowledgeRecord[];
+  state.records = snapshot;
+  state.cachedAt = Date.now();
+
+  // Let background DB fetch finish asynchronously to populate cache once awake
+  dbPromise.then((res) => {
+    if (!res.isTimeout && res.records && res.records.length > 0) {
+      state.records = res.records;
+      state.cachedAt = Date.now();
+    }
+  }).catch(() => {});
+
+  return {
+    records: snapshot,
+    cacheHit: false,
+    source: 'snapshot',
+    dbMs: Date.now() - startDb,
+  };
 }
 
 /**

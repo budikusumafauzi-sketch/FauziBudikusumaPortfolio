@@ -3,7 +3,7 @@ import {
   isTransientGeminiError,
   classifyGeminiError,
   generateGroundedAnswer,
-  PER_ATTEMPT_TIMEOUT_MS,
+  SOFT_DEADLINE_MS,
   TOTAL_REQUEST_BUDGET_MS,
 } from '@/lib/server/gemini';
 import {
@@ -221,21 +221,24 @@ describe('Chatbot Reliability & In-Memory Cache (TASK-037 / CR-009)', () => {
       expect(res.headers.get('x-warmup')).toBeDefined();
     });
 
-    it('returns 405 on GET /api/chat without warmup parameter', async () => {
+    it('returns 204 No Content on GET /api/chat warm-up without query parameters (Item 24, R-037)', async () => {
       const req = new NextRequest('http://localhost:3000/api/chat', {
         method: 'GET',
       });
 
       const res = await GET(req);
-      expect(res.status).toBe(405);
+      expect(res.status).toBe(204);
+      expect(res.headers.get('Allow')).toContain('GET');
+      expect(res.headers.get('Allow')).toContain('POST');
     });
   });
 
   describe('Timing Constants Verification', () => {
-    it('adheres to approved per-attempt and total budgets', () => {
-      expect(PER_ATTEMPT_TIMEOUT_MS).toBe(7_000);
-      expect(TOTAL_REQUEST_BUDGET_MS).toBe(14_000);
-      expect(KNOWLEDGE_CACHE_TTL_MS).toBe(600_000); // 10 minutes
+    it('adheres to approved per-attempt and total budgets (ADR-014, ADR-015)', () => {
+      expect(SOFT_DEADLINE_MS).toBe(2_800);
+      expect(TOTAL_REQUEST_BUDGET_MS).toBe(8_000);
+      expect(KNOWLEDGE_CACHE_TTL_MS).toBe(12 * 60 * 60 * 1000); // 12 hours
     });
   });
 });
+

@@ -12,11 +12,11 @@
 |---|---|
 | Date | 2026-10-26 |
 | Current phase | **7 — Quality and security review (Revision 3: CR-011..CR-015 in progress)** |
-| Waiting for | Execution of `TASK-039` (Chatbot tail-latency & 30-min idle-failure elimination) |
-| Last completed task | TASK-043 — Field Documentation photos, titles & interactive Lightbox preview (CR-015) |
-| Next task | TASK-039 — Chatbot tail-latency & 30-min idle-failure elimination (CR-011) |
+| Waiting for | Execution of `TASK-040` (Comprehensive Knowledge Expansion & Helpful Fallback Copy) |
+| Last completed task | TASK-039 — Chatbot tail-latency (~2s) and 30-min idle-failure elimination (CR-011) |
+| Next task | TASK-040 — Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) |
 | Blockers | None |
-| Last verified commit | `ca44036` |
+| Last verified commit | `afe1334` |
 
 ## 2. Phases and gates
 
@@ -77,7 +77,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [041](tasks/TASK-041-hero-chips-removal.md) | Remove two bottom chips from Hero portrait (CR-013) | 7 | P0 | `DONE` | TASK-038 |
 | [042](tasks/TASK-042-projects-photos-lightbox.md) | Selected Projects display photos & interactive Lightbox preview (CR-014) | 7 | P0 | `DONE` | TASK-041 |
 | [043](tasks/TASK-043-documentation-photos-lightbox.md) | Field Documentation photos, titles & interactive Lightbox preview (CR-015) | 7 | P0 | `DONE` | TASK-042 |
-| [039](tasks/TASK-039-idle-failure-hedged-requests-snapshot.md) | Chatbot tail-latency & 30-min idle-failure elimination (CR-011) | 7 | P0 | `TODO` | TASK-043 |
+| [039](tasks/TASK-039-idle-failure-hedged-requests-snapshot.md) | Chatbot tail-latency & 30-min idle-failure elimination (CR-011) | 7 | P0 | `DONE` | TASK-043 |
 | [040](tasks/TASK-040-knowledge-expansion-helpful-fallback.md) | Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) | 7 | P0 | `TODO` | TASK-039 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
