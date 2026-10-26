@@ -73,6 +73,9 @@ export interface Dictionary {
     privateRepo: string;
     inDevelopment: string;
     completed: string;
+    viewImage: string;
+    closeModal: string;
+    previewAria: string;
     descriptions: Record<string, string>;
   };
   credentials: {
@@ -227,6 +230,9 @@ export const dictionaries: Record<Language, Dictionary> = {
       privateRepo: "Private repository",
       inDevelopment: "In Development",
       completed: "Completed",
+      viewImage: "Preview Display",
+      closeModal: "Close project display preview",
+      previewAria: "Preview display image for",
       descriptions: {
         "project-network-monitoring-dashboard":
           "Real-time network telemetry and SNMP device monitoring dashboard providing active node health, bandwidth throughput, and automated incident alerts.",
@@ -399,6 +405,9 @@ export const dictionaries: Record<Language, Dictionary> = {
       privateRepo: "Repositori privat",
       inDevelopment: "Dalam Pengembangan",
       completed: "Selesai",
+      viewImage: "Lihat Tampilan",
+      closeModal: "Tutup pratinjau tampilan proyek",
+      previewAria: "Lihat gambar tampilan proyek",
       descriptions: {
         "project-network-monitoring-dashboard":
           "Dasbor telemetri jaringan waktu-nyata dan pemantauan perangkat SNMP yang menyediakan status kesehatan node aktif, throughput bandwidth, dan peringatan insiden otomatis.",

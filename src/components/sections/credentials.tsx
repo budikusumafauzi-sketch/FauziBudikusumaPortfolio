@@ -6,8 +6,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Container, SectionHeader, Card, IconButton, Chip } from "@/components/ui/primitives";
 import { certificationsData } from "@/data/certifications";
 import { CertificationItem } from "@/data/schemas";
-import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/context";
+import { Lightbox } from "@/components/ui/lightbox";
 
 export function CredentialsSection() {
   const { t } = useLanguage();
@@ -21,7 +22,6 @@ export function CredentialsSection() {
   const [nextBtnDisabled, setNextBtnDisabled] = React.useState(false);
   const [selectedCert, setSelectedCert] = React.useState<CertificationItem | null>(null);
   const triggerRefMap = React.useRef<Map<string, HTMLButtonElement>>(new Map());
-  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const scrollPrev = React.useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -55,31 +55,6 @@ export function CredentialsSection() {
       }, 50);
     }
   }, [selectedCert]);
-
-  // Lightbox Focus & Keyboard Management (C-03 & OD-12)
-  React.useEffect(() => {
-    if (!selectedCert) return;
-
-    // Move focus into Close button on modal open
-    const timeout = setTimeout(() => {
-      closeButtonRef.current?.focus();
-    }, 50);
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        closeModal();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      clearTimeout(timeout);
-      window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [selectedCert, closeModal]);
 
   const openModal = (cert: CertificationItem) => {
     setSelectedCert(cert);
@@ -162,17 +137,17 @@ export function CredentialsSection() {
                       </div>
                     )}
 
-                    {/* Metadata Header */}
+                    {/* Metadata Header: Issuer & Year */}
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <Chip variant="neutral" className="bg-surface-raised text-[10px]">
+                      <span className="font-mono text-xs font-semibold text-accent-text tracking-wide">
                         {cert.issuer}
-                      </Chip>
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-accent-text font-semibold">
-                        {cert.issuedLabel}
                       </span>
+                      <Chip variant="neutral">
+                        {cert.issuedLabel}
+                      </Chip>
                     </div>
 
-                    {/* Certificate Title */}
+                    {/* Title */}
                     <h3 className="font-display font-bold text-base sm:text-lg text-text-strong uppercase tracking-tight mb-2">
                       {cert.title}
                     </h3>
@@ -196,45 +171,17 @@ export function CredentialsSection() {
           </div>
         </div>
 
-        {/* Clean Image-Only Lightbox Modal (C-03 & OD-12) */}
+        {/* Clean Image-Only Lightbox Modal (C-03 & OD-12 via shared Lightbox) */}
         {selectedCert && (
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Certificate Preview — ${selectedCert.title}`}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"
-            onClick={closeModal}
-          >
-            {/* Modal Content Container (Click propagation stopped inside) */}
-            <div
-              className="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button Header (AC-2: only close X and full uncropped image) */}
-              <div className="w-full flex items-center justify-end pb-3">
-                <button
-                  ref={closeButtonRef}
-                  type="button"
-                  onClick={closeModal}
-                  aria-label={t.credentials.closeModal}
-                  className="rounded-full bg-surface-card p-2 text-text-secondary hover:text-text-primary hover:bg-surface-raised focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
-                >
-                  <X className="h-6 w-6" />
-                </button>
-              </div>
-
-              {/* Pure Uncropped Image Frame (C-03: Zero Fake Verification Hashes/Sidebars) */}
-              <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] max-h-[80vh] overflow-hidden rounded-xl border border-border-default bg-surface-card shadow-2xl">
-                <Image
-                  src={selectedCert.imagePath}
-                  alt={selectedCert.title}
-                  fill
-                  priority
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          </div>
+          <Lightbox
+            isOpen={Boolean(selectedCert)}
+            onClose={closeModal}
+            src={selectedCert.imagePath}
+            alt={selectedCert.title}
+            title={`${selectedCert.title} (${selectedCert.issuer})`}
+            closeAriaLabel={t.credentials.closeModal}
+            aspectRatioClass="aspect-[4/3] sm:aspect-[16/11]"
+          />
         )}
       </Container>
     </section>

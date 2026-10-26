@@ -127,10 +127,10 @@ Visual details live in `DESIGN.md` (reference: `design/approved/`). Behavior liv
 | ID | Requirement |
 |---|---|
 | FR-PRJ-01 | Exactly **3 columns** at desktop, **2** at tablet, **1** at mobile; equal card height; uniform padding. |
-| FR-PRJ-02 | Thumbnails use **16:10** aspect ratio with reserved dimensions (no layout shift). |
+| FR-PRJ-02 | Thumbnails use **16:10** aspect ratio with reserved dimensions (no layout shift) displaying authentic owner-provided project display photos (`CR-014`). Clicking or activating the thumbnail button opens the shared Lightbox modal (`role="dialog"`, `aria-modal="true"`) displaying the uncropped full display image (`object-contain`). |
 | FR-PRJ-03 | If project count is not divisible by 3, last-row cards keep 1/3 width, left-aligned, **never stretched**. |
 | FR-PRJ-04 | Card content: thumbnail (or explicitly approved fallback), title, concise summary, technology badges, verified GitHub URL, optional approved live-demo URL. Extra labels (status, license) only per C-06 decision. |
-| FR-PRJ-05 | No filters, search, categories, or detail modal. |
+| FR-PRJ-05 | Interactive Lightbox preview modal for project cover images; no external navigation triggered by cover click; card footer repository links remain separate and independent (`CR-014`). |
 | FR-PRJ-06 | No invented repository/demo URLs. A project without a verified public URL shows an explicit non-link state and never masquerades as a working link. |
 | FR-PRJ-07 | External links open safely (`rel="noopener noreferrer"` on new-tab links). |
 
@@ -228,7 +228,7 @@ Facts seen in the approved designs are listed as **DESIGN-OBSERVED / DRAFT** to 
 | Summary / bio | `src/data/profile.ts` | Informatics student at Universitas AMIKOM Yogyakarta; TKJ (Computer & Network Engineering) graduate of SMK Negeri 1 Seyegan; Dinas Kominfo DIY experience | DRAFT |
 | Education / experience | `src/data/journey.ts` | AMIKOM (S.Kom, Informatics, 2026–2029 expected Apr 2029); Help Desk Supervisor (Internship), Dinas Kominfo DIY (2025); SMK Negeri 1 Seyegan, TKJ (2023–2026) incl. internship scores and competency result | DRAFT — wording differs between desktop/mobile (C-10) |
 | Skills (35) | `src/data/skills.ts` | 35 verified skills across 5 categories, including Next.js (local asset `public/assets/skills/nextjs.svg`) | VERIFIED (CR-008, 2026-10-25) |
-| Projects (6) | `src/data/projects.ts` | Sentinel; StackLab; Network Monitoring Dashboard; RNIC; Enterprise Data Center Network Simulation; Enterprise Network Lab (MikroTik CHR) | DRAFT; thumbnails `[OWNER TO PROVIDE]`; repo URLs `[OWNER TO PROVIDE]` |
+| Projects (6) | `src/data/projects.ts` | Sentinel; StackLab; Network Monitoring Dashboard; RNIC; Enterprise Data Center Network Simulation; Enterprise Network Lab (MikroTik CHR). Display photos from 'Foto Project' and GitHub repo URLs verified. | VERIFIED (CR-014, 2026-10-26) |
 | Certifications (4) | `src/data/certifications.ts` | MikroTik MTCNA; Google Cybersecurity Professional Certificate; Google AI Essentials; Sertifikat Kompetensi (LAN implementation, BNSP/LSP) | DRAFT; full images `[OWNER TO PROVIDE]`; dates/IDs unverified |
 | Gallery (4) | `src/data/gallery.ts` | Academic symposium; hackathon build; tech workshop; lab infrastructure demo (**mock imagery/captions**) | `[OWNER TO PROVIDE]` real photos + captions |
 | Email | `src/data/contacts.ts` | `budikusumafauzi@gmail.com` | DRAFT; publication not yet approved (OD-11) |

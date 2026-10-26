@@ -181,26 +181,27 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 - CSS-only infinite loop of a duplicated track; `aria-hidden` on the duplicate; one visually-hidden list of skill names for assistive tech; pause on hover/focus; **reduced motion → static wrapping grid**.
 - Icons: Lucide glyphs are acceptable for generic tiles; real technology logos only from owner-approved assets in `public/assets/skills/`.
 
-### 5.6 Projects grid (DS-PRJ) — refs 3, 5, 6; decisions C-06, C-07
+### 5.6 Projects grid (DS-PRJ) — refs 3, 5, 6; decisions C-06, C-07; CR-014
 - Grid: **3 / 2 / 1** columns. Cards equal height (use grid stretch + footer pinned to the bottom).
-- Card anatomy (top → bottom): inset **16:10** image with rounded corners → mono status label (when approved) → title (display, semibold) → 3–4 line description (muted) → mono tag chips → hairline divider → footer row: **"GitHub Repository ↗"** left, mono license/visibility right.
+- Card anatomy (top → bottom): inset **16:10** image thumbnail with rounded corners → title (display, semibold) → 3–4 line description (muted) → mono tag chips → hairline divider → footer row: **"GitHub Repository ↗"** left, mono license/visibility right.
+- **Interactive Cover Lightbox Preview (CR-014):** Clicking or activating the 16:10 display image thumbnail opens the shared accessible Lightbox modal (`role="dialog"`, `aria-modal="true"`). The thumbnail is an accessible `<button type="button">` with hover zoom, `Maximize2` icon indicator ("Preview Display" / "Lihat Gambar"), and bilingual `aria-label`. Card footer repository links remain completely separate and never open the lightbox.
 - **Last row rule:** with n not divisible by 3, remaining cards keep exactly 1/3 width and sit left-aligned; they never stretch. Implement with a true grid (not flex-grow). Verify with 4, 5 and 6 cards.
 - The crimson border on card 1 in every export is INTERPRETED as the **hover/active** state (OPEN DS-08 to confirm); hover = crimson border + subtle lift/shadow (RECOMMENDED).
-- Images: `next/image` with explicit dimensions/aspect; no layout shift; real thumbnails only. Missing thumbnail → designed neutral placeholder consistent with the card (never a fake screenshot).
+- Images: `next/image` with explicit dimensions/aspect; no layout shift; real thumbnails only from `public/assets/projects/` (verified 2026-10-26).
 - No filters, search, categories, detail modal.
 
 ### 5.7 Credentials carousel (DS-CRT) — refs 3, 4, 6; decisions C-03, C-08
 - Heading "VERIFIED CREDENTIALS" with **square prev/next buttons** (bordered, chevrons) aligned right of the heading; Embla viewport below.
 - Card anatomy: image area (≈ **1.8 : 1** observed; finalize by measurement) with badge top-left (solid crimson or dark chip) and issuer chip top-right → title → description (3–4 lines) → footer: mono "• Click preview" (left) + dated chip (right).
 - Only verified fields are rendered (C-08). Issuer chips need a **solid background** (the light-mode export shows red-on-image text that is hard to read — a defect to avoid).
-- Whole card is the button for the lightbox (keyboard focusable, visible focus ring, Enter/Space). Missing image → unavailable state, not clickable (FR-CRT-08).
+- Whole card thumbnail is the button for the lightbox (keyboard focusable, visible focus ring, Enter/Space). Missing image → unavailable state, not clickable (FR-CRT-08).
 - Mobile: partial next card visible to hint swiping.
 
-### 5.8 Certificate lightbox (DS-LBX) — ref 4, decision C-03 (**image-only**)
-- Fixed overlay with dark scrim, **centered** dialog; contents: the full certificate image (`object-fit: contain`, `max-width/height` within the viewport) and a close **X** button (accessible name "Close certificate preview", ≥ 44 px target).
-- Optional decorative crimson corner brackets around the image (RECOMMENDED allowed; no text).
-- **Not implemented:** header caption line, "CLOSE (ESC)" pill, "SHA-256 HASH VERIFIED…", "ACTIVE STATUS: VALID THROUGH…".
-- Behavior: `role="dialog"` + `aria-modal="true"` + accessible name from the certificate title; focus moves into the dialog on open and **returns to the invoking card**; Escape closes; Tab stays inside while open; body scroll locked **without jumping scroll position**; backdrop-click closing is **OPEN (OD-12)** — default: not enabled; chat launcher is hidden/inert while the dialog is open.
+### 5.8 Shared Lightbox modal (DS-LBX) — ref 4, decision C-03, CR-014, CR-015 (**image-only**)
+- Unified across **Selected Projects**, **Credentials & Certifications**, and **Field Documentation** via `@/components/ui/lightbox`.
+- Fixed overlay with dark scrim (`bg-black/90 backdrop-blur-md`), **centered** dialog; contents: the full display image (`object-fit: contain`, `max-width/height` within viewport) and a close **X** button (accessible name per section, ≥ 44 px target).
+- **Not implemented:** fake verification hashes, "SHA-256 HASH VERIFIED…", "ACTIVE STATUS: VALID THROUGH…", fake metadata sidebars (C-03).
+- Behavior: `role="dialog"` + `aria-modal="true"` + accessible name from item title; focus moves into the dialog on open and **returns to the invoking card trigger button**; Escape closes; Tab/Shift+Tab trapped inside while open; body scroll locked **without jumping scroll position**; backdrop-click closing enabled; chat widget is automatically hidden and inert while the dialog is open (`isLightboxOpen`).
 
 ### 5.9 Field Documentation (DS-GAL) — refs 3, 5, 6, 7
 - Heading "FIELD DOCUMENTATION" + (mobile) mono "SWIPE ↔" hint.

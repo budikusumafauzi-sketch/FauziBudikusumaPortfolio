@@ -46,4 +46,19 @@ describe("Projects Section (TASK-012 / FR-PRJ / C-06 / C-07 / C-10)", () => {
     const html = renderToString(React.createElement(ProjectsSection));
     expect(html).not.toContain("[PREVIEW 16:10]");
   });
+
+  it("renders an accessible thumbnail preview button for every project (CR-014 / AC-3)", () => {
+    const html = renderToString(React.createElement(ProjectsSection));
+    projectsData.forEach((project) => {
+      expect(html).toContain(`aria-label="Preview display image for ${project.title}"`);
+    });
+  });
+
+  it("keeps repository links strictly separate from cover thumbnail triggers (CR-014 / AC-5)", () => {
+    const html = renderToString(React.createElement(ProjectsSection));
+    // Verify <button> is used for image preview and <a> is used for external repo
+    const buttonMatches = html.match(/<button[^>]*type="button"[^>]*aria-label="Preview display image for/g);
+    expect(buttonMatches?.length).toBe(6);
+    expect(html).toContain("GitHub Repository");
+  });
 });

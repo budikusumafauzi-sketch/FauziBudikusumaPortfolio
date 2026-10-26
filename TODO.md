@@ -12,11 +12,11 @@
 |---|---|
 | Date | 2026-10-26 |
 | Current phase | **7 — Quality and security review (Revision 3: CR-011..CR-015 in progress)** |
-| Waiting for | Execution of `TASK-042` (Selected Projects display photos & interactive Lightbox preview) |
-| Last completed task | TASK-041 — Remove two bottom chips from Hero portrait (CR-013) |
-| Next task | TASK-042 — Selected Projects display photos & interactive Lightbox preview (CR-014) |
+| Waiting for | Execution of `TASK-043` (Field Documentation photos, titles & interactive Lightbox preview) |
+| Last completed task | TASK-042 — Selected Projects display photos & interactive Lightbox preview (CR-014) |
+| Next task | TASK-043 — Field Documentation photos, titles & interactive Lightbox preview (CR-015) |
 | Blockers | None |
-| Last verified commit | `pending TASK-041 commit` |
+| Last verified commit | `pending TASK-042 commit` |
 
 ## 2. Phases and gates
 
@@ -75,7 +75,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [037](tasks/TASK-037-chatbot-reliability-cache-speed.md) | Chatbot reliability, in-memory cache & speed (CR-009) | 7 | P0 | `DONE` | TASK-036 |
 | [038](tasks/TASK-038-multilingual-qa-full-knowledge-citations.md) | Answer quality, multilingual free-form Q&A & structured citations (CR-010) | 7 | P0 | `DONE` | TASK-037 |
 | [041](tasks/TASK-041-hero-chips-removal.md) | Remove two bottom chips from Hero portrait (CR-013) | 7 | P0 | `DONE` | TASK-038 |
-| [042](tasks/TASK-042-projects-photos-lightbox.md) | Selected Projects display photos & interactive Lightbox preview (CR-014) | 7 | P0 | `TODO` | TASK-041 |
+| [042](tasks/TASK-042-projects-photos-lightbox.md) | Selected Projects display photos & interactive Lightbox preview (CR-014) | 7 | P0 | `DONE` | TASK-041 |
 | [043](tasks/TASK-043-documentation-photos-lightbox.md) | Field Documentation photos, titles & interactive Lightbox preview (CR-015) | 7 | P0 | `TODO` | TASK-042 |
 | [039](tasks/TASK-039-idle-failure-hedged-requests-snapshot.md) | Chatbot tail-latency & 30-min idle-failure elimination (CR-011) | 7 | P0 | `TODO` | TASK-043 |
 | [040](tasks/TASK-040-knowledge-expansion-helpful-fallback.md) | Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) | 7 | P0 | `TODO` | TASK-039 |

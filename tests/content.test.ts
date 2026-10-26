@@ -52,11 +52,14 @@ describe("Typed Content Modules & Zod Validation (TASK-008)", () => {
     });
   });
 
-  it("validates 6 projects with valid GitHub URLs and cover SVGs", () => {
+  it("validates 6 projects with verified real display photos on disk (CR-014)", () => {
     expect(projectsData.length).toBe(6);
     projectsData.forEach((project) => {
       expect(() => ProjectItemSchema.parse(project)).not.toThrow();
-      expect(project.coverPath).toMatch(/^\/assets\/projects\//);
+      expect(project.coverPath).toMatch(/^\/assets\/projects\/.*\.(png|jpg|webp)$/);
+      const diskPath = path.resolve(process.cwd(), "public" + project.coverPath);
+      expect(fs.existsSync(diskPath)).toBe(true);
+      expect(fs.statSync(diskPath).size).toBeGreaterThan(0);
       expect(project.repoUrl).toMatch(/^https:\/\/github.com\//);
     });
   });

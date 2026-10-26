@@ -4,11 +4,25 @@ import * as React from "react";
 import Image from "next/image";
 import { Container, SectionHeader, Card } from "@/components/ui/primitives";
 import { projectsData } from "@/data/projects";
-import { ExternalLink, Lock } from "lucide-react";
+import { type ProjectItem } from "@/data/schemas";
+import { ExternalLink, Lock, Maximize2 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/context";
+import { Lightbox } from "@/components/ui/lightbox";
 
 export function ProjectsSection() {
   const { t } = useLanguage();
+  const [selectedProject, setSelectedProject] = React.useState<ProjectItem | null>(null);
+  const triggerRefMap = React.useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  const closeModal = React.useCallback(() => {
+    const projectId = selectedProject?.id;
+    setSelectedProject(null);
+    if (projectId) {
+      setTimeout(() => {
+        triggerRefMap.current.get(projectId)?.focus();
+      }, 50);
+    }
+  }, [selectedProject]);
 
   return (
     <section id="projects" className="scroll-mt-24 py-16 sm:py-20">
@@ -31,16 +45,32 @@ export function ProjectsSection() {
                 className="group flex flex-col justify-between h-full bg-surface-card p-4 sm:p-5 transition-all duration-300 hover:border-accent hover:shadow-[0_0_24px_var(--color-accent-glow)]"
               >
                 <div>
-                  {/* Aspect-Locked 16:10 Cover Container */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-raised mb-5">
+                  {/* Interactive Thumbnail Preview Trigger (AC-3, CR-014) */}
+                  <button
+                    ref={(el) => {
+                      if (el) triggerRefMap.current.set(project.id, el);
+                      else triggerRefMap.current.delete(project.id);
+                    }}
+                    type="button"
+                    onClick={() => setSelectedProject(project)}
+                    aria-label={`${t.projects.previewAria} ${project.title}`}
+                    className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-raised mb-5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent group/btn block text-left"
+                  >
                     <Image
                       src={project.coverPath}
                       alt={`${project.title} Preview Thumbnail`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="object-cover transition-transform duration-300 group-hover/btn:scale-105"
                     />
-                  </div>
+                    {/* Hover indicator overlay */}
+                    <div className="absolute inset-0 bg-bg-page/40 opacity-0 group-hover/btn:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                      <span className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-text-strong bg-bg-page/90 px-3 py-1.5 rounded border border-border-default shadow-xs">
+                        <Maximize2 className="h-3.5 w-3.5 text-accent" />
+                        <span>{t.projects.viewImage}</span>
+                      </span>
+                    </div>
+                  </button>
 
                   {/* Project Title */}
                   <h3 className="font-display font-bold text-lg sm:text-xl text-text-strong uppercase tracking-tight mb-2.5">
@@ -65,14 +95,14 @@ export function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* Bottom Action Footer Pinned to Card Bottom */}
+                {/* Bottom Action Footer Pinned to Card Bottom (Separate link target, AC-5) */}
                 <div className="border-t border-border-default/80 pt-4 mt-auto flex items-center justify-between">
                   {isPublic ? (
                     <a
                       href={project.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-accent-text hover:text-accent transition-colors"
+                      className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-accent-text hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
                     >
                       <span>{t.projects.viewRepo}</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -92,6 +122,19 @@ export function ProjectsSection() {
             );
           })}
         </div>
+
+        {/* Shared Lightbox Modal (CR-014, AC-3..AC-6) */}
+        {selectedProject && (
+          <Lightbox
+            isOpen={Boolean(selectedProject)}
+            onClose={closeModal}
+            src={selectedProject.coverPath}
+            alt={selectedProject.title}
+            title={selectedProject.title}
+            closeAriaLabel={t.projects.closeModal}
+            aspectRatioClass="aspect-[4/3] sm:aspect-[16/10]"
+          />
+        )}
       </Container>
     </section>
   );
