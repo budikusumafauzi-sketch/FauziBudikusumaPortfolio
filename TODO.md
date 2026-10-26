@@ -12,11 +12,11 @@
 |---|---|
 | Date | 2026-10-26 |
 | Current phase | **7 — Quality and security review (Revision 4: CR-014 Zero-Unavailable Chatbot)** |
-| Waiting for | Resilience architecture: never-unavailable design (`TASK-043`) |
-| Last completed task | TASK-042 — Root-cause proof by experiment (CR-014 / Revision 4) |
-| Next task | TASK-043 — Resilience architecture: never-unavailable design (CR-014 / Revision 4) |
+| Waiting for | Fault-injection and soak verification (`TASK-044`) |
+| Last completed task | TASK-043 — Resilience architecture: never-unavailable design (CR-014 / Revision 4) |
+| Next task | TASK-044 — Fault-injection and soak verification (CR-014 / Revision 4) |
 | Blockers | None |
-| Last verified commit | `0534529` |
+| Last verified commit | `f905719` |
 
 ## 2. Phases and gates
 
@@ -80,8 +80,8 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [039](tasks/TASK-039-idle-failure-hedged-requests-snapshot.md) | Chatbot tail-latency & 30-min idle-failure elimination (CR-011) | 7 | P0 | `DONE` | TASK-043-archive |
 | [040](tasks/TASK-040-knowledge-expansion-helpful-fallback.md) | Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) | 7 | P0 | `DONE` | TASK-039 |
 | [042](tasks/TASK-042-root-cause-experiment.md) | Root-cause proof by experiment (CR-014 / Revision 4) | 7 | P0 | `DONE` | TASK-040 |
-| [043](tasks/TASK-043-never-unavailable-architecture.md) | Resilience architecture: never-unavailable design (CR-014 / Revision 4) | 7 | P0 | `IN_PROGRESS` | TASK-042 |
-| [044](tasks/TASK-044-fault-injection-soak.md) | Fault-injection and soak verification (CR-014 / Revision 4) | 7 | P0 | `TODO` | TASK-043 |
+| [043](tasks/TASK-043-never-unavailable-architecture.md) | Resilience architecture: never-unavailable design (CR-014 / Revision 4) | 7 | P0 | `DONE` | TASK-042 |
+| [044](tasks/TASK-044-fault-injection-soak.md) | Fault-injection and soak verification (CR-014 / Revision 4) | 7 | P0 | `IN_PROGRESS` | TASK-043 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 

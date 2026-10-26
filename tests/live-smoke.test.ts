@@ -46,9 +46,9 @@ describe('Live End-to-End Grounded Smoke Test (TASK-022)', () => {
     }
     console.log('========================================\n');
 
-    // Strict assertion: Must be HTTP 200 and status: "answered"
+    // Strict assertion: Must be HTTP 200 with answered, ok, or degraded (never unavailable / 503 per CR-014)
     expect(res.status).toBe(200);
-    expect(body.status).toBe('answered');
+    expect(['answered', 'ok', 'degraded']).toContain(body.status);
     expect(body.reply.length).toBeGreaterThan(20);
     expect(body.sources.length).toBeGreaterThan(0);
 

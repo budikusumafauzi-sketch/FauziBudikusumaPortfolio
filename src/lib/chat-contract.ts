@@ -56,6 +56,8 @@ export const ANSWER_MAX_CHARS = 1_200;
 export const ChatStatusSchema = z.enum([
   'ok',
   'answered',
+  'greeting',
+  'degraded',
   'no_data',
   'out_of_scope',
   'invalid_request',
@@ -130,12 +132,29 @@ export type Source = z.infer<typeof SourceSchema>;
 // ─── Response shapes ──────────────────────────────────────────────────────────
 
 export const ChatResponseSchema = z.union([
-  // Grounded answer
+  // Grounded answer / Tier 0 starter chip answer
   z.object({
     status: z.union([z.literal('ok'), z.literal('answered')]),
     answer: z.string(),
     reply: z.string().optional(),
     sources: z.array(SourceSchema),
+    caption: z.string().optional(),
+  }),
+  // Tier 0 Greeting / polite reply
+  z.object({
+    status: z.literal('greeting'),
+    answer: z.string(),
+    reply: z.string().optional(),
+    sources: z.array(SourceSchema).optional(),
+    caption: z.string().optional(),
+  }),
+  // Tier 3 Degraded deterministic answer from local composer
+  z.object({
+    status: z.literal('degraded'),
+    answer: z.string(),
+    reply: z.string().optional(),
+    caption: z.string().optional(),
+    sources: z.array(SourceSchema).optional(),
   }),
   // Deterministic no-data or out-of-scope (no Gemini call)
   z.object({
@@ -157,7 +176,7 @@ export const ChatResponseSchema = z.union([
     answer: z.string(),
     retryAfterSeconds: z.number().int().positive(),
   }),
-  // Server errors
+  // Server errors (strictly reserved for catastrophic total loss of knowledge sources)
   z.object({
     status: z.union([z.literal('unavailable'), z.literal('error')]),
     answer: z.string(),
@@ -175,6 +194,9 @@ export const COPY_EN = {
     "I can only answer questions about Fauzi's public portfolio, so I can't help with that request.",
   unavailable:
     'The assistant is temporarily unavailable. The rest of the portfolio works as usual — please try again later.',
+  degraded_caption: "Quick answer from Fauzi's portfolio records; the AI assistant is busy right now.",
+  greeting:
+    "Hello! I am Fauzi's portfolio assistant. You can ask me about his software & networking projects, 35 technical skills, certifications, work experience, or direct contact channels.",
   rate_limited: 'Too many questions in a short time. Please wait a moment and try again.',
   invalid_request: `Please enter a question between 1 and ${MAX_MESSAGE_LENGTH} characters.`,
   error: 'Something went wrong. Please try again later.',
@@ -189,6 +211,9 @@ export const COPY_ID = {
     'Saya hanya dapat menjawab pertanyaan seputar portofolio publik Fauzi, sehingga saya tidak dapat membantu permintaan tersebut.',
   unavailable:
     'Asisten untuk sementara waktu tidak tersedia. Bagian portofolio lainnya tetap berfungsi normal — silakan coba kembali beberapa saat lagi.',
+  degraded_caption: 'Jawaban cepat dari arsip portofolio Fauzi; asisten AI sedang sibuk.',
+  greeting:
+    'Halo! Saya asisten portofolio Fauzi. Anda dapat menanyakan tentang proyek rekayasa perangkat lunak & jaringan, 35 keahlian teknis, sertifikasi, pengalaman kerja, maupun kontak langsung Fauzi.',
   rate_limited: 'Terlalu banyak pertanyaan dalam waktu singkat. Harap tunggu sejenak dan coba lagi.',
   invalid_request: `Harap masukkan pertanyaan antara 1 hingga ${MAX_MESSAGE_LENGTH} karakter.`,
   error: 'Terjadi kendala teknis. Silakan coba kembali nanti.',

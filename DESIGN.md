@@ -219,18 +219,26 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 - Left: bold name + bordered mono location chip ("YOGYAKARTA, ID" — owner-verify), tagline in two lines, small mono copyright. Mobile: centered stack.
 - **TOP** control: bordered rectangle with up-arrow + mono "TOP", sits immediately **left of** the chat launcher in all exports (OPEN DS-03: static in the footer vs. part of the floating group). RECOMMENDED: an anchor to `#home` that never overlaps the launcher.
 
-### 5.12 Chatbot (DS-CHT) — ref 2 (open), 3/5/7 (closed); CR-009, CR-010, CR-011
+### 5.12 Chatbot (DS-CHT) — ref 2 (open), 3/5/7 (closed); CR-009, CR-010, CR-011, CR-014
 - **Launcher:** fixed bottom-right; rounded-square tile, **2 px crimson border**, light (white) inner tile with a dark headset-bot icon in both themes; small crimson dot at the top-right corner (C-09: show only until first open, or omit).
-- **Panel** (anchored above the launcher): rounded card with hairline border and shadow. Header: small icon tile, title "Fauzi's AI Assistant", small crimson-bordered status badge "LIVE" (C-09: reflects real state, verified on 200 responses), mono subtitle "Answers strictly from verified profile data", close **X**. Below: row of starter chips (e.g. "What projects has he built?", "Skills & networking background" — answerable from real data). Messages: visitor bubbles right (neutral raised), assistant bubbles left with small avatar, key terms may be highlighted in crimson-light; a distinct bordered **guardrail message** with a lock icon and mono label "SCOPE GUARDRAIL ENFORCED" for out-of-scope replies. Footer: text input "Ask a question about Fauzi…" + crimson square send button.
+- **Panel** (anchored above the launcher): rounded card with hairline border and shadow. Header: small icon tile, title "Fauzi's AI Assistant", status badge (see states below), mono subtitle "Answers strictly from verified profile data", close **X**. Below: row of starter chips (e.g. "What projects has he built?", "Skills & networking background" — answerable from real data). Messages: visitor bubbles right (neutral raised), assistant bubbles left with small avatar, key terms may be highlighted in crimson-light; a distinct bordered **guardrail message** with a lock icon and mono label "SCOPE GUARDRAIL ENFORCED" for out-of-scope replies. Footer: text input "Ask a question about Fauzi…" + crimson square send button.
+- **Status Badge States (CR-014):**
+  - **"LIVE":** crimson-bordered accent badge with pulsing green/crimson dot, rendered when the last AI answer succeeded or on initial ready state.
+  - **"QUICK MODE" (EN) / "MODE CEPAT" (ID):** neutral bordered chip with accent dot, rendered when an answer was deterministically composed by Tier 3 local composer while AI was busy or timed out. Never displays "UNAVAILABLE" when degraded mode is functioning smoothly; automatically transitions back to "LIVE" upon the next successful AI response.
+  - **"Unavailable":** muted gray badge, reserved exclusively for the practically impossible edge case where no knowledge source can be loaded (HTTP 503).
+- **Degraded Message Rendering (CR-014):** Answers from the Tier 3 local composer render inside standard assistant chat bubbles accompanied by an italicized disclaimer caption below the body:
+  - EN: *"Quick answer from Fauzi's portfolio records; the AI assistant is busy right now."*
+  - ID: *"Jawaban cepat dari catatan portofolio Fauzi; asisten AI sedang sibuk."*
+  No "SERVICE NOTICE" banner is shown for degraded responses; "SERVICE NOTICE" is strictly reserved for genuine `unavailable` (503) and rate limits (429).
 - **Panel Warm-Up on Open (CR-011 / R-037):** Opening the chat panel fires a lightweight background `GET /api/chat` (returning `204 No Content`) to warm the in-memory knowledge cache and wake the database connection ahead of visitor typing, with 0 AI calls.
-- **Slow-Request Notice (CR-011):** If an in-flight request exceeds **4 seconds**, display a subtle, calm helper line below the typing indicator:
+- **Typing Indicator & Shortened Notice (CR-011, CR-014):** If an in-flight request exceeds **2.5 seconds** (shortened from 4s due to the 4.0s hard AI budget), display a subtle, calm helper line below the typing indicator:
   - EN: *"Taking a little longer than usual — finalizing verified answer..."*
   - ID: *"Membutuhkan waktu sedikit lebih lama — sedang menyiapkan jawaban terverifikasi..."*
-  When the response completes, this notice clears immediately, and the status badge confirms `"LIVE"`.
-- Panel size: RECOMMENDED `min(24rem, 100vw − 2rem)` wide, `min(32rem, 70dvh)` tall on desktop; mobile: fits `dvh`, keeps input visible above the on-screen keyboard, honors `env(safe-area-inset-*)`; messages area scrolls independently.
-- States to build: closed, open-empty (welcome + chips), loading (typing indicator, send disabled, >4s notice), answer, `no_data`/`out_of_scope` (guardrail style), `rate_limited`, `unavailable`, `error`. Statuses map to `ARCHITECTURE.md` §7 — the UI never shows raw errors.
-- Mobile panel layout is **not depicted** (only the launcher is) → derive, then flag for owner review (DS-06).
-- Behavior in `PRD.md` FR-CHT-xx / CB-xx.
+  When the response completes (≤ 5.0s worst-case), this notice clears immediately, and the status badge updates appropriately.
+- **Panel size:** RECOMMENDED `min(24rem, 100vw − 2rem)` wide, `min(32rem, 70dvh)` tall on desktop; mobile: fits `dvh`, keeps input visible above the on-screen keyboard, honors `env(safe-area-inset-*)`; messages area scrolls independently.
+- **States to build:** closed, open-empty (welcome + chips), loading (typing indicator, send disabled, >2.5s notice), answer (`ok`), `greeting` (instant fast path), `degraded` (local composer with caption), `no_data`/`out_of_scope` (guardrail style), `rate_limited`, `unavailable` (only if all sources fail). Statuses map to `ARCHITECTURE.md` §7 — the UI never shows raw errors.
+- **Mobile panel layout is not depicted** (only the launcher is) → derive, then flag for owner review (DS-06).
+- **Behavior in `PRD.md` FR-CHT-xx / CB-xx.**
 
 ## 6. Interaction-state matrix (all required)
 

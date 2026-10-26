@@ -3,7 +3,9 @@
     "id": "certification:mtcna",
     "category": "CERTIFICATION",
     "title": "MikroTik Certified Network Associate (MTCNA) (MikroTik)",
+    "titleId": "MikroTik Certified Network Associate (MTCNA) (MikroTik)",
     "body": "Verified credential issued by MikroTik. Issued 2026. Category: Networking. Details: Certification demonstrating foundational competency in MikroTik-based network management, covering routing configuration, wireless networking, firewalls, and bandwidth management to ensure reliable network connectivity.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh MikroTik. Issued 2026. Kategori: Networking. Rincian: Sertifikasi yang menunjukkan kompetensi dasar dalam pengelolaan jaringan berbasis MikroTik, mencakup konfigurasi routing, jaringan nirkabel, firewall, serta manajemen bandwidth untuk mendukung konektivitas jaringan yang andal.",
     "keywords": [
       "certification",
       "credential",
@@ -23,7 +25,9 @@
     "id": "certification:google-cybersecurity",
     "category": "CERTIFICATION",
     "title": "Google Cybersecurity Professional Certificate (Google)",
+    "titleId": "Google Cybersecurity Professional Certificate (Google)",
     "body": "Verified credential issued by Google. Issued 2025. Category: Security. Details: Professional certification program covering cybersecurity fundamentals, threat and vulnerability identification, network hardening, and the use of security tools such as SIEM. Also encompasses the practical use of Linux, SQL, and Python to support security analysis and incident response.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh Google. Issued 2025. Kategori: Security. Rincian: Program sertifikasi profesional yang mencakup dasar-dasar keamanan siber, identifikasi ancaman dan kerentanan, pengamanan jaringan, serta penggunaan alat keamanan seperti SIEM. Materi juga mencakup pemanfaatan Linux, SQL, dan Python untuk mendukung analisis serta penanganan masalah keamanan.",
     "keywords": [
       "certification",
       "credential",
@@ -42,7 +46,9 @@
     "id": "certification:google-ai",
     "category": "CERTIFICATION",
     "title": "Google AI Essentials (Google)",
+    "titleId": "Google AI Essentials (Google)",
     "body": "Verified credential issued by Google. Issued 2025. Category: AI & ML. Details: Foundational learning program on leveraging generative artificial intelligence effectively and responsibly, including prompt design, AI integration into daily workflows, productivity optimization, and understanding ethical AI practices.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh Google. Issued 2025. Kategori: AI & ML. Rincian: Program pembelajaran dasar mengenai pemanfaatan kecerdasan buatan generatif secara efektif dan bertanggung jawab, termasuk penyusunan prompt, integrasi AI ke dalam alur kerja, peningkatan produktivitas, serta pemahaman mengenai penggunaan AI yang etis.",
     "keywords": [
       "certification",
       "credential",
@@ -62,7 +68,9 @@
     "id": "certification:uji-kompetensi-1",
     "category": "CERTIFICATION",
     "title": "Sertifikat Uji Kompetensi Keahlian (Bagian 1) (BNSP / LSP SMK N 1 Seyegan)",
+    "titleId": "Sertifikat Uji Kompetensi Keahlian (Bagian 1) (BNSP / LSP SMK N 1 Seyegan)",
     "body": "Verified credential issued by BNSP / LSP SMK N 1 Seyegan. Issued 2026. Category: Vocational. Details: Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh BNSP / LSP SMK N 1 Seyegan. Issued 2026. Kategori: Vocational. Rincian: Sertifikat kompetensi yang mencakup dasar perancangan jaringan area lokal, penyusunan topologi, identifikasi kebutuhan perangkat, pengkabelan terstruktur, dan instalasi infrastruktur jaringan sesuai kebutuhan teknis.",
     "keywords": [
       "certification",
       "credential",
@@ -82,7 +90,9 @@
     "id": "certification:uji-kompetensi-2",
     "category": "CERTIFICATION",
     "title": "Sertifikat Uji Kompetensi Keahlian (Bagian 2) (BNSP / LSP SMK N 1 Seyegan)",
+    "titleId": "Sertifikat Uji Kompetensi Keahlian (Bagian 2) (BNSP / LSP SMK N 1 Seyegan)",
     "body": "Verified credential issued by BNSP / LSP SMK N 1 Seyegan. Issued 2026. Category: Vocational. Details: Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh BNSP / LSP SMK N 1 Seyegan. Issued 2026. Kategori: Vocational. Rincian: Sertifikat kompetensi yang mencakup dasar perancangan jaringan area lokal, penyusunan topologi, identifikasi kebutuhan perangkat, pengkabelan terstruktur, dan instalasi infrastruktur jaringan sesuai kebutuhan teknis.",
     "keywords": [
       "certification",
       "credential",
@@ -102,7 +112,9 @@
     "id": "certification:nilai-pkl-1",
     "category": "CERTIFICATION",
     "title": "Sertifikat Praktik Kerja Lapangan (Bagian 1) (Dinas Kominfo DIY)",
+    "titleId": "Sertifikat Praktik Kerja Lapangan (Bagian 1) (Dinas Kominfo DIY)",
     "body": "Verified credential issued by Dinas Kominfo DIY. Issued 2025. Category: Industry Experience. Details: Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh Dinas Kominfo DIY. Issued 2025. Kategori: Industry Experience. Rincian: Dokumen pengakuan atas pelaksanaan praktik kerja lapangan di bidang layanan teknologi informasi. Kegiatan praktik mencakup dukungan teknis, pemantauan jaringan dan perangkat, penanganan kendala konektivitas, serta dokumentasi dan dukungan pemeliharaan infrastruktur TI.",
     "keywords": [
       "certification",
       "credential",
@@ -122,7 +134,9 @@
     "id": "certification:nilai-pkl-2",
     "category": "CERTIFICATION",
     "title": "Sertifikat Penilaian Praktik Kerja Lapangan (Bagian 2) (Dinas Kominfo DIY)",
+    "titleId": "Sertifikat Penilaian Praktik Kerja Lapangan (Bagian 2) (Dinas Kominfo DIY)",
     "body": "Verified credential issued by Dinas Kominfo DIY. Issued 2025. Category: Industry Experience. Details: Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
+    "bodyId": "Kredensial terverifikasi yang diterbitkan oleh Dinas Kominfo DIY. Issued 2025. Kategori: Industry Experience. Rincian: Dokumen pengakuan atas pelaksanaan praktik kerja lapangan di bidang layanan teknologi informasi. Kegiatan praktik mencakup dukungan teknis, pemantauan jaringan dan perangkat, penanganan kendala konektivitas, serta dokumentasi dan dukungan pemeliharaan infrastruktur TI.",
     "keywords": [
       "certification",
       "credential",
@@ -141,7 +155,9 @@
     "id": "contact:email",
     "category": "CONTACT",
     "title": "Direct Channel: Direct Email",
+    "titleId": "Saluran Langsung: Direct Email",
     "body": "Fauzi Budikusuma's approved contact channel via Direct Email: budikusumafauzi@gmail.com. Visitors may connect or inquire directly using this verified channel.",
+    "bodyId": "Saluran kontak resmi Fauzi Budikusuma melalui Direct Email: budikusumafauzi@gmail.com. Pengunjung dapat terhubung atau berdiskusi langsung melalui saluran terverifikasi ini.",
     "keywords": [
       "contact",
       "kontak",
@@ -160,7 +176,9 @@
     "id": "contact:linkedin",
     "category": "CONTACT",
     "title": "Direct Channel: LinkedIn Profile",
+    "titleId": "Saluran Langsung: LinkedIn Profile",
     "body": "Fauzi Budikusuma's approved contact channel via LinkedIn Profile: linkedin.com/in/fauzi-budikusuma. Visitors may connect or inquire directly using this verified channel.",
+    "bodyId": "Saluran kontak resmi Fauzi Budikusuma melalui LinkedIn Profile: linkedin.com/in/fauzi-budikusuma. Pengunjung dapat terhubung atau berdiskusi langsung melalui saluran terverifikasi ini.",
     "keywords": [
       "contact",
       "kontak",
@@ -179,7 +197,9 @@
     "id": "contact:github",
     "category": "CONTACT",
     "title": "Direct Channel: GitHub Repositories",
+    "titleId": "Saluran Langsung: GitHub Repositories",
     "body": "Fauzi Budikusuma's approved contact channel via GitHub Repositories: github.com/budikusumafauzi-sketch. Visitors may connect or inquire directly using this verified channel.",
+    "bodyId": "Saluran kontak resmi Fauzi Budikusuma melalui GitHub Repositories: github.com/budikusumafauzi-sketch. Pengunjung dapat terhubung atau berdiskusi langsung melalui saluran terverifikasi ini.",
     "keywords": [
       "contact",
       "kontak",
@@ -198,7 +218,9 @@
     "id": "contact:instagram",
     "category": "CONTACT",
     "title": "Direct Channel: Instagram Activity",
+    "titleId": "Saluran Langsung: Instagram Activity",
     "body": "Fauzi Budikusuma's approved contact channel via Instagram Activity: @budikusuma._fauzi. Visitors may connect or inquire directly using this verified channel.",
+    "bodyId": "Saluran kontak resmi Fauzi Budikusuma melalui Instagram Activity: @budikusuma._fauzi. Pengunjung dapat terhubung atau berdiskusi langsung melalui saluran terverifikasi ini.",
     "keywords": [
       "contact",
       "kontak",
@@ -217,7 +239,9 @@
     "id": "contact:credly",
     "category": "CONTACT",
     "title": "Direct Channel: Credly Profile",
+    "titleId": "Saluran Langsung: Credly Profile",
     "body": "Fauzi Budikusuma's approved contact channel via Credly Profile: credly.com/users/fauzi-budikusuma. Visitors may connect or inquire directly using this verified channel.",
+    "bodyId": "Saluran kontak resmi Fauzi Budikusuma melalui Credly Profile: credly.com/users/fauzi-budikusuma. Pengunjung dapat terhubung atau berdiskusi langsung melalui saluran terverifikasi ini.",
     "keywords": [
       "contact",
       "kontak",
@@ -240,7 +264,9 @@
     "id": "education:amikom",
     "category": "EDUCATION",
     "title": "Bachelor of Informatics (S1 Informatika) at Universitas AMIKOM Yogyakarta",
+    "titleId": "Bachelor of Informatics (S1 Informatika) di Universitas AMIKOM Yogyakarta",
     "body": "Pursuing a bachelor's degree in Informatics, building a solid foundation in computing, algorithms, database systems, and software engineering, with focused study on Artificial Intelligence and Machine Learning systems. Period: 2026 — 2030. Academic curriculum and practical coursework center on software engineering, distributed systems, relational and NoSQL database systems, algorithm optimization, and modern full-stack web architectures.",
+    "bodyId": "Menempuh pendidikan sarjana di bidang Informatika dengan membangun fondasi dalam komputasi, algoritma, basis data, dan pengembangan perangkat lunak. Saya juga berfokus memperdalam pemahaman mengenai Kecerdasan Buatan (Artificial Intelligence/AI) dan Pembelajaran Mesin (Machine Learning/ML), termasuk konsep, metode, serta penerapannya dalam pengembangan sistem cerdas dan solusi berbasis data. Periode: 2026 — 2030. Kurikulum dan perkuliahan praktikum berpusat pada rekayasa perangkat lunak, sistem terdistribusi, optimasi algoritma, dan arsitektur web modern.",
     "keywords": [
       "education",
       "study",
@@ -263,7 +289,9 @@
     "id": "education:smk",
     "category": "EDUCATION",
     "title": "Computer & Network Engineering (TKJ) at SMK Negeri 1 Seyegan",
+    "titleId": "Computer & Network Engineering (TKJ) di SMK Negeri 1 Seyegan",
     "body": "Built a technical foundation in network topology, device configuration, routing, switching, system administration, and connectivity troubleshooting, forming the bedrock for broader IT infrastructure exploration. Period: 2023 — 2026. Hands-on mastery in MikroTik RouterOS routing, Cisco IOS switching, Linux server administration, structured fiber optic and UTP LAN cabling, network topology design, and earned two national BNSP/LSP UKK vocational certifications.",
+    "bodyId": "Membangun fondasi teknis dalam topologi jaringan, konfigurasi perangkat, routing, switching, administrasi sistem, dan pemecahan masalah konektivitas. Pengalaman pembelajaran ini membentuk dasar untuk mengeksplorasi infrastruktur TI dan pengembangan sistem secara lebih luas. Periode: 2023 — 2026. Menguasai praktik routing MikroTik RouterOS, switching Cisco IOS, administrasi server Linux, pengkabelan serat optik dan LAN UTP, serta meraih sertifikasi kejuruan BNSP/LSP UKK nasional.",
     "keywords": [
       "education",
       "study",
@@ -286,7 +314,9 @@
     "id": "experience:kominfo",
     "category": "EXPERIENCE",
     "title": "Help Desk Supervisor Intern — Dinas Komunikasi dan Informatika (Kominfo) DIY",
+    "titleId": "Help Desk Supervisor Intern — Dinas Komunikasi dan Informatika (Kominfo) DIY",
     "body": "Underwent practical training in IT services, supporting network and bandwidth monitoring, device health inspection, troubleshooting, technical documentation, and network equipment installation using The Dude and PRTG across provincial government and school environments. Period: 2025. Responsibilities included supervising provincial government IT help desk operations, managing technical incident escalation workflows, monitoring provincial government network telemetry and service continuity, and troubleshooting enterprise network and server infrastructure.",
+    "bodyId": "Menjalani praktik di bidang layanan teknologi informasi dengan mendukung pemantauan jaringan dan bandwidth, pemeriksaan status perangkat, troubleshooting, serta dokumentasi teknis. Menggunakan The Dude dan PRTG untuk membantu pemantauan jaringan di lingkungan pemerintah Provinsi dan sekolah, serta mendukung kegiatan instalasi perangkat jaringan sesuai kebutuhan tim. Periode: 2025. Tanggung jawab mencakup operasional helpdesk TI, pemantauan telemetri jaringan pemerintah provinsi, penanganan gangguan teknis, serta pemeliharaan infrastruktur server dan perangkat jaringan.",
     "keywords": [
       "experience",
       "work",
@@ -310,7 +340,9 @@
     "id": "gallery:gdg-jogja-gen-ai",
     "category": "GALLERY",
     "title": "Google Developer Groups (GDG) Jogja — Build Your First Gen AI App",
+    "titleId": "Google Developer Groups (GDG) Jogja — Build Your First Gen AI App",
     "body": "Active participation in Google Developer Groups (GDG) Jogja session on building generative AI applications. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
+    "bodyId": "Active participation in Google Developer Groups (GDG) Jogja session on building generative AI applications. Foto dokumentasi visual kegiatan lapangan portofolio Fauzi dengan pratinjau interaktif.",
     "keywords": [
       "gallery",
       "documentation",
@@ -324,7 +356,9 @@
     "id": "gallery:magang-kominfo-diy",
     "category": "GALLERY",
     "title": "Internship Activities at Dinas Kominfo DIY",
+    "titleId": "Kegiatan Magang di Dinas Kominfo DIY",
     "body": "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
+    "bodyId": "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY. Foto dokumentasi visual kegiatan lapangan portofolio Fauzi dengan pratinjau interaktif.",
     "keywords": [
       "gallery",
       "documentation",
@@ -339,7 +373,9 @@
     "id": "gallery:magang-monitoring-jaringan",
     "category": "GALLERY",
     "title": "Network Monitoring Internship Activities",
+    "titleId": "Kegiatan Magang Monitoring Jaringan",
     "body": "Real-time enterprise network telemetry and provincial infrastructure monitoring during internship at Dinas Kominfo DIY. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
+    "bodyId": "Real-time enterprise network telemetry and provincial infrastructure monitoring during internship at Dinas Kominfo DIY. Foto dokumentasi visual kegiatan lapangan portofolio Fauzi dengan pratinjau interaktif.",
     "keywords": [
       "gallery",
       "documentation",
@@ -354,7 +390,9 @@
     "id": "gallery:maintenance-server",
     "category": "GALLERY",
     "title": "Server & Infrastructure Maintenance",
+    "titleId": "Maintenance Server & Infrastruktur",
     "body": "Routine server hardware maintenance, structured rack inspection, and operational node integrity checks. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
+    "bodyId": "Routine server hardware maintenance, structured rack inspection, and operational node integrity checks. Foto dokumentasi visual kegiatan lapangan portofolio Fauzi dengan pratinjau interaktif.",
     "keywords": [
       "gallery",
       "documentation",
@@ -369,7 +407,9 @@
     "id": "gallery:policy-brief-sleman",
     "category": "GALLERY",
     "title": "Handover of Sleman Regency Organizational Policy Brief Outcomes",
+    "titleId": "Penyerahan Policy Brief Organisasi Kabupaten Sleman",
     "body": "Formal handover of organizational policy brief formulation outcomes for Sleman Regency. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
+    "bodyId": "Formal handover of organizational policy brief formulation outcomes for Sleman Regency. Foto dokumentasi visual kegiatan lapangan portofolio Fauzi dengan pratinjau interaktif.",
     "keywords": [
       "gallery",
       "documentation",
@@ -383,7 +423,9 @@
     "id": "gallery:survey-gedung-agung",
     "category": "GALLERY",
     "title": "Gedung Agung Network Survey",
+    "titleId": "Survey Lapangan Gedung Agung",
     "body": "On-site field survey and network infrastructure assessment conducted at Gedung Agung. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
+    "bodyId": "On-site field survey and network infrastructure assessment conducted at Gedung Agung. Foto dokumentasi visual kegiatan lapangan portofolio Fauzi dengan pratinjau interaktif.",
     "keywords": [
       "gallery",
       "documentation",
@@ -398,7 +440,9 @@
     "id": "profile:main",
     "category": "PROFILE",
     "title": "FAUZI BUDIKUSUMA — SOFTWARE DEVELOPMENT & NETWORK ENGINEER",
+    "titleId": "FAUZI BUDIKUSUMA — Pengembang Perangkat Lunak & Rekayasa Jaringan",
     "body": "Fauzi Budikusuma is a Software Development & Network Engineer based in Yogyakarta and Surakarta, Indonesia. He is an undergraduate Informatics student at Universitas AMIKOM Yogyakarta and a Computer & Network Engineering (TKJ) graduate from SMK Negeri 1 Seyegan. He is actively available for professional opportunities, internships, and collaborative engineering roles. Spoken languages: Indonesian (native) and English (professional working proficiency). Overview: Undergraduate Informatics student at Universitas AMIKOM Yogyakarta and Computer & Network Engineering graduate from SMK Negeri 1 Seyegan. Combines modern full-stack software engineering with enterprise network architecture, Mikrotik routing, and AI-assisted automation. Focus Areas: Full-Stack Web & API Development, Enterprise Network Architecture & Routing, Artificial Intelligence & Machine Learning.",
+    "bodyId": "Fauzi Budikusuma adalah seorang Software Development & Network Engineer yang berbasis di Yogyakarta dan Surakarta, Indonesia. Beliau merupakan mahasiswa S1 Informatika di Universitas AMIKOM Yogyakarta dan lulusan Teknik Komputer dan Jaringan (TKJ) dari SMK Negeri 1 Seyegan. Terbuka aktif untuk peluang profesional, magang, dan peran rekayasa kolaboratif. Bahasa yang dikuasai: Indonesia (asli) dan Inggris (kemahiran kerja profesional). Gambaran Umum: Berfokus pada perancangan aplikasi, integrasi sistem, keandalan jaringan, dan otomatisasi teknis. Area Fokus: Pengembangan Web & API Full-Stack, Arsitektur & Routing Jaringan Enterprise, Kecerdasan Buatan & Pembelajaran Mesin.",
     "keywords": [
       "fauzi",
       "budikusuma",
@@ -429,7 +473,9 @@
     "id": "profile:philosophy",
     "category": "PROFILE",
     "title": "FAUZI BUDIKUSUMA — Engineering Philosophy & Working Style",
+    "titleId": "FAUZI BUDIKUSUMA — Filosofi Rekayasa & Prinsip Kerja",
     "body": "Fauzi combines rigorous systems precision with practical network engineering and clean software architecture. His working philosophy centers on building resilient distributed backends, reliable enterprise network topologies, grounded AI integrations with zero hallucination tolerance, and comprehensive technical documentation. He embraces defensive programming, automated telemetry, and transparent engineering standards. Available for collaborative software engineering and network infrastructure opportunities.",
+    "bodyId": "Fauzi menggabungkan presisi sistem dengan rekayasa jaringan praktis dan arsitektur perangkat lunak yang terstruktur. Prinsip kerjanya berpusat pada keandalan sistem, integritas jaringan, keamanan teknis, serta integrasi AI berbasis data tanpa halusinasi. Mengutamakan dokumentasi akurat, pemrograman defensif, dan pemeliharaan sistem jangka panjang. Tersedia untuk kolaborasi rekayasa perangkat lunak dan infrastruktur jaringan.",
     "keywords": [
       "philosophy",
       "filosofi",
@@ -452,7 +498,9 @@
     "id": "profile:portfolio-architecture",
     "category": "PROFILE",
     "title": "Portfolio Website & AI Assistant Architecture",
+    "titleId": "Arsitektur Situs Portofolio & Asisten AI",
     "body": "This portfolio and grounded AI assistant are built with Next.js 16 (App Router), React, TypeScript, and Tailwind CSS. The assistant uses a grounded Gemini Flash architecture with zero external tools, strict prompt grounding against verified records, a read-only PostgreSQL runtime on Neon, in-memory SWR caching (12h TTL), build-time snapshot fallback, and hedged fallback requests for zero idle failures and sub-2-second median response times.",
+    "bodyId": "Portofolio dan asisten AI ini dibangun menggunakan Next.js 16 (App Router), React, TypeScript, dan Tailwind CSS. Asisten menggunakan arsitektur Gemini Flash dengan pengikatan ketat pada data terverifikasi, basis data PostgreSQL Neon mode baca saja, cache memori SWR (TTL 12 jam), snapshot cadangan saat build, dan mekanisme hedged fallback untuk menjamin respon cepat dan handal.",
     "keywords": [
       "portfolio",
       "portofolio",
@@ -478,7 +526,9 @@
     "id": "project:network-monitoring-dashboard",
     "category": "PROJECT",
     "title": "Network Monitoring Dashboard",
+    "titleId": "Network Monitoring Dashboard",
     "body": "Network monitoring application presenting device health, latency telemetry, packet loss, and connectivity history through visual dashboards. Features automated incident logging and proactive alerting to detect disruptions and evaluate network reliability. Built with: SNMP, Fastify, TypeScript, Tailwind CSS. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/network-monitoring-dashboard. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "bodyId": "Aplikasi pemantauan jaringan yang menyajikan status perangkat, metrik latensi, kehilangan paket, dan riwayat konektivitas melalui dasbor visual. Dilengkapi pencatatan kejadian serta peringatan otomatis untuk membantu mengidentifikasi gangguan dan mengevaluasi keandalan jaringan. Dibangun dengan: SNMP, Fastify, TypeScript, Tailwind CSS. Repositori publik tersedia di GitHub: https://github.com/budikusumafauzi-sketch/network-monitoring-dashboard. Foto tampilan dengan pratinjau lightbox layar penuh interaktif tersedia di Proyek Pilihan.",
     "keywords": [
       "project",
       "built",
@@ -499,7 +549,9 @@
     "id": "project:research-news-intelligence-center",
     "category": "PROJECT",
     "title": "Research News Intelligence Center",
+    "titleId": "Research News Intelligence Center",
     "body": "Information intelligence platform that aggregates and organizes tech news and academic research publications. Integrates AI-assisted analytics to power automated summarization, key takeaway extraction, topic clustering, and trend tracking via a centralized dashboard. Built with: FastAPI, Python, PostgreSQL, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/research-news-intelligence-center. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "bodyId": "Platform intelijen informasi yang mengumpulkan dan mengorganisasi berita teknologi serta publikasi penelitian. Mengintegrasikan analisis berbantuan AI untuk mendukung peringkasan informasi, ekstraksi poin penting, pengelompokan topik, dan pemantauan tren melalui satu dasbor terpusat. Dibangun dengan: FastAPI, Python, PostgreSQL, Docker. Repositori publik tersedia di GitHub: https://github.com/budikusumafauzi-sketch/research-news-intelligence-center. Foto tampilan dengan pratinjau lightbox layar penuh interaktif tersedia di Proyek Pilihan.",
     "keywords": [
       "project",
       "built",
@@ -520,7 +572,9 @@
     "id": "project:stacklab",
     "category": "PROJECT",
     "title": "StackLab",
+    "titleId": "StackLab",
     "body": "Interactive learning and technical simulation platform offering hands-on practice environments for SQL, APIs, JSON, Linux systems, and computer networking. Designed to validate comprehension, test configurations, and sharpen technical engineering skills in structured workspaces. Built with: Node.js, Docker, TypeScript, Redis. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/stacklab-v1. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "bodyId": "Platform pembelajaran dan simulasi teknis interaktif yang menyediakan lingkungan praktik untuk SQL, API, JSON, Linux, dan jaringan komputer. Dirancang untuk membantu pengguna menguji pemahaman, mengeksplorasi konfigurasi, dan melatih keterampilan teknis melalui lingkungan kerja yang terstruktur. Dibangun dengan: Node.js, Docker, TypeScript, Redis. Repositori publik tersedia di GitHub: https://github.com/budikusumafauzi-sketch/stacklab-v1. Foto tampilan dengan pratinjau lightbox layar penuh interaktif tersedia di Proyek Pilihan.",
     "keywords": [
       "project",
       "built",
@@ -541,7 +595,9 @@
     "id": "project:sentinel",
     "category": "PROJECT",
     "title": "Sentinel",
+    "titleId": "Sentinel",
     "body": "Cybersecurity intelligence platform engineered to evaluate device security posture based on verifiable technical signals. Combines rule-based risk evaluation, threat intelligence, and remediation recommendations, utilizing AI as an analytical assistant rather than an authoritative decision-maker. Built with: Python, Network Security, FastAPI, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/sentinel. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "bodyId": "Platform intelijen keamanan siber yang dirancang untuk mengevaluasi kondisi keamanan perangkat berdasarkan sinyal teknis yang dapat diverifikasi. Menggabungkan evaluasi risiko berbasis aturan, informasi ancaman, dan rekomendasi mitigasi dengan AI sebagai pendukung analisis, bukan penentu hasil penilaian keamanan. Dibangun dengan: Python, Network Security, FastAPI, Docker. Repositori publik tersedia di GitHub: https://github.com/budikusumafauzi-sketch/sentinel. Foto tampilan dengan pratinjau lightbox layar penuh interaktif tersedia di Proyek Pilihan.",
     "keywords": [
       "project",
       "built",
@@ -562,7 +618,9 @@
     "id": "project:enterprise-network-lab",
     "category": "PROJECT",
     "title": "Enterprise Network Lab (MikroTik CHR)",
+    "titleId": "Enterprise Network Lab (MikroTik CHR)",
     "body": "Enterprise network laboratory simulation utilizing MikroTik Cloud Hosted Router (CHR), focusing on OSPF and BGP routing, VLAN segmentation, and hardened firewall filtering. Serves as a practical testbed for multi-region network design, inter-site connectivity, and network infrastructure governance. Built with: MikroTik CHR, OSPF, BGP, VLAN, Firewall. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/enterprise-network-lab-mikrotik. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "bodyId": "Simulasi laboratorium jaringan perusahaan menggunakan MikroTik Cloud Hosted Router (CHR), dengan fokus pada routing OSPF dan BGP, segmentasi VLAN, serta penerapan aturan firewall. Proyek ini menjadi sarana praktik untuk memahami desain jaringan multiwilayah, konektivitas antarsitus, dan pengelolaan infrastruktur jaringan. Dibangun dengan: MikroTik CHR, OSPF, BGP, VLAN, Firewall. Repositori publik tersedia di GitHub: https://github.com/budikusumafauzi-sketch/enterprise-network-lab-mikrotik. Foto tampilan dengan pratinjau lightbox layar penuh interaktif tersedia di Proyek Pilihan.",
     "keywords": [
       "project",
       "built",
@@ -584,7 +642,9 @@
     "id": "project:datacenter-simulation",
     "category": "PROJECT",
     "title": "Data Center Network Simulation",
+    "titleId": "Data Center Network Simulation",
     "body": "Hierarchical data center network architecture simulation spanning core, distribution, access, WAN edge, server farm, and network operations center (NOC). Design emphasizes connection redundancy, network segmentation, high service availability, and comprehensive infrastructure observability. Built with: Leaf-Spine, Cisco Packet Tracer, LACP, VLAN. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/Enterprise-Data-Center-Network-Simulation. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "bodyId": "Simulasi arsitektur jaringan pusat data dengan pendekatan berlapis yang mencakup core, distribution, access, konektivitas WAN, server farm, dan pusat operasi jaringan. Perancangan menekankan redundansi koneksi, segmentasi jaringan, ketersediaan layanan, dan kemudahan pemantauan infrastruktur. Dibangun dengan: Leaf-Spine, Cisco Packet Tracer, LACP, VLAN. Repositori publik tersedia di GitHub: https://github.com/budikusumafauzi-sketch/Enterprise-Data-Center-Network-Simulation. Foto tampilan dengan pratinjau lightbox layar penuh interaktif tersedia di Proyek Pilihan.",
     "keywords": [
       "project",
       "built",
@@ -605,7 +665,9 @@
     "id": "skill:languages",
     "category": "SKILL",
     "title": "Languages Skills",
+    "titleId": "Kemampuan Bahasa Pemrograman",
     "body": "Verified technical competencies in Languages: JavaScript, TypeScript, Python, Rust, Kotlin, Swift.",
+    "bodyId": "Kompetensi teknis terverifikasi dalam Bahasa Pemrograman: JavaScript, TypeScript, Python, Rust, Kotlin, Swift.",
     "keywords": [
       "skill",
       "stack",
@@ -628,7 +690,9 @@
     "id": "skill:frontend",
     "category": "SKILL",
     "title": "Frontend Skills",
+    "titleId": "Kemampuan Frontend",
     "body": "Verified technical competencies in Frontend: HTML5, CSS3, React Native, Expo, Vite, Tailwind CSS, Bootstrap, Framer Motion, React Router, Axios, Chart.js, Next.js.",
+    "bodyId": "Kompetensi teknis terverifikasi dalam Frontend: HTML5, CSS3, React Native, Expo, Vite, Tailwind CSS, Bootstrap, Framer Motion, React Router, Axios, Chart.js, Next.js.",
     "keywords": [
       "skill",
       "stack",
@@ -657,7 +721,9 @@
     "id": "skill:backend-api",
     "category": "SKILL",
     "title": "Backend & API Skills",
+    "titleId": "Kemampuan Backend & API",
     "body": "Verified technical competencies in Backend & API: FastAPI, Flask, NestJS, Fastify, Node.js, SQLAlchemy, Prisma.",
+    "bodyId": "Kompetensi teknis terverifikasi dalam Backend & API: FastAPI, Flask, NestJS, Fastify, Node.js, SQLAlchemy, Prisma.",
     "keywords": [
       "skill",
       "stack",
@@ -681,7 +747,9 @@
     "id": "skill:database-caching",
     "category": "SKILL",
     "title": "Database & Caching Skills",
+    "titleId": "Kemampuan Basis Data & Caching",
     "body": "Verified technical competencies in Database & Caching: MySQL, PostgreSQL, SQLite, Redis, Sequelize.",
+    "bodyId": "Kompetensi teknis terverifikasi dalam Basis Data & Caching: MySQL, PostgreSQL, SQLite, Redis, Sequelize.",
     "keywords": [
       "skill",
       "stack",
@@ -703,7 +771,9 @@
     "id": "skill:devops-tools",
     "category": "SKILL",
     "title": "DevOps & Tools Skills",
+    "titleId": "Kemampuan DevOps & Peralatan",
     "body": "Verified technical competencies in DevOps & Tools: Git, GitHub, Docker, npm, pnpm.",
+    "bodyId": "Kompetensi teknis terverifikasi dalam DevOps & Peralatan: Git, GitHub, Docker, npm, pnpm.",
     "keywords": [
       "skill",
       "stack",
@@ -725,7 +795,9 @@
     "id": "skill:networking",
     "category": "SKILL",
     "title": "Network & Infrastructure Engineering Skills",
+    "titleId": "Kemampuan Rekayasa Jaringan & Infrastruktur",
     "body": "Verified technical competencies in Enterprise Network & Infrastructure Engineering: MikroTik RouterOS (MTCNA certified), Cisco IOS Switching & Routing, Multi-Area OSPF, BGP Routing, VLAN Segmentation (802.1Q), Leaf-Spine Topology Design, SNMP Telemetry & Monitoring, Hardened Firewall Rules & NAT, WireGuard & IPsec VPN, Linux Server Administration (Ubuntu/Debian), and Structured Cabling.",
+    "bodyId": "Kompetensi teknis terverifikasi dalam Rekayasa Jaringan & Infrastruktur Enterprise: MikroTik RouterOS (bersertifikat MTCNA), Cisco IOS Switching & Routing, Multi-Area OSPF, BGP Routing, Segmentasi VLAN (802.1Q), Desain Topologi Leaf-Spine, Telemetri & Pemantauan SNMP, Aturan Firewall & NAT, WireGuard & IPsec VPN, Administrasi Server Linux (Ubuntu/Debian), dan Pengkabelan Terstruktur.",
     "keywords": [
       "skill",
       "networking",

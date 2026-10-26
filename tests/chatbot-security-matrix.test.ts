@@ -352,10 +352,10 @@ describe('6. Resilience & Controlled 503 Fallbacks', () => {
     resetRateLimitStore();
   });
 
-  it('returns 503 unavailable with visitor copy when GEMINI_API_KEY is missing', async () => {
+  it('returns 200 degraded with caption when GEMINI_API_KEY is missing (CR-014 / Invariant I-2)', async () => {
     vi.spyOn(dbModule.prisma.knowledgeRecord, 'findMany').mockResolvedValue([
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { id: '1', category: 'PROFILE', title: 'Fauzi', body: 'Info', keywords: [], url: null } as any,
+      { id: '1', category: 'PROFILE', title: 'Fauzi', body: 'Fauzi Budikusuma is a software engineer.', keywords: [], url: null } as any,
     ]);
 
     vi.spyOn(envModule, 'getServerEnv').mockReturnValue({
@@ -365,16 +365,17 @@ describe('6. Resilience & Controlled 503 Fallbacks', () => {
 
     const req = makeRequest({ message: 'Tell me about Fauzi' }, { clientIp: '10.0.1.1' });
     const res = await POST(req);
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data.status).toBe('unavailable');
-    expect(data.answer).toBe(COPY.unavailable);
+    expect(data.status).toBe('degraded');
+    expect(data.caption).toBe(COPY.degraded_caption);
+    expect(data.answer.length).toBeGreaterThan(10);
   });
 
-  it('returns 503 unavailable when Gemini times out', async () => {
+  it('returns 200 degraded when Gemini times out (CR-014 / Invariant I-2)', async () => {
     vi.spyOn(dbModule.prisma.knowledgeRecord, 'findMany').mockResolvedValue([
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { id: '1', category: 'PROFILE', title: 'Fauzi', body: 'Info', keywords: [], url: null } as any,
+      { id: '1', category: 'PROFILE', title: 'Fauzi', body: 'Fauzi Budikusuma is a software engineer.', keywords: [], url: null } as any,
     ]);
 
     vi.spyOn(geminiModule, 'generateGroundedAnswer').mockResolvedValue({
@@ -385,16 +386,17 @@ describe('6. Resilience & Controlled 503 Fallbacks', () => {
 
     const req = makeRequest({ message: 'Tell me about Fauzi' }, { clientIp: '10.0.1.2' });
     const res = await POST(req);
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data.status).toBe('unavailable');
-    expect(data.answer).toBe(COPY.unavailable);
+    expect(data.status).toBe('degraded');
+    expect(data.caption).toBe(COPY.degraded_caption);
+    expect(data.answer.length).toBeGreaterThan(10);
   });
 
-  it('returns 503 unavailable when Gemini hits quota 429', async () => {
+  it('returns 200 degraded when Gemini hits quota 429 (CR-014 / Invariant I-2)', async () => {
     vi.spyOn(dbModule.prisma.knowledgeRecord, 'findMany').mockResolvedValue([
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { id: '1', category: 'PROFILE', title: 'Fauzi', body: 'Info', keywords: [], url: null } as any,
+      { id: '1', category: 'PROFILE', title: 'Fauzi', body: 'Fauzi Budikusuma is a software engineer.', keywords: [], url: null } as any,
     ]);
 
     vi.spyOn(geminiModule, 'generateGroundedAnswer').mockResolvedValue({
@@ -405,10 +407,11 @@ describe('6. Resilience & Controlled 503 Fallbacks', () => {
 
     const req = makeRequest({ message: 'Tell me about Fauzi' }, { clientIp: '10.0.1.3' });
     const res = await POST(req);
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data.status).toBe('unavailable');
-    expect(data.answer).toBe(COPY.unavailable);
+    expect(data.status).toBe('degraded');
+    expect(data.caption).toBe(COPY.degraded_caption);
+    expect(data.answer.length).toBeGreaterThan(10);
   });
 
   it('returns 503 unavailable when database lookup fails', async () => {

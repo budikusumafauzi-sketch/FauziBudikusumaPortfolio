@@ -29,6 +29,8 @@ import { prisma } from '@/lib/server/db';
 import { generateGroundedAnswer } from '@/lib/server/gemini';
 import { warmKnowledgeCache } from '@/lib/server/knowledge-cache';
 import { answerCache } from '@/lib/server/answer-cache';
+import { matchGreetingOrThanks, matchStarterChip } from '@/lib/server/local-matcher';
+import { composeLocalAnswer } from '@/lib/server/local-composer';
 
 /** Safe JSON response with cache-control and no internal leakage. */
 function json(body: ChatResponse, status: number, extra?: HeadersInit): NextResponse {
@@ -190,6 +192,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
     }
 
+    // ── Layer 5.5: Tier 0 Fast Path — Greeting & Thanks (Item 15 / CR-014) ─────
+    const greetingMatch = matchGreetingOrThanks(message, language);
+    if (greetingMatch.matched) {
+      const totalMs = Date.now() - startTotal;
+      logStageMetric({
+        totalMs,
+        dbMs: 0,
+        aiMs: 0,
+        cacheHit: true,
+        source: 'local',
+        hedged: false,
+        winner: 'local',
+        attempts: 0,
+        softDeadlineHit: false,
+        promptTokens: 0,
+        outputTokens: 0,
+        thoughtsTokens: 0,
+        answerCache: 'bypass',
+        status: 'greeting',
+      });
+      return json({ status: 'greeting', answer: greetingMatch.answer, reply: greetingMatch.answer }, 200);
+    }
+
     // ── Layer 6: Scope / injection guard ───────────────────────────────────────
     const guardResult = checkGuard(message, history);
     if (guardResult.blocked) {
@@ -272,6 +297,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return json(resp, 200);
     }
 
+    // ── Layer 7.5: Tier 0 Starter-Chip Matcher (Item 16 / CR-014) ───────────────
+    if (!hasHistory) {
+      const chipMatch = matchStarterChip(message, language, loaded.records);
+      if (chipMatch.matched) {
+        const totalMs = Date.now() - startTotal;
+        logStageMetric({
+          totalMs,
+          dbMs: loaded.dbMs,
+          aiMs: 0,
+          cacheHit: loaded.cacheHit,
+          source: 'local',
+          hedged: false,
+          winner: 'local',
+          attempts: 0,
+          softDeadlineHit: false,
+          promptTokens: 0,
+          outputTokens: 0,
+          thoughtsTokens: 0,
+          answerCache: 'bypass',
+          status: 'ok',
+        });
+        const resp: ChatResponse = {
+          status: 'ok',
+          answer: chipMatch.answer,
+          reply: chipMatch.answer,
+          sources: chipMatch.sources,
+        };
+        answerCache.set(language, message, resp);
+        return json(resp, 200);
+      }
+    }
+
     // ── Layer 8: Grounded generation via Gemini (Hedged Request, ADR-014) ─────
     const geminiResult = await generateGroundedAnswer(
       loaded.contextString,
@@ -285,21 +342,37 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!geminiResult.success) {
       if (process.env.NODE_ENV !== 'test') {
-        console.error(geminiResult.logCode);
+        if (geminiResult.logCode === 'chat.gemini_key') {
+          console.error('chat.config_key');
+        } else if (geminiResult.logCode === 'chat.gemini_not_found') {
+          console.error('chat.config_model');
+        } else if (geminiResult.logCode === 'chat.gemini_denied') {
+          console.error('chat.config_denied');
+        } else if (geminiResult.logCode === 'chat.no_key') {
+          console.error('chat.no_key');
+        } else {
+          console.error(geminiResult.logCode);
+        }
       }
+
+      // Tier 3: Deterministic Local Composer (Item 18, 20 / Invariants I-1, I-2)
+      // Any Gemini failure produces HTTP 200 degraded with composed answer and fixed caption
+      const composed = composeLocalAnswer(message, language, loaded.records);
+      const totalMs = Date.now() - startTotal;
+
       logStageMetric({
         totalMs,
         dbMs: loaded.dbMs,
         aiMs: geminiResult.aiMs ?? 0,
         cacheHit: loaded.cacheHit,
-        source: loaded.source,
+        source: 'local',
         hedged: geminiResult.hedged,
-        winner: geminiResult.winner,
+        winner: 'local',
         attempts: geminiResult.attempts,
         softDeadlineHit: geminiResult.softDeadlineHit,
         answerCache: answerCacheStatus,
-        status: geminiResult.status,
-        stage: 'ai',
+        status: composed.status,
+        stage: 'ai_fallback_degraded',
         model: geminiResult.modelUsed,
         retries: geminiResult.retryCount,
         errorClass: geminiResult.errorClass,
@@ -313,10 +386,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         a2Model: geminiResult.a2Model,
         connReused: geminiResult.connReused,
       });
-      if (geminiResult.status === 'no_data') {
-        return json({ status: 'no_data', answer: getFixedCopy('no_data', language) }, 200);
+
+      if (composed.status === 'no_data') {
+        return json({ status: 'no_data', answer: composed.answer }, 200);
       }
-      return json({ status: 'unavailable', answer: getFixedCopy('unavailable', language) }, 503);
+
+      return json(
+        {
+          status: 'degraded',
+          answer: composed.answer,
+          reply: composed.answer,
+          caption: composed.caption,
+          sources: composed.sources,
+        },
+        200,
+      );
     }
 
     logStageMetric({

@@ -12,6 +12,8 @@ export interface CachedKnowledgeRecord {
   keywords: string[];
   url: string | null;
   position: number;
+  titleId?: string;
+  bodyId?: string;
 }
 
 export interface KnowledgeCacheResult {
@@ -73,6 +75,15 @@ async function fetchRecordsFromDatabase(
           position: true,
         },
       });
+
+      const snapshotMap = new Map((snapshotRecords as CachedKnowledgeRecord[]).map((r) => [r.id, r]));
+      for (const row of rows as CachedKnowledgeRecord[]) {
+        const snap = snapshotMap.get(row.id);
+        if (snap) {
+          row.titleId = snap.titleId;
+          row.bodyId = snap.bodyId;
+        }
+      }
 
       return rows as CachedKnowledgeRecord[];
     } catch (err: unknown) {

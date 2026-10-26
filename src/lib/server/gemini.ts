@@ -11,15 +11,15 @@ import {
 import { getServerEnv } from '@/lib/env';
 
 /**
- * Timeout configuration:
- * - 2,800ms soft deadline (Attempt 2 hedged launch if primary not completed)
- * - 8,000ms hard total request budget (hard abort for all in-flight attempts)
- * - 1,200ms minimum remaining budget required to start Attempt 2
+ * Timeout configuration (tuned in TASK-043 / Revision 4):
+ * - 2,000ms soft deadline (Attempt 2 hedged launch if primary not completed)
+ * - 4,000ms hard total AI request budget (hard abort moving to local degraded tier)
+ * - 800ms minimum remaining budget required to start Attempt 2
  */
-export const SOFT_DEADLINE_MS = 2_800;
-export const TOTAL_REQUEST_BUDGET_MS = 8_000;
-export const PER_ATTEMPT_TIMEOUT_MS = 6_000;
-export const MIN_TIME_FOR_HEDGE_MS = 1_200;
+export const SOFT_DEADLINE_MS = 2_000;
+export const TOTAL_REQUEST_BUDGET_MS = 4_000;
+export const PER_ATTEMPT_TIMEOUT_MS = 3_500;
+export const MIN_TIME_FOR_HEDGE_MS = 800;
 
 /**
  * Multilingual Grounding System Instruction (Items 45, 46, 47, R-030..R-033).
@@ -325,7 +325,14 @@ export async function generateGroundedAnswer(
   ): Promise<SingleAttemptOutcome> => {
     const attemptStart = Date.now();
     // Fresh client instance per attempt (unless overridden in tests) to prevent idle socket stalls (item 7, E5)
-    const attemptAi = clientOverride ?? new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+    // Supports test-only GEMINI_BASE_URL override for fault injection (Item 26)
+    const clientOptions: { apiKey: string; httpOptions?: { baseUrl?: string } } = {
+      apiKey: GEMINI_API_KEY,
+    };
+    if (process.env.GEMINI_BASE_URL) {
+      clientOptions.httpOptions = { baseUrl: process.env.GEMINI_BASE_URL };
+    }
+    const attemptAi = clientOverride ?? new GoogleGenAI(clientOptions);
     try {
       const config: Record<string, unknown> = {
         systemInstruction: SYSTEM_INSTRUCTION,

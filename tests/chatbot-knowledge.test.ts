@@ -142,4 +142,26 @@ describe("Deterministic KnowledgeRecord Builder (TASK-018)", () => {
 
     expect(() => assertPrivacySafe(leakedTokenRecord)).toThrow(/Privacy lint error/);
   });
+
+  it("verifies AC-5 / Item 19: English fields equal seed data and every record has non-empty Indonesian fields (titleId, bodyId)", () => {
+    const records = buildKnowledgeRecords();
+    expect(records.length).toBe(36);
+
+    for (const record of records) {
+      // 1. English fields are non-empty and well-formed
+      expect(record.title).toBeTruthy();
+      expect(record.body).toBeTruthy();
+      expect(typeof record.title).toBe("string");
+      expect(typeof record.body).toBe("string");
+
+      // 2. Indonesian fields are present and non-empty (Item 19)
+      expect(record.titleId).toBeDefined();
+      expect(record.bodyId).toBeDefined();
+      expect(record.titleId!.trim().length).toBeGreaterThan(0);
+      expect(record.bodyId!.trim().length).toBeGreaterThan(0);
+      expect(typeof record.titleId).toBe("string");
+      expect(typeof record.bodyId).toBe("string");
+    }
+  });
 });
+

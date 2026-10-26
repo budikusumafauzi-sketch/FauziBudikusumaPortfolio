@@ -234,9 +234,9 @@ describe('Chatbot Reliability & In-Memory Cache (TASK-037 / CR-009)', () => {
   });
 
   describe('Timing Constants Verification', () => {
-    it('adheres to approved per-attempt and total budgets (ADR-014, ADR-015)', () => {
-      expect(SOFT_DEADLINE_MS).toBe(2_800);
-      expect(TOTAL_REQUEST_BUDGET_MS).toBe(8_000);
+    it('adheres to approved per-attempt and total budgets (ADR-014, ADR-015, ADR-016)', () => {
+      expect(SOFT_DEADLINE_MS).toBe(2_000);
+      expect(TOTAL_REQUEST_BUDGET_MS).toBe(4_000);
       expect(KNOWLEDGE_CACHE_TTL_MS).toBe(12 * 60 * 60 * 1000); // 12 hours
     });
   });

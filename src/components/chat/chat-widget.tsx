@@ -43,12 +43,15 @@ export interface MessageItem {
   status?:
     | "answered"
     | "ok"
+    | "greeting"
+    | "degraded"
     | "no_data"
     | "out_of_scope"
     | "rate_limited"
     | "unavailable"
     | "error";
   sources?: Source[];
+  caption?: string;
   retryAfterSeconds?: number;
 }
 
@@ -82,7 +85,7 @@ export function ChatWidget() {
     getStorageSnapshot,
     getServerStorageSnapshot
   );
-  const [assistantStatus, setAssistantStatus] = React.useState<"live" | "unavailable">("live");
+  const [assistantStatus, setAssistantStatus] = React.useState<"live" | "quick" | "unavailable">("live");
   const [messages, setMessages] = React.useState<MessageItem[]>([]);
   const [inputValue, setInputValue] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
@@ -210,14 +213,21 @@ export function ChatWidget() {
     if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
     slowTimerRef.current = setTimeout(() => {
       setIsSlowRequest(true);
-    }, 4000);
+    }, 2500);
 
     // Extract history: up to last 6 valid user/assistant turns excluding error/service notices (Item 50)
     const validHistoryTurns = messages
       .filter((m) => {
         if (m.role === "user") return true;
         if (m.role === "assistant") {
-          return m.status === "answered" || m.status === "no_data" || m.status === "out_of_scope";
+          return (
+            m.status === "answered" ||
+            m.status === "ok" ||
+            m.status === "degraded" ||
+            m.status === "greeting" ||
+            m.status === "no_data" ||
+            m.status === "out_of_scope"
+          );
         }
         return false;
       })
@@ -251,10 +261,9 @@ export function ChatWidget() {
       }
 
       if (res.status === 200 && data) {
-        // Successful response (200: answered, no_data, out_of_scope)
-        setAssistantStatus("live");
-
         if (data.status === "answered" || data.status === "ok") {
+          // AI answer or starter-chip answer succeeded -> LIVE
+          setAssistantStatus("live");
           const replyText = data.reply || data.answer;
           setMessages((prev) => [
             ...prev,
@@ -263,6 +272,33 @@ export function ChatWidget() {
               role: "assistant",
               text: replyText,
               status: "answered",
+              sources: data.sources,
+            },
+          ]);
+        } else if (data.status === "greeting") {
+          setAssistantStatus("live");
+          const replyText = data.reply || data.answer;
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: generateMessageId("ast"),
+              role: "assistant",
+              text: replyText,
+              status: "greeting",
+            },
+          ]);
+        } else if (data.status === "degraded") {
+          // AI was busy/timed out -> transitions to neutral QUICK MODE (Item 22)
+          setAssistantStatus("quick");
+          const replyText = data.reply || data.answer;
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: generateMessageId("ast"),
+              role: "assistant",
+              text: replyText,
+              status: "degraded",
+              caption: data.caption,
               sources: data.sources,
             },
           ]);
@@ -418,7 +454,7 @@ export function ChatWidget() {
                     {t.chat.title}
                   </h2>
 
-                  {/* Honest Status Badge (C-09 / AC-2) */}
+                  {/* Honest Status Badge (CR-014 / Item 22 / AC-7) */}
                   {assistantStatus === "live" ? (
                     <span
                       data-testid="chat-status-badge"
@@ -426,6 +462,14 @@ export function ChatWidget() {
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                       {t.chat.statusLive || "LIVE"}
+                    </span>
+                  ) : assistantStatus === "quick" ? (
+                    <span
+                      data-testid="chat-status-badge"
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full font-mono text-[9px] font-semibold tracking-wider uppercase border border-border-default bg-surface-raised text-text-secondary shrink-0"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent/70" />
+                      {language === "id" ? "MODE CEPAT" : "QUICK MODE"}
                     </span>
                   ) : (
                     <span
@@ -579,9 +623,15 @@ export function ChatWidget() {
                       </div>
                     )}
 
-                    {/* 4. Standard Grounded Answer Bubble */}
+                    {/* 4. Standard Grounded Answer or Degraded Bubble (Item 22 / AC-7) */}
                     {!isGuardrail && !isRateLimited && !isUnavailable && !isError && (
                       <div className="rounded-2xl rounded-tl-xs px-3.5 py-2.5 border border-border-default bg-surface-card text-text-secondary leading-relaxed shadow-xs">
+                        {/* Fixed Disclaimer Caption for Degraded Mode (Item 20, 22) */}
+                        {msg.caption && (
+                          <p className="font-mono text-[10px] text-accent-text italic mb-1.5 border-b border-border-default/40 pb-1">
+                            {msg.caption}
+                          </p>
+                        )}
                         {/* Strict plain text rendering (AC-4) */}
                         <p className="whitespace-pre-line">{msg.text}</p>
 
