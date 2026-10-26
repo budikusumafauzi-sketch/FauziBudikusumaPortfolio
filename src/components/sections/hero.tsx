@@ -105,16 +105,6 @@ export function HeroSection() {
                     className="absolute inset-0 bg-gradient-to-t from-bg-page/90 via-transparent to-transparent pointer-events-none"
                     aria-hidden="true"
                   />
-
-                  {/* Technical Meta Tag Overlay */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-text-primary/90 bg-bg-page/80 backdrop-blur-sm px-2 py-0.5 rounded border border-border-default/60">
-                      ID // FB-TKJ-ENG
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-accent-text bg-bg-page/80 backdrop-blur-sm px-2 py-0.5 rounded border border-accent/40 font-semibold">
-                      {t.common.verified}
-                    </span>
-                  </div>
                 </div>
               </CornerFrame>
             </div>

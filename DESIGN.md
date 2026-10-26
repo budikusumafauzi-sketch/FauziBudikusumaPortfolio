@@ -166,7 +166,7 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 - Desktop: left column text (name → highlighted headline chip → paragraph → 3 buttons), right column framed portrait.
 - Name: uppercase heavy display; headline: mono/semibold uppercase on a crimson-tinted chip (dark: bg `#28141B`, text `#FFB3B6`; light: crimson text on subtle tint).
 - Buttons: **View Projects** = crimson fill + down-arrow icon (+ glow in dark); **Contact Me** and **Download CV** = 1 px bordered, transparent/surface, arrow-up-right and download icons. Desktop labels Inter uppercase tracking; mobile labels appear mono (INTERPRETATION — validate).
-- Portrait frame: rounded border container, inner photo ≈ **4:5**, **crimson L-shaped corner brackets** at all four corners, faint pink radial glow behind the subject top, soft bottom fade. Use the real portrait asset with `next/image` and reserved aspect ratio. Per CR-001, portrait renders permanently in natural full color by default without grayscale or hover dependency.
+- Portrait frame: rounded border container, inner photo ≈ **4:5**, **crimson L-shaped corner brackets** at all four corners, faint pink radial glow behind the subject top, soft bottom fade. Use the real portrait asset with `next/image` and reserved aspect ratio. Per CR-001, portrait renders permanently in natural full color by default without grayscale or hover dependency. Per CR-013, the bottom overlay chips (`ID // FB-TKJ-ENG` and `VERIFIED`) are completely removed, providing an unobstructed view of the portrait and smooth bottom vignette.
 - Entrance: restrained stagger (RECOMMENDED), disabled under reduced motion.
 
 ### 5.4 Profile & Journey (DS-ABT) — refs 3, 5, 6

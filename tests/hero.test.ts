@@ -32,4 +32,9 @@ describe("Hero Section (TASK-009 / FR-HRO / FR-CV)", () => {
     expect(html).toContain('alt="Fauzi Budikusuma — Formal Portrait"');
     expect(html).not.toContain("grayscale");
   });
+
+  it("omits ID // FB-TKJ-ENG and VERIFIED portrait chips per CR-013", () => {
+    const html = renderToString(React.createElement(HeroSection));
+    expect(html).not.toContain("FB-TKJ-ENG");
+  });
 });
