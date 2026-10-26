@@ -125,7 +125,7 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
 
   // 1. Profile (PROFILE)
   if (profile.verification === "VERIFIED") {
-    const keywords = sanitizeKeywords([
+    const mainKeywords = sanitizeKeywords([
       "fauzi",
       "budikusuma",
       "profile",
@@ -139,19 +139,74 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
       "engineer",
       "rekayasa",
       "informatics",
+      "informatika",
       "mikrotik",
       "yogyakarta",
+      "surakarta",
       "amikom",
+      "availability",
+      "languages",
     ]);
 
     records.push({
       id: "profile:main",
       category: "PROFILE",
       title: `${profile.name} — ${profile.headline}`,
-      body: `${profile.summary} Focus Areas: ${profile.focusAreas.join(", ")}. Location: ${profile.location}.`,
-      keywords,
+      body: `Fauzi Budikusuma is a Software Development & Network Engineer based in Yogyakarta and Surakarta, Indonesia. He is an undergraduate Informatics student at Universitas AMIKOM Yogyakarta and a Computer & Network Engineering (TKJ) graduate from SMK Negeri 1 Seyegan. He is actively available for professional opportunities, internships, and collaborative engineering roles. Spoken languages: Indonesian (native) and English (professional working proficiency). Overview: ${profile.summary} Focus Areas: ${profile.focusAreas.join(", ")}.`,
+      keywords: mainKeywords,
       url: null,
       position: 0,
+      source: "profile",
+    });
+
+    records.push({
+      id: "profile:philosophy",
+      category: "PROFILE",
+      title: `${profile.name} — Engineering Philosophy & Working Style`,
+      body: `Fauzi combines rigorous systems precision with practical network engineering and clean software architecture. His working philosophy centers on building resilient distributed backends, reliable enterprise network topologies, grounded AI integrations with zero hallucination tolerance, and comprehensive technical documentation. He embraces defensive programming, automated telemetry, and transparent engineering standards. Available for collaborative software engineering and network infrastructure opportunities.`,
+      keywords: sanitizeKeywords([
+        "philosophy",
+        "filosofi",
+        "working-style",
+        "gaya-kerja",
+        "approach",
+        "pendekatan",
+        "availability",
+        "ketersediaan",
+        "collaboration",
+        "engineering",
+        "principles",
+        "standards",
+      ]),
+      url: null,
+      position: 1,
+      source: "profile",
+    });
+
+    records.push({
+      id: "profile:portfolio-architecture",
+      category: "PROFILE",
+      title: `Portfolio Website & AI Assistant Architecture`,
+      body: `This portfolio and grounded AI assistant are built with Next.js 16 (App Router), React, TypeScript, and Tailwind CSS. The assistant uses a grounded Gemini Flash architecture with zero external tools, strict prompt grounding against verified records, a read-only PostgreSQL runtime on Neon, in-memory SWR caching (12h TTL), build-time snapshot fallback, and hedged fallback requests for zero idle failures and sub-2-second median response times.`,
+      keywords: sanitizeKeywords([
+        "portfolio",
+        "portofolio",
+        "architecture",
+        "arsitektur",
+        "website",
+        "tech-stack",
+        "built-with",
+        "gemini",
+        "nextjs",
+        "react",
+        "typescript",
+        "tailwind",
+        "prisma",
+        "neon",
+        "postgresql",
+      ]),
+      url: null,
+      position: 2,
       source: "profile",
     });
   }
@@ -166,23 +221,35 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
     const baseKeywords = [item.title, item.organization, ...(item.chips ?? [])];
 
     if (item.kind === "education") {
+      let extraDetail = "";
+      if (slug === "amikom") {
+        extraDetail = " Academic curriculum and practical coursework center on software engineering, distributed systems, relational and NoSQL database systems, algorithm optimization, and modern full-stack web architectures.";
+      } else if (slug === "smk") {
+        extraDetail = " Hands-on mastery in MikroTik RouterOS routing, Cisco IOS switching, Linux server administration, structured fiber optic and UTP LAN cabling, network topology design, and earned two national BNSP/LSP UKK vocational certifications.";
+      }
+
       records.push({
         id: `education:${slug}`,
         category: "EDUCATION",
         title: `${item.title} at ${item.organization}`,
-        body: `${item.description} Period: ${item.period}.`,
+        body: `${item.description} Period: ${item.period}.${extraDetail}`,
         keywords: sanitizeKeywords(["education", "study", "degree", "pendidikan", "kuliah", "sekolah", ...baseKeywords]),
         url: null,
         position: eduPos++,
         source: "journey",
       });
     } else {
+      let extraExpDetail = "";
+      if (slug === "kominfo") {
+        extraExpDetail = " Responsibilities included supervising provincial government IT help desk operations, managing technical incident escalation workflows, monitoring provincial government network telemetry and service continuity, and troubleshooting enterprise network and server infrastructure.";
+      }
+
       records.push({
         id: `experience:${slug}`,
         category: "EXPERIENCE",
         title: `${item.title} — ${item.organization}`,
-        body: `${item.description} Period: ${item.period}.`,
-        keywords: sanitizeKeywords(["experience", "work", "job", "career", "pengalaman", "kerja", "magang", ...baseKeywords]),
+        body: `${item.description} Period: ${item.period}.${extraExpDetail}`,
+        keywords: sanitizeKeywords(["experience", "work", "job", "career", "pengalaman", "kerja", "magang", "internship", ...baseKeywords]),
         url: null,
         position: expPos++,
         source: "journey",
@@ -227,6 +294,38 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
     });
   });
 
+  // Dedicated Network & Infrastructure Engineering skills record
+  records.push({
+    id: "skill:networking",
+    category: "SKILL",
+    title: "Network & Infrastructure Engineering Skills",
+    body: "Verified technical competencies in Enterprise Network & Infrastructure Engineering: MikroTik RouterOS (MTCNA certified), Cisco IOS Switching & Routing, Multi-Area OSPF, BGP Routing, VLAN Segmentation (802.1Q), Leaf-Spine Topology Design, SNMP Telemetry & Monitoring, Hardened Firewall Rules & NAT, WireGuard & IPsec VPN, Linux Server Administration (Ubuntu/Debian), and Structured Cabling.",
+    keywords: sanitizeKeywords([
+      "skill",
+      "networking",
+      "jaringan",
+      "mikrotik",
+      "cisco",
+      "ospf",
+      "bgp",
+      "vlan",
+      "routeros",
+      "leaf-spine",
+      "snmp",
+      "vpn",
+      "firewall",
+      "wireguard",
+      "infrastructure",
+      "infrastruktur",
+      "mtcna",
+      "cabling",
+      "linux",
+    ]),
+    url: null,
+    position: groupOrder.length,
+    source: "skills",
+  });
+
   // 4. Projects (PROJECT)
   let projPos = 0;
   for (const project of projects) {
@@ -235,12 +334,14 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
     const slug = project.id.replace(/^project-/, "");
     const statusNote = project.status ? ` Status: ${project.status}.` : "";
     const licenseNote = project.license ? ` License: ${project.license}.` : "";
+    const repoNote = project.repoUrl ? ` Public repository available on GitHub: ${project.repoUrl}.` : "";
+    const previewNote = " Display photo with interactive full-screen lightbox preview available in Selected Projects.";
 
     records.push({
       id: `project:${slug}`,
       category: "PROJECT",
       title: project.title,
-      body: `${project.summary}${statusNote}${licenseNote} Built with: ${project.technologies.join(", ")}.`,
+      body: `${project.summary}${statusNote}${licenseNote} Built with: ${project.technologies.join(", ")}.${repoNote}${previewNote}`,
       keywords: sanitizeKeywords(["project", "built", "repo", "proyek", "aplikasi", ...project.technologies, project.title]),
       url: project.repoUrl ?? project.demoUrl ?? null,
       position: projPos++,
@@ -278,7 +379,7 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
       id: `gallery:${slug}`,
       category: "GALLERY",
       title: item.title,
-      body: item.caption,
+      body: `${item.caption} Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.`,
       keywords: sanitizeKeywords(["gallery", "documentation", "dokumentasi", item.title]),
       url: null,
       position: galPos++,
@@ -300,7 +401,7 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
       id: `contact:${slug}`,
       category: "CONTACT",
       title: `Direct Channel: ${contact.label}`,
-      body: `Fauzi Budikusuma's approved contact channel via ${contact.label}: ${contact.displayText}.`,
+      body: `Fauzi Budikusuma's approved contact channel via ${contact.label}: ${contact.displayText}. Visitors may connect or inquire directly using this verified channel.`,
       keywords: sanitizeKeywords([
         "contact",
         "kontak",

@@ -15,7 +15,7 @@ describe("Deterministic KnowledgeRecord Builder (TASK-018)", () => {
 
     expect(run1.length).toBeGreaterThan(0);
     expect(run1).toEqual(run2);
-    expect(run1.length).toBe(33); // 1 profile + 3 journey + 5 skills + 6 projects + 7 certs + 6 gallery (VERIFIED) + 5 contacts
+    expect(run1.length).toBe(36); // 3 profile + 3 journey + 6 skills + 6 projects + 7 certs + 6 gallery (VERIFIED) + 5 contacts
   });
 
   it("strictly enforces unique IDs across all generated records", () => {

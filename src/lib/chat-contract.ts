@@ -170,7 +170,7 @@ export type ChatResponse = z.infer<typeof ChatResponseSchema>;
 
 export const COPY_EN = {
   no_data:
-    "I only have access to Fauzi's approved public portfolio data, and that information isn't available there.",
+    "I don't have that specific detail in Fauzi's verified portfolio records yet. However, I can tell you about his software & network engineering projects, 35 technical skills, internship experience at Dinas Kominfo DIY, education at Universitas AMIKOM Yogyakarta, verified certifications, or how to contact him directly via Gmail, LinkedIn, GitHub, Instagram, or Credly.",
   out_of_scope:
     "I can only answer questions about Fauzi's public portfolio, so I can't help with that request.",
   unavailable:
@@ -184,7 +184,7 @@ export const COPY_EN = {
 
 export const COPY_ID = {
   no_data:
-    'Saya hanya memiliki akses ke data portofolio publik terverifikasi Fauzi, dan informasi tersebut tidak tersedia di dalamnya.',
+    'Detail spesifik tersebut belum tercantum di dalam data portofolio terverifikasi Fauzi. Namun, Anda dapat bertanya mengenai proyek rekayasa perangkat lunak & jaringan, 35 keahlian teknis, pengalaman magang di Dinas Kominfo DIY, pendidikan di Universitas AMIKOM Yogyakarta, sertifikasi resmi, atau cara menghubungi Fauzi secara langsung melalui Gmail, LinkedIn, GitHub, Instagram, maupun Credly.',
   out_of_scope:
     'Saya hanya dapat menjawab pertanyaan seputar portofolio publik Fauzi, sehingga saya tidak dapat membantu permintaan tersebut.',
   unavailable:

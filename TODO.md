@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-26 |
-| Current phase | **7 — Quality and security review (Revision 3: CR-011..CR-015 in progress)** |
-| Waiting for | Execution of `TASK-040` (Comprehensive Knowledge Expansion & Helpful Fallback Copy) |
-| Last completed task | TASK-039 — Chatbot tail-latency (~2s) and 30-min idle-failure elimination (CR-011) |
-| Next task | TASK-040 — Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) |
+| Current phase | **7 — Quality and security review (Revision 3: CR-011..CR-015 COMPLETED)** |
+| Waiting for | Owner gate / Phase 8 deployment (`TASK-026`) |
+| Last completed task | TASK-040 — Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) |
+| Next task | TASK-026 — Service eligibility check and deployment (Phase 8) |
 | Blockers | None |
-| Last verified commit | `afe1334` |
+| Last verified commit | `abd44d9` |
 
 ## 2. Phases and gates
 
@@ -78,7 +78,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [042](tasks/TASK-042-projects-photos-lightbox.md) | Selected Projects display photos & interactive Lightbox preview (CR-014) | 7 | P0 | `DONE` | TASK-041 |
 | [043](tasks/TASK-043-documentation-photos-lightbox.md) | Field Documentation photos, titles & interactive Lightbox preview (CR-015) | 7 | P0 | `DONE` | TASK-042 |
 | [039](tasks/TASK-039-idle-failure-hedged-requests-snapshot.md) | Chatbot tail-latency & 30-min idle-failure elimination (CR-011) | 7 | P0 | `DONE` | TASK-043 |
-| [040](tasks/TASK-040-knowledge-expansion-helpful-fallback.md) | Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) | 7 | P0 | `TODO` | TASK-039 |
+| [040](tasks/TASK-040-knowledge-expansion-helpful-fallback.md) | Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) | 7 | P0 | `DONE` | TASK-039 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 
@@ -108,27 +108,27 @@ Full text, recommendations and owner-answer log: `PRD.md` §13 (C-xx), §14.1 (O
 ### 5.1 Assets
 | Item | Destination | Needed by | State |
 |---|---|---|---|
-| Logo monogram (SVG) | `public/assets/brand/logo-monogram.svg` | TASK-006, 007 | `[OWNER TO PROVIDE]` |
-| Chatbot icon (SVG) | `public/assets/brand/chatbot-icon.svg` | TASK-023 | `[OWNER TO PROVIDE]` |
-| Portrait (WebP) | `public/assets/profile/profile-portrait.webp` | TASK-009 | `[OWNER TO PROVIDE]` |
-| Project covers 16:10 (×6 as in the design) | `public/assets/projects/[slug]-cover.webp` | TASK-012 | `[OWNER TO PROVIDE]` |
-| Certificate full images (×4 as in the design) | `public/assets/certificates/[slug].webp` | TASK-013 | `[OWNER TO PROVIDE]` |
-| Gallery photos (authentic) | `public/assets/gallery/[activity]-[n].webp` | TASK-014 | `[OWNER TO PROVIDE]` |
-| Skill logos (only if custom icons are wanted) | `public/assets/skills/[tech].svg` | TASK-011 | optional |
-| Final CV PDF | `public/assets/documents/Fauzi-Budikusuma-CV.pdf` | TASK-009 | `[OWNER TO PROVIDE]` |
+| Logo monogram / Favicon | `public/assets/brand/LOGO FB.png`, `src/app/icon.png` | TASK-006, 034 | `VERIFIED` (owner-supplied) |
+| Chatbot icon (SVG) | `public/assets/brand/chatbot-icon.svg` | TASK-023 | `VERIFIED` |
+| Portrait (WebP) | `public/assets/profile/profile-portrait.webp` | TASK-009, 029 | `VERIFIED` (owner-supplied) |
+| Project covers (×6) | `public/assets/projects/*` | TASK-012, 042 | `VERIFIED` (owner-supplied, CR-014) |
+| Certificate full images (×4 as in the design) | `public/assets/certificates/[slug].webp` | TASK-013 | `VERIFIED` (owner-supplied) |
+| Gallery photos (authentic ×6) | `public/assets/gallery/*` | TASK-014, 043 | `VERIFIED` (owner-supplied, CR-015) |
+| Skill logos (custom SVGs) | `public/assets/skills/[tech].svg` | TASK-011, 036 | `VERIFIED` |
+| Final CV PDF | `public/assets/documents/Fauzi-Budikusuma-CV.pdf` | TASK-009 | `VERIFIED` (owner-supplied) |
 
-### 5.2 Facts and links (all currently DRAFT or missing)
+### 5.2 Facts and links
 | Item | Needed by | State |
 |---|---|---|
-| Headline wording (C-05) and approved summary | 007, 009 | DRAFT (design-observed) |
-| Education/experience entries, single consistent wording | 010 | DRAFT |
-| Skill list + icon mapping | 011 | `[OWNER TO PROVIDE]` |
-| Project titles/summaries/tech/status/license; corrected Enterprise Network Lab description | 012 | DRAFT |
-| Verified repository/demo URLs; which repos are private | 012 | `[OWNER TO PROVIDE]` |
-| Credential titles, issuers, dates/IDs, verification links (only if real) | 013 | DRAFT |
-| Gallery captions/alt text (only confirmed) | 014 | `[OWNER TO PROVIDE]` |
-| Contact values + full URLs + publication approval (OD-11) | 015 | DRAFT (handles read from images — confirm exactly) |
-| Location label ("Yogyakarta, ID") | 015 | DRAFT |
+| Headline wording and approved summary | 007, 009 | `VERIFIED` |
+| Education/experience entries | 010 | `VERIFIED` |
+| Skill list (35 skills) | 011, 040 | `VERIFIED` |
+| Project titles/summaries/tech/status | 012, 040, 042 | `VERIFIED` |
+| Verified repository URLs | 012, 040 | `VERIFIED` |
+| Credential titles, issuers, dates, IDs | 013, 040 | `VERIFIED` |
+| Gallery captions/alt text (authentic) | 014, 040, 043 | `VERIFIED` |
+| Contact values + full URLs | 015, 031, 035, 040 | `VERIFIED` |
+| Location label ("Surakarta / Yogyakarta, ID") | 015, 040 | `VERIFIED` |
 
 ### 5.3 Owner account actions (agents cannot do these)
 | Action | Needed by |

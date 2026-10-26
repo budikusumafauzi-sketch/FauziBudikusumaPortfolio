@@ -268,4 +268,36 @@ describe('TASK-038 Pipeline & Contract Guardrails', () => {
       /exceeds the hard limit of 40000 characters/,
     );
   });
+
+  it('serves helpful polite bilingual fallback copy on no_data (AC-5 / Item 32)', () => {
+    const copyEn = getFixedCopy('no_data', 'en');
+    expect(copyEn).toContain("I don't have that specific detail in Fauzi's verified portfolio records yet");
+    expect(copyEn).toContain('35 technical skills');
+    expect(copyEn).toContain('Dinas Kominfo DIY');
+    expect(copyEn).toContain('Universitas AMIKOM Yogyakarta');
+    expect(copyEn).toContain('Gmail, LinkedIn, GitHub, Instagram, or Credly');
+
+    const copyId = getFixedCopy('no_data', 'id');
+    expect(copyId).toContain('Detail spesifik tersebut belum tercantum di dalam data portofolio terverifikasi Fauzi');
+    expect(copyId).toContain('35 keahlian teknis');
+    expect(copyId).toContain('Dinas Kominfo DIY');
+    expect(copyId).toContain('Universitas AMIKOM Yogyakarta');
+    expect(copyId).toContain('Gmail, LinkedIn, GitHub, Instagram, maupun Credly');
+  });
+
+  it('generates all 36 expanded verified records covering all portfolio domains (AC-2)', () => {
+    const records = buildKnowledgeRecords();
+    expect(records.length).toBe(36);
+
+    const ids = new Set(records.map((r) => r.id));
+    expect(ids.has('profile:main')).toBe(true);
+    expect(ids.has('profile:philosophy')).toBe(true);
+    expect(ids.has('profile:portfolio-architecture')).toBe(true);
+    expect(ids.has('skill:networking')).toBe(true);
+    expect(ids.has('experience:kominfo')).toBe(true);
+    expect(ids.has('education:amikom')).toBe(true);
+    expect(ids.has('education:smk')).toBe(true);
+    expect(ids.has('contact:credly')).toBe(true);
+    expect(ids.has('gallery:gdg-jogja-gen-ai')).toBe(true);
+  });
 });

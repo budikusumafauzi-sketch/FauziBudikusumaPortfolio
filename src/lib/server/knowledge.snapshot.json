@@ -141,7 +141,7 @@
     "id": "contact:email",
     "category": "CONTACT",
     "title": "Direct Channel: Direct Email",
-    "body": "Fauzi Budikusuma's approved contact channel via Direct Email: budikusumafauzi@gmail.com.",
+    "body": "Fauzi Budikusuma's approved contact channel via Direct Email: budikusumafauzi@gmail.com. Visitors may connect or inquire directly using this verified channel.",
     "keywords": [
       "contact",
       "kontak",
@@ -160,7 +160,7 @@
     "id": "contact:linkedin",
     "category": "CONTACT",
     "title": "Direct Channel: LinkedIn Profile",
-    "body": "Fauzi Budikusuma's approved contact channel via LinkedIn Profile: linkedin.com/in/fauzi-budikusuma.",
+    "body": "Fauzi Budikusuma's approved contact channel via LinkedIn Profile: linkedin.com/in/fauzi-budikusuma. Visitors may connect or inquire directly using this verified channel.",
     "keywords": [
       "contact",
       "kontak",
@@ -179,7 +179,7 @@
     "id": "contact:github",
     "category": "CONTACT",
     "title": "Direct Channel: GitHub Repositories",
-    "body": "Fauzi Budikusuma's approved contact channel via GitHub Repositories: github.com/budikusumafauzi-sketch.",
+    "body": "Fauzi Budikusuma's approved contact channel via GitHub Repositories: github.com/budikusumafauzi-sketch. Visitors may connect or inquire directly using this verified channel.",
     "keywords": [
       "contact",
       "kontak",
@@ -198,7 +198,7 @@
     "id": "contact:instagram",
     "category": "CONTACT",
     "title": "Direct Channel: Instagram Activity",
-    "body": "Fauzi Budikusuma's approved contact channel via Instagram Activity: @budikusuma._fauzi.",
+    "body": "Fauzi Budikusuma's approved contact channel via Instagram Activity: @budikusuma._fauzi. Visitors may connect or inquire directly using this verified channel.",
     "keywords": [
       "contact",
       "kontak",
@@ -217,7 +217,7 @@
     "id": "contact:credly",
     "category": "CONTACT",
     "title": "Direct Channel: Credly Profile",
-    "body": "Fauzi Budikusuma's approved contact channel via Credly Profile: credly.com/users/fauzi-budikusuma.",
+    "body": "Fauzi Budikusuma's approved contact channel via Credly Profile: credly.com/users/fauzi-budikusuma. Visitors may connect or inquire directly using this verified channel.",
     "keywords": [
       "contact",
       "kontak",
@@ -240,7 +240,7 @@
     "id": "education:amikom",
     "category": "EDUCATION",
     "title": "Bachelor of Informatics (S1 Informatika) at Universitas AMIKOM Yogyakarta",
-    "body": "Pursuing undergraduate degree in Informatics focusing on distributed systems architecture, database engineering, and modern full-stack web applications. Period: 2026 — 2029 (Expected).",
+    "body": "Pursuing undergraduate degree in Informatics focusing on distributed systems architecture, database engineering, and modern full-stack web applications. Period: 2026 — 2029 (Expected). Academic curriculum and practical coursework center on software engineering, distributed systems, relational and NoSQL database systems, algorithm optimization, and modern full-stack web architectures.",
     "keywords": [
       "education",
       "study",
@@ -262,7 +262,7 @@
     "id": "education:smk",
     "category": "EDUCATION",
     "title": "Computer & Network Engineering (TKJ) at SMK Negeri 1 Seyegan",
-    "body": "Graduated from vocational diploma in Computer and Network Engineering (TKJ), mastering routing & switching (MikroTik/Cisco), Linux server administration, and structured network cabling. Period: 2023 — 2026.",
+    "body": "Graduated from vocational diploma in Computer and Network Engineering (TKJ), mastering routing & switching (MikroTik/Cisco), Linux server administration, and structured network cabling. Period: 2023 — 2026. Hands-on mastery in MikroTik RouterOS routing, Cisco IOS switching, Linux server administration, structured fiber optic and UTP LAN cabling, network topology design, and earned two national BNSP/LSP UKK vocational certifications.",
     "keywords": [
       "education",
       "study",
@@ -285,7 +285,7 @@
     "id": "experience:kominfo",
     "category": "EXPERIENCE",
     "title": "Help Desk Supervisor Intern — Dinas Komunikasi dan Informatika (Kominfo) DIY",
-    "body": "Supervised provincial government help desk workflows, analyzed incident escalations, and assisted in troubleshooting enterprise network infrastructure and service continuity. Period: 2025.",
+    "body": "Supervised provincial government help desk workflows, analyzed incident escalations, and assisted in troubleshooting enterprise network infrastructure and service continuity. Period: 2025. Responsibilities included supervising provincial government IT help desk operations, managing technical incident escalation workflows, monitoring provincial government network telemetry and service continuity, and troubleshooting enterprise network and server infrastructure.",
     "keywords": [
       "experience",
       "work",
@@ -294,6 +294,7 @@
       "pengalaman",
       "kerja",
       "magang",
+      "internship",
       "helpdesksupervisorintern",
       "dinaskomunikasidaninformatikakominfodiy",
       "publicsectorit",
@@ -308,7 +309,7 @@
     "id": "gallery:gdg-jogja-gen-ai",
     "category": "GALLERY",
     "title": "Google Developer Groups (GDG) Jogja — Build Your First Gen AI App",
-    "body": "Active participation in Google Developer Groups (GDG) Jogja session on building generative AI applications.",
+    "body": "Active participation in Google Developer Groups (GDG) Jogja session on building generative AI applications. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
@@ -322,7 +323,7 @@
     "id": "gallery:magang-kominfo-diy",
     "category": "GALLERY",
     "title": "Kegiatan Magang di Dinas Kominfo DIY",
-    "body": "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY.",
+    "body": "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
@@ -337,7 +338,7 @@
     "id": "gallery:magang-monitoring-jaringan",
     "category": "GALLERY",
     "title": "Kegiatan Magang Monitoring Jaringan",
-    "body": "Real-time enterprise network telemetry and provincial infrastructure monitoring during internship at Dinas Kominfo DIY.",
+    "body": "Real-time enterprise network telemetry and provincial infrastructure monitoring during internship at Dinas Kominfo DIY. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
@@ -352,7 +353,7 @@
     "id": "gallery:maintenance-server",
     "category": "GALLERY",
     "title": "Maintenance Server & Infrastruktur",
-    "body": "Routine server hardware maintenance, structured rack inspection, and operational node integrity checks.",
+    "body": "Routine server hardware maintenance, structured rack inspection, and operational node integrity checks. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
@@ -367,7 +368,7 @@
     "id": "gallery:policy-brief-sleman",
     "category": "GALLERY",
     "title": "Penyerahan Hasil Perumusan Policy Brief Organisasi Kab Sleman",
-    "body": "Formal handover of organizational policy brief formulation outcomes for Sleman Regency.",
+    "body": "Formal handover of organizational policy brief formulation outcomes for Sleman Regency. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
@@ -381,7 +382,7 @@
     "id": "gallery:survey-gedung-agung",
     "category": "GALLERY",
     "title": "Survey Jaringan Gedung Agung",
-    "body": "On-site field survey and network infrastructure assessment conducted at Gedung Agung.",
+    "body": "On-site field survey and network infrastructure assessment conducted at Gedung Agung. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
@@ -396,7 +397,7 @@
     "id": "profile:main",
     "category": "PROFILE",
     "title": "FAUZI BUDIKUSUMA — SOFTWARE DEVELOPMENT & NETWORK ENGINEER",
-    "body": "Undergraduate Informatics student at Universitas AMIKOM Yogyakarta and Computer & Network Engineering graduate from SMK Negeri 1 Seyegan. Combines modern full-stack software engineering with enterprise network architecture, Mikrotik routing, and AI-assisted automation. Focus Areas: Full-Stack Web & API Development, Enterprise Network Architecture & Routing, AI-Assisted Systems & Cloud Automation. Location: Yogyakarta, Indonesia.",
+    "body": "Fauzi Budikusuma is a Software Development & Network Engineer based in Yogyakarta and Surakarta, Indonesia. He is an undergraduate Informatics student at Universitas AMIKOM Yogyakarta and a Computer & Network Engineering (TKJ) graduate from SMK Negeri 1 Seyegan. He is actively available for professional opportunities, internships, and collaborative engineering roles. Spoken languages: Indonesian (native) and English (professional working proficiency). Overview: Undergraduate Informatics student at Universitas AMIKOM Yogyakarta and Computer & Network Engineering graduate from SMK Negeri 1 Seyegan. Combines modern full-stack software engineering with enterprise network architecture, Mikrotik routing, and AI-assisted automation. Focus Areas: Full-Stack Web & API Development, Enterprise Network Architecture & Routing, AI-Assisted Systems & Cloud Automation.",
     "keywords": [
       "fauzi",
       "budikusuma",
@@ -411,19 +412,72 @@
       "engineer",
       "rekayasa",
       "informatics",
+      "informatika",
       "mikrotik",
       "yogyakarta",
-      "amikom"
+      "surakarta",
+      "amikom",
+      "availability",
+      "languages"
     ],
     "url": null,
     "position": 0,
     "source": "profile"
   },
   {
+    "id": "profile:philosophy",
+    "category": "PROFILE",
+    "title": "FAUZI BUDIKUSUMA — Engineering Philosophy & Working Style",
+    "body": "Fauzi combines rigorous systems precision with practical network engineering and clean software architecture. His working philosophy centers on building resilient distributed backends, reliable enterprise network topologies, grounded AI integrations with zero hallucination tolerance, and comprehensive technical documentation. He embraces defensive programming, automated telemetry, and transparent engineering standards. Available for collaborative software engineering and network infrastructure opportunities.",
+    "keywords": [
+      "philosophy",
+      "filosofi",
+      "working-style",
+      "gaya-kerja",
+      "approach",
+      "pendekatan",
+      "availability",
+      "ketersediaan",
+      "collaboration",
+      "engineering",
+      "principles",
+      "standards"
+    ],
+    "url": null,
+    "position": 1,
+    "source": "profile"
+  },
+  {
+    "id": "profile:portfolio-architecture",
+    "category": "PROFILE",
+    "title": "Portfolio Website & AI Assistant Architecture",
+    "body": "This portfolio and grounded AI assistant are built with Next.js 16 (App Router), React, TypeScript, and Tailwind CSS. The assistant uses a grounded Gemini Flash architecture with zero external tools, strict prompt grounding against verified records, a read-only PostgreSQL runtime on Neon, in-memory SWR caching (12h TTL), build-time snapshot fallback, and hedged fallback requests for zero idle failures and sub-2-second median response times.",
+    "keywords": [
+      "portfolio",
+      "portofolio",
+      "architecture",
+      "arsitektur",
+      "website",
+      "tech-stack",
+      "built-with",
+      "gemini",
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwind",
+      "prisma",
+      "neon",
+      "postgresql"
+    ],
+    "url": null,
+    "position": 2,
+    "source": "profile"
+  },
+  {
     "id": "project:network-monitoring-dashboard",
     "category": "PROJECT",
     "title": "Network Monitoring Dashboard",
-    "body": "Real-time network telemetry and SNMP device monitoring dashboard providing active node health, bandwidth throughput, and automated incident alerts. Built with: SNMP, Fastify, TypeScript, Tailwind CSS.",
+    "body": "Real-time network telemetry and SNMP device monitoring dashboard providing active node health, bandwidth throughput, and automated incident alerts. Built with: SNMP, Fastify, TypeScript, Tailwind CSS. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/network-monitoring-dashboard. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -444,7 +498,7 @@
     "id": "project:research-news-intelligence-center",
     "category": "PROJECT",
     "title": "Research News Intelligence Center",
-    "body": "Automated intelligence platform aggregating, categorizing, and summarizing tech news and academic research streams via NLP pipelines. Built with: FastAPI, Python, PostgreSQL, Docker.",
+    "body": "Automated intelligence platform aggregating, categorizing, and summarizing tech news and academic research streams via NLP pipelines. Built with: FastAPI, Python, PostgreSQL, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/research-news-intelligence-center. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -465,7 +519,7 @@
     "id": "project:stacklab",
     "category": "PROJECT",
     "title": "StackLab",
-    "body": "Developer workflow orchestration and sandbox environment for containerized microservices and automated API testing pipelines. Built with: Node.js, Docker, TypeScript, Redis.",
+    "body": "Developer workflow orchestration and sandbox environment for containerized microservices and automated API testing pipelines. Built with: Node.js, Docker, TypeScript, Redis. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/stacklab-v1. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -486,7 +540,7 @@
     "id": "project:sentinel",
     "category": "PROJECT",
     "title": "Sentinel",
-    "body": "Infrastructure security monitoring and network anomaly detection system providing automated traffic analysis and alerting. Built with: Python, Network Security, FastAPI, Docker.",
+    "body": "Infrastructure security monitoring and network anomaly detection system providing automated traffic analysis and alerting. Built with: Python, Network Security, FastAPI, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/sentinel. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -507,7 +561,7 @@
     "id": "project:enterprise-network-lab",
     "category": "PROJECT",
     "title": "Enterprise Network Lab (MikroTik CHR)",
-    "body": "Multi-area OSPF and BGP routing topology built on MikroTik Cloud Hosted Router (CHR) featuring VLAN segmentation and hardened firewall filters. Built with: MikroTik CHR, OSPF, BGP, VLAN, Firewall.",
+    "body": "Multi-area OSPF and BGP routing topology built on MikroTik Cloud Hosted Router (CHR) featuring VLAN segmentation and hardened firewall filters. Built with: MikroTik CHR, OSPF, BGP, VLAN, Firewall. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/enterprise-network-lab-mikrotik. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -529,7 +583,7 @@
     "id": "project:datacenter-simulation",
     "category": "PROJECT",
     "title": "Data Center Network Simulation",
-    "body": "Enterprise leaf-spine architecture simulation with redundant core switching, LACP link aggregation, and resilient disaster recovery routing. Built with: Leaf-Spine, Cisco Packet Tracer, LACP, VLAN.",
+    "body": "Enterprise leaf-spine architecture simulation with redundant core switching, LACP link aggregation, and resilient disaster recovery routing. Built with: Leaf-Spine, Cisco Packet Tracer, LACP, VLAN. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/Enterprise-Data-Center-Network-Simulation. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -664,6 +718,36 @@
     ],
     "url": null,
     "position": 4,
+    "source": "skills"
+  },
+  {
+    "id": "skill:networking",
+    "category": "SKILL",
+    "title": "Network & Infrastructure Engineering Skills",
+    "body": "Verified technical competencies in Enterprise Network & Infrastructure Engineering: MikroTik RouterOS (MTCNA certified), Cisco IOS Switching & Routing, Multi-Area OSPF, BGP Routing, VLAN Segmentation (802.1Q), Leaf-Spine Topology Design, SNMP Telemetry & Monitoring, Hardened Firewall Rules & NAT, WireGuard & IPsec VPN, Linux Server Administration (Ubuntu/Debian), and Structured Cabling.",
+    "keywords": [
+      "skill",
+      "networking",
+      "jaringan",
+      "mikrotik",
+      "cisco",
+      "ospf",
+      "bgp",
+      "vlan",
+      "routeros",
+      "leaf-spine",
+      "snmp",
+      "vpn",
+      "firewall",
+      "wireguard",
+      "infrastructure",
+      "infrastruktur",
+      "mtcna",
+      "cabling",
+      "linux"
+    ],
+    "url": null,
+    "position": 5,
     "source": "skills"
   }
 ]

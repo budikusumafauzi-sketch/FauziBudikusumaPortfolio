@@ -6,7 +6,7 @@ const runtimeUrl = process.env.DATABASE_URL;
 describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => {
   let runtimePrisma: PrismaClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     if (!runtimeUrl) {
       console.warn("DATABASE_URL not set — skipping live db-readonly tests");
       return;
@@ -18,6 +18,16 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
         },
       },
     });
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        await runtimePrisma.$connect();
+        break;
+      } catch (err) {
+        if (attempt === 3) throw err;
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+    }
   });
 
   afterAll(async () => {
@@ -45,7 +55,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
       orderBy: { position: "asc" },
     });
 
-    expect(records.length).toBe(27);
+    expect(records.length).toBe(36);
     expect(records.every((r) => r.body.length > 0)).toBe(true);
     expect(records.every((r) => r.title.length > 0)).toBe(true);
 
@@ -57,7 +67,7 @@ describe("Least-Privilege Runtime Role (portfolio_runtime) Verification", () => 
     expect(categories.has("PROJECT")).toBe(true);
     expect(categories.has("CERTIFICATION")).toBe(true);
     expect(categories.has("CONTACT")).toBe(true);
-    expect(categories.has("GALLERY")).toBe(false); // 0 non-verified / draft records
+    expect(categories.has("GALLERY")).toBe(true); // 6 verified field documentation records seeded in TASK-043
   }, 20000);
 
   it("Negative Write Test 1: INSERT (create) fails with permission denied", async () => {
