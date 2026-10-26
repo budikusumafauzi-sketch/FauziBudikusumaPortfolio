@@ -73,13 +73,15 @@ describe("Typed Content Modules & Zod Validation (TASK-008)", () => {
     });
   });
 
-  it("validates all gallery items and confirms modular placeholders exist on disk", () => {
+  it("validates all 6 gallery items with verified real photos on disk (CR-015)", () => {
     expect(galleryData.length).toBe(6);
     galleryData.forEach((item) => {
       expect(() => GalleryItemSchema.parse(item)).not.toThrow();
+      expect(item.imagePath).toMatch(/^\/assets\/gallery\/.*\.(jpeg|jpg|png|webp)$/);
       const diskPath = path.resolve(process.cwd(), "public" + item.imagePath);
       expect(fs.existsSync(diskPath)).toBe(true);
-      expect(item.verification).toBe("DRAFT");
+      expect(fs.statSync(diskPath).size).toBeGreaterThan(0);
+      expect(item.verification).toBe("VERIFIED");
     });
   });
 

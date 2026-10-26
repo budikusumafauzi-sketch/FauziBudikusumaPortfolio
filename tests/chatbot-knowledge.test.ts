@@ -15,7 +15,7 @@ describe("Deterministic KnowledgeRecord Builder (TASK-018)", () => {
 
     expect(run1.length).toBeGreaterThan(0);
     expect(run1).toEqual(run2);
-    expect(run1.length).toBe(27); // 1 profile + 3 journey + 5 skills + 6 projects + 7 certs + 0 gallery (DRAFT) + 5 contacts
+    expect(run1.length).toBe(33); // 1 profile + 3 journey + 5 skills + 6 projects + 7 certs + 6 gallery (VERIFIED) + 5 contacts
   });
 
   it("strictly enforces unique IDs across all generated records", () => {
@@ -52,12 +52,24 @@ describe("Deterministic KnowledgeRecord Builder (TASK-018)", () => {
   });
 
   it("strictly excludes DRAFT and NOT_PROVIDED items from the knowledge corpus", () => {
-    // Current gallery data is all DRAFT
-    expect(galleryData.every((g) => g.verification === "DRAFT")).toBe(true);
+    // Current gallery data is all VERIFIED in production
+    expect(galleryData.every((g) => g.verification === "VERIFIED")).toBe(true);
 
     const records = buildKnowledgeRecords();
     const galleryRecords = records.filter((r) => r.category === "GALLERY");
-    expect(galleryRecords.length).toBe(0);
+    expect(galleryRecords.length).toBe(6);
+
+    // If an item in gallery is marked DRAFT, it must not be included
+    const mockGallery = [
+      ...galleryData,
+      {
+        ...galleryData[0],
+        id: "gallery-draft-test",
+        verification: "DRAFT" as const,
+      },
+    ];
+    const recordsWithDraftGallery = buildKnowledgeRecords({ gallery: mockGallery });
+    expect(recordsWithDraftGallery.some((r) => r.id === "gallery:gallery-draft-test")).toBe(false);
 
     // If an item in projects is marked DRAFT, it must not be included
     const mockProjects = [

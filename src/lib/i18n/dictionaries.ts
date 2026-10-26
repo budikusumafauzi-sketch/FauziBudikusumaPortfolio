@@ -92,6 +92,8 @@ export interface Dictionary {
     title: string;
     descriptor: string;
     swipeHint: string;
+    closeModal: string;
+    previewAria: string;
     captions: {
       img1: string;
       img2: string;
@@ -262,13 +264,15 @@ export const dictionaries: Record<Language, Dictionary> = {
       title: "Field Documentation",
       descriptor: "PHOTOGRAPHIC RECORDS OF DEPLOYMENTS & COLLABORATIONS",
       swipeHint: "SWIPE ↔",
+      closeModal: "Close field photo preview",
+      previewAria: "Preview field photo for",
       captions: {
-        img1: "Hardware routing configuration session with multi-area OSPF protocols.",
-        img2: "Technical supervision, ticket resolution, and provincial network continuity.",
-        img3: "Patch panel cable management and Cat6 termination testing.",
-        img4: "Deployment of virtualization nodes and network monitoring agents.",
-        img5: "Full-stack software development workstation and API testing environment.",
-        img6: "Practical vocational competency examination in wide area network design.",
+        img1: "Active participation in Google Developer Groups (GDG) Jogja session on building generative AI applications.",
+        img2: "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY.",
+        img3: "Real-time enterprise network telemetry and provincial infrastructure monitoring during internship at Dinas Kominfo DIY.",
+        img4: "Routine server hardware maintenance, structured rack inspection, and operational node integrity checks.",
+        img5: "Formal handover of organizational policy brief formulation outcomes for Sleman Regency.",
+        img6: "On-site field survey and network infrastructure assessment conducted at Gedung Agung.",
       },
     },
     contact: {
@@ -437,13 +441,15 @@ export const dictionaries: Record<Language, Dictionary> = {
       title: "Dokumentasi Lapangan",
       descriptor: "PENGALAMAN PRAKTIK & OPERASIONAL LAB",
       swipeHint: "GESER ↔",
+      closeModal: "Tutup pratinjau foto lapangan",
+      previewAria: "Lihat foto lapangan untuk",
       captions: {
-        img1: "Sesi konfigurasi perutean perangkat keras dengan protokol OSPF multi-area.",
-        img2: "Supervisi teknis, penyelesaian tiket, dan kontinuitas jaringan provinsi.",
-        img3: "Manajemen kabel patch panel dan pengujian terminasi Cat6.",
-        img4: "Penerapan node virtualisasi dan agen pemantauan jaringan.",
-        img5: "Stasiun kerja pengembangan perangkat lunak full-stack dan lingkungan pengujian API.",
-        img6: "Ujian kompetensi kejuruan praktis dalam desain jaringan area luas (WAN).",
+        img1: "Partisipasi aktif dalam sesi teknis Google Developer Groups (GDG) Jogja membangun aplikasi generative AI.",
+        img2: "Dokumentasi kegiatan operasional dan supervisi helpdesk TI di Dinas Kominfo DIY.",
+        img3: "Pemantauan telemetri jaringan enterprise dan infrastruktur provinsi saat magang di Dinas Kominfo DIY.",
+        img4: "Pemeliharaan rutin perangkat keras server, inspeksi rak, dan pemeriksaan integritas node operasional.",
+        img5: "Penyerahan resmi hasil perumusan policy brief organisasi untuk Pemerintah Kabupaten Sleman.",
+        img6: "Survey lapangan teknis dan asesmen infrastruktur jaringan yang dilaksanakan di Gedung Agung.",
       },
     },
     contact: {

@@ -203,11 +203,12 @@ Global: no horizontal page scroll; wide content scrolls inside its own container
 - **Not implemented:** fake verification hashes, "SHA-256 HASH VERIFIED…", "ACTIVE STATUS: VALID THROUGH…", fake metadata sidebars (C-03).
 - Behavior: `role="dialog"` + `aria-modal="true"` + accessible name from item title; focus moves into the dialog on open and **returns to the invoking card trigger button**; Escape closes; Tab/Shift+Tab trapped inside while open; body scroll locked **without jumping scroll position**; backdrop-click closing enabled; chat widget is automatically hidden and inert while the dialog is open (`isLightboxOpen`).
 
-### 5.9 Field Documentation (DS-GAL) — refs 3, 5, 6, 7
+### 5.9 Field Documentation (DS-GAL) — refs 3, 5, 6, 7; CR-015
 - Heading "FIELD DOCUMENTATION" + (mobile) mono "SWIPE ↔" hint.
 - Image cards with rounded corners, hairline border, **bottom gradient scrim** with mono-bracket caption `[TITLE]` (bold) + one/two-line description. Add a sufficient scrim so captions stay legible in **both** themes (light export shows weak contrast).
 - Card size: appears **fixed height** (≈ 320–350 export-px) with 4 across on desktop — finalize in TASK-014 by measurement. Mobile: horizontal swipe, `touch-action: pan-y`, partial next card visible.
-- Real photos only; alt text meaningful; captions only if owner-confirmed.
+- Real photos only from `public/assets/gallery/` (verified 2026-10-26); alt text meaningful; captions derived faithfully from owner filenames.
+- **Interactive Lightbox Preview with Drag-vs-Click Guard (CR-015):** Clicking or tapping a photo card opens the shared Lightbox modal (`role="dialog"`, `aria-modal="true"`) displaying the uncropped field photograph (`object-contain`). Pointer delta > 6px is guarded as a carousel scroll/swipe (does not trigger modal); delta <= 6px or Enter/Space opens the modal. Focus moves into the modal and returns to the card button upon closing; floating chatbot launcher is hidden/inert while open.
 
 ### 5.10 Direct Channels / Contact (DS-CNT) — refs 3, 5, 6; CR-003, CR-007
 - Grid Layout: Spacious 2-row layout on desktop/laptop (`lg:grid-cols-6` with 3 cards top row `lg:col-span-2` + 2 cards bottom row `lg:col-span-3`). Tablet (`sm` / 768px): 2-column grid (`sm:grid-cols-2`, with 5th card spanning 2 cols `sm:col-span-2`). Mobile (`320px`–`375px`): single spacious column stack (`grid-cols-1`). Card heights remain uniform (`h-full`).

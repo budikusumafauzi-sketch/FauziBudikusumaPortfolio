@@ -39,4 +39,14 @@ describe("Field Documentation Section", () => {
     expect(html).toContain('aria-label="Previous documentation item"');
     expect(html).toContain('aria-label="Next documentation item"');
   });
+
+  it("renders accessible button triggers for all 6 documentation photo cards (CR-015 / AC-3)", () => {
+    const html = renderToString(React.createElement(DocumentationSection));
+    for (const item of galleryData) {
+      const escapedTitle = item.title.replace(/&/g, "&amp;");
+      expect(html).toContain(`aria-label="Preview field photo for ${escapedTitle}"`);
+    }
+    const buttonMatches = html.match(/<button[^>]*type="button"[^>]*aria-label="Preview field photo for/g);
+    expect(buttonMatches?.length).toBe(6);
+  });
 });

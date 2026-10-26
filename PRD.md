@@ -146,13 +146,13 @@ Visual details live in `DESIGN.md` (reference: `design/approved/`). Behavior liv
 | FR-CRT-07 | Backdrop-click-to-close is **not assumed** (OD-12). |
 | FR-CRT-08 | Missing certificate image → respectful, non-fabricated "unavailable" state on the card; no modal with a broken image. |
 
-### 6.9 Field Documentation gallery
+### 6.9 Field Documentation gallery (FR-DOC / CR-015)
 | ID | Requirement |
 |---|---|
-| FR-GAL-01 | Horizontal drag/swipe gallery of **authentic** activity images (academic, organizational, training, project documentation). |
-| FR-GAL-02 | Consistent card size and cropping per design; mobile uses a touch-action that keeps vertical page scroll working (e.g. `pan-y`). |
-| FR-GAL-03 | Keyboard accessible where applicable; informative images have meaningful alt text, decorative ones empty alt. |
-| FR-GAL-04 | No invented events, captions, dates or people. |
+| FR-DOC-01 | Horizontal drag/swipe gallery of **authentic** activity images (from `Dokumentasi`: GDG Jogja, Kominfo DIY internship, Network monitoring, Server maintenance, Policy brief Sleman, Survey Gedung Agung). |
+| FR-DOC-02 | Clicking or tapping any documentation card opens the shared accessible Lightbox modal (`role="dialog"`, `aria-modal="true"`) showing the full uncropped photo (`object-contain`) and accessible Close (`X`) button. |
+| FR-DOC-03 | **Drag vs. Click Guard:** Movement delta > 6px is treated strictly as carousel dragging/scrolling (modal does not open); click/tap (movement <= 6px) or Enter/Space opens the Lightbox. Escape/X closes and restores focus to triggering card button. |
+| FR-DOC-04 | No invented events, captions, dates or people; alt text meaningful; captions derived faithfully from owner filenames. |
 
 ### 6.10 Contact and footer
 | ID | Requirement |
@@ -230,7 +230,7 @@ Facts seen in the approved designs are listed as **DESIGN-OBSERVED / DRAFT** to 
 | Skills (35) | `src/data/skills.ts` | 35 verified skills across 5 categories, including Next.js (local asset `public/assets/skills/nextjs.svg`) | VERIFIED (CR-008, 2026-10-25) |
 | Projects (6) | `src/data/projects.ts` | Sentinel; StackLab; Network Monitoring Dashboard; RNIC; Enterprise Data Center Network Simulation; Enterprise Network Lab (MikroTik CHR). Display photos from 'Foto Project' and GitHub repo URLs verified. | VERIFIED (CR-014, 2026-10-26) |
 | Certifications (4) | `src/data/certifications.ts` | MikroTik MTCNA; Google Cybersecurity Professional Certificate; Google AI Essentials; Sertifikat Kompetensi (LAN implementation, BNSP/LSP) | DRAFT; full images `[OWNER TO PROVIDE]`; dates/IDs unverified |
-| Gallery (4) | `src/data/gallery.ts` | Academic symposium; hackathon build; tech workshop; lab infrastructure demo (**mock imagery/captions**) | `[OWNER TO PROVIDE]` real photos + captions |
+| Gallery (6) | `src/data/gallery.ts` | GDG Jogja Gen AI; Kominfo DIY internship; Network monitoring; Server maintenance; Policy brief Sleman; Survey Gedung Agung (from 'Dokumentasi'). Real photos and titles verified. | VERIFIED (CR-015, 2026-10-26) |
 | Email | `src/data/contacts.ts` | `budikusumafauzi@gmail.com` | DRAFT; publication not yet approved (OD-11) |
 | LinkedIn | same | handle `in/fauzibudikusuma` | full URL `[OWNER TO PROVIDE]` |
 | GitHub | same | handle `budikusumafauzi-sketch` | full URL `[OWNER TO PROVIDE]` |
