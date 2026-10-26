@@ -11,12 +11,12 @@
 | Field | Value |
 |---|---|
 | Date | 2026-10-26 |
-| Current phase | **7 — Quality and security review (Revision 4: CR-014 Zero-Unavailable Chatbot)** |
-| Waiting for | Fault-injection and soak verification (`TASK-044`) |
-| Last completed task | TASK-043 — Resilience architecture: never-unavailable design (CR-014 / Revision 4) |
-| Next task | TASK-044 — Fault-injection and soak verification (CR-014 / Revision 4) |
+| Current phase | **7 — Quality and security review (Revision 4: CR-014 Complete / Phase 7 Done)** |
+| Waiting for | Owner Gate G8 Approval / Phase 8 Deployment (`TASK-026`) |
+| Last completed task | TASK-044 — Fault-injection and soak verification (CR-014 / Revision 4) |
+| Next task | TASK-026 — Service eligibility check and deployment (Phase 8) |
 | Blockers | None |
-| Last verified commit | `f905719` |
+| Last verified commit | `0dd0b83` (TASK-044 changes verified green) |
 
 ## 2. Phases and gates
 
@@ -29,7 +29,7 @@
 | 4 | Data preparation and PostgreSQL | 017–018 | G4 | AUTO | `DONE` |
 | 5 | Chatbot backend | 019–022 | G5 | AUTO | `DONE` |
 | 6 | Chatbot UI and integration | 023 | G6 | **OWNER** | `DONE` |
-| 7 | Quality and security review | 024, 025, 028–044 | G7 | AUTO | `IN_PROGRESS` |
+| 7 | Quality and security review | 024, 025, 028–044 | G7 | AUTO | `DONE` |
 | 8 | Deployment and final acceptance | 026–027 | G8 | **OWNER** | `TODO` |
 
 Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work listed in `WORKFLOW.md` §3.3 may proceed.
@@ -81,7 +81,7 @@ Rules: `WORKFLOW.md` §3–§4. While an OWNER gate is pending, only the work li
 | [040](tasks/TASK-040-knowledge-expansion-helpful-fallback.md) | Comprehensive knowledge expansion & helpful bilingual fallback (CR-012) | 7 | P0 | `DONE` | TASK-039 |
 | [042](tasks/TASK-042-root-cause-experiment.md) | Root-cause proof by experiment (CR-014 / Revision 4) | 7 | P0 | `DONE` | TASK-040 |
 | [043](tasks/TASK-043-never-unavailable-architecture.md) | Resilience architecture: never-unavailable design (CR-014 / Revision 4) | 7 | P0 | `DONE` | TASK-042 |
-| [044](tasks/TASK-044-fault-injection-soak.md) | Fault-injection and soak verification (CR-014 / Revision 4) | 7 | P0 | `IN_PROGRESS` | TASK-043 |
+| [044](tasks/TASK-044-fault-injection-soak.md) | Fault-injection and soak verification (CR-014 / Revision 4) | 7 | P0 | `DONE` | TASK-043 |
 | [026](tasks/TASK-026-service-eligibility-and-deployment.md) | Service eligibility check and deployment | 8 | P0 | `TODO` | Gate G7 passed (all Phase 7 tasks) |
 | [027](tasks/TASK-027-final-acceptance-and-runbook.md) | Final acceptance audit, release gate and runbook | 8 | P0 | `TODO` | TASK-026 |
 

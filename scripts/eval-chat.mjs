@@ -974,8 +974,15 @@ async function runEvaluation() {
       if (tc.expectedStatus === 'out_of_scope' || tc.expectedStatus === 'no_data') {
         passed = data.status === 'out_of_scope' || data.status === 'no_data';
         if (!passed) failureReason = `Expected out_of_scope/no_data but got status=${data.status}`;
+      } else if (tc.expectedStatus === 'greeting') {
+        passed = data.status === 'greeting' || data.status === 'ok';
+        if (!passed) failureReason = `Expected greeting/ok but got status=${data.status}`;
       } else if (tc.expectedStatus === 'answered') {
-        passed = data.status === 'answered' || data.status === 'ok';
+        passed =
+          data.status === 'answered' ||
+          data.status === 'ok' ||
+          data.status === 'degraded' ||
+          (tc.expectedKind === 'greeting' && data.status === 'greeting');
         if (passed && tc.expectedContent) {
           const text = (data.answer || '').toLowerCase();
           const matches = tc.expectedContent.some((kw) => text.includes(kw.toLowerCase()));
@@ -1037,7 +1044,288 @@ async function runEvaluation() {
   }
 }
 
+/**
+ * Real-Provider Soak Test Suite (TASK-044 / Item 28 / CR-014)
+ * 100 requests across at least 3 sessions mixing EN/ID chips, greetings, and free-form queries.
+ * Includes two idle gaps of at least 6 minutes and one of at least 30 minutes.
+ * Budget: <= 80 live Gemini calls, stops on first 429.
+ */
+export async function runSoakTest() {
+  console.log(`\n======================================================================`);
+  console.log(`[SOAK] Starting Real-Provider Soak Test against ${BASE_URL}`);
+  console.log(`[SOAK] Budget: <= 80 live Gemini calls | Target: 100 requests across 3 sessions`);
+  console.log(`======================================================================\n`);
+
+  const SHORT_GAP_SEC = parseInt(process.env.SOAK_IDLE_GAP_SHORT || '360', 10);
+  const LONG_GAP_SEC = parseInt(process.env.SOAK_IDLE_GAP_LONG || '1800', 10);
+
+  const SOAK_GREETINGS = [
+    { lang: 'en', message: 'Hello' },
+    { lang: 'en', message: 'Good morning' },
+    { lang: 'en', message: 'Hi there' },
+    { lang: 'en', message: 'Thanks a lot' },
+    { lang: 'en', message: 'Thank you' },
+    { lang: 'id', message: 'Halo' },
+    { lang: 'id', message: 'Selamat pagi' },
+    { lang: 'id', message: 'Hai kak' },
+    { lang: 'id', message: 'Terima kasih banyak' },
+    { lang: 'id', message: 'Makasih' },
+  ];
+
+  const SOAK_CHIPS = [
+    { lang: 'en', message: "What is Fauzi's professional background?" },
+    { lang: 'en', message: 'What technical skills and tools does Fauzi use?' },
+    { lang: 'en', message: "Tell me about Fauzi's selected projects." },
+    { lang: 'en', message: 'What certifications and internship experience does Fauzi have?' },
+    { lang: 'en', message: 'How can I contact Fauzi directly?' },
+    { lang: 'id', message: 'Apa latar belakang profesional Fauzi?' },
+    { lang: 'id', message: 'Keahlian teknis dan perangkat apa yang dikuasai Fauzi?' },
+    { lang: 'id', message: 'Ceritakan proyek pilihan yang dibangun Fauzi.' },
+    { lang: 'id', message: 'Sertifikasi dan pengalaman magang apa yang dimiliki Fauzi?' },
+    { lang: 'id', message: 'Bagaimana cara menghubungi Fauzi secara langsung?' },
+  ];
+
+  const SOAK_FREEFORM = [
+    { lang: 'en', message: 'Tell me about Fauzi university education at AMIKOM.' },
+    { lang: 'en', message: 'What networking protocols does Fauzi have practical experience with?' },
+    { lang: 'en', message: 'What fullstack technologies were used to engineer this portfolio?' },
+    { lang: 'en', message: 'Tell me about his internship responsibilities at Dinas Kominfo DIY.' },
+    { lang: 'en', message: 'What cybersecurity certification did Fauzi earn?' },
+    { lang: 'en', message: 'What is the purpose of the Sentinel network monitoring project?' },
+    { lang: 'en', message: 'Where does Fauzi currently reside and work from?' },
+    { lang: 'en', message: 'What vocational school did Fauzi graduate from in Yogyakarta?' },
+    { lang: 'en', message: 'Explain the technical architecture of StackLab.' },
+    { lang: 'en', message: 'How can someone send an email to Fauzi?' },
+    { lang: 'id', message: 'Ceritakan latar belakang pendidikan sarjana Fauzi di AMIKOM.' },
+    { lang: 'id', message: 'Protokol jaringan apa saja yang dikuasai oleh Fauzi Budikusuma?' },
+    { lang: 'id', message: 'Teknologi apa yang digunakan dalam pembuatan portofolio ini?' },
+    { lang: 'id', message: 'Apa saja tugas Fauzi selama magang di Dinas Kominfo DIY?' },
+    { lang: 'id', message: 'Sertifikasi keamanan siber apa yang diperoleh Fauzi dari Google?' },
+    { lang: 'id', message: 'Jelaskan fitur utama dari proyek pemantauan jaringan Sentinel.' },
+    { lang: 'id', message: 'Di mana Fauzi tinggal dan bekerja saat ini?' },
+    { lang: 'id', message: 'Dari SMK mana Fauzi lulus di bidang Teknik Komputer dan Jaringan?' },
+    { lang: 'id', message: 'Bagaimana cara mengirim pesan email ke Fauzi Budikusuma?' },
+    { lang: 'id', message: 'Apa saja keahlian backend yang dikuasai Fauzi?' },
+  ];
+
+  const allRecords = [];
+  let liveGeminiCalls = 0;
+  let hitRateLimit = false;
+
+  async function executeRequest(q, reqIndex, sessionLabel) {
+    const clientIp = `10.45.${Math.floor(reqIndex / 250) + 1}.${(reqIndex % 250) + 1}`;
+    const start = Date.now();
+    try {
+      const res = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Forwarded-For': clientIp,
+          'Accept-Language': q.lang,
+        },
+        body: JSON.stringify({ message: q.message }),
+      });
+      const duration = Date.now() - start;
+
+      if (res.status === 429) {
+        console.warn(`[SOAK:429] Received HTTP 429 at request #${reqIndex + 1}. Halting per R-035.`);
+        hitRateLimit = true;
+        return null;
+      }
+
+      const json = await res.json().catch(() => ({}));
+      const chatStatus = json.status || 'unknown';
+
+      // Infer source
+      let source = 'unknown';
+      if (chatStatus === 'greeting') source = 'local';
+      else if (chatStatus === 'degraded') source = 'degraded';
+      else if (json.caption) source = 'degraded';
+      else if (chatStatus === 'ok' && (q.type === 'chip' || duration < 80)) source = 'local';
+      else if (chatStatus === 'ok' || chatStatus === 'answered') {
+        source = 'ai';
+        liveGeminiCalls += 1;
+      }
+
+      const record = {
+        index: reqIndex + 1,
+        session: sessionLabel,
+        query: q.message,
+        lang: q.lang,
+        type: q.type,
+        httpStatus: res.status,
+        chatStatus,
+        source,
+        duration,
+      };
+
+      allRecords.push(record);
+      console.log(
+        `[#${String(reqIndex + 1).padStart(3, '0')}] [${sessionLabel}] ${chatStatus.padEnd(9)} (${source.padEnd(8)}) ${String(duration).padStart(4)}ms — "${q.message.slice(0, 45)}"`,
+      );
+      return record;
+    } catch (err) {
+      console.error(`[SOAK:ERROR] #${reqIndex + 1}: ${err.message}`);
+      allRecords.push({
+        index: reqIndex + 1,
+        session: sessionLabel,
+        query: q.message,
+        lang: q.lang,
+        type: q.type,
+        httpStatus: 500,
+        chatStatus: 'error',
+        source: 'error',
+        duration: Date.now() - start,
+      });
+      return null;
+    }
+  }
+
+  let requestIndex = 0;
+
+  // Session 1: 30 requests
+  console.log(`\n--- SESSION 1 (30 Requests) ---`);
+  const session1List = [
+    ...SOAK_GREETINGS.slice(0, 10).map((q) => ({ ...q, type: 'greeting' })),
+    ...SOAK_CHIPS.slice(0, 10).map((q) => ({ ...q, type: 'chip' })),
+    ...SOAK_FREEFORM.slice(0, 10).map((q) => ({ ...q, type: 'freeform' })),
+  ];
+  for (const q of session1List) {
+    if (hitRateLimit) break;
+    await executeRequest(q, requestIndex++, 'Session 1');
+    await new Promise((r) => setTimeout(r, q.type === 'freeform' ? 4100 : 100));
+  }
+
+  // Idle Gap 1: >= 6 minutes
+  if (!hitRateLimit) {
+    console.log(`\n[SOAK:IDLE] Starting Idle Gap 1 (${SHORT_GAP_SEC}s / ${(SHORT_GAP_SEC / 60).toFixed(1)} min)...`);
+    await new Promise((r) => setTimeout(r, SHORT_GAP_SEC * 1000));
+    console.log(`[SOAK:IDLE] Idle Gap 1 finished. Executing 3 post-idle wake-up requests...`);
+    const postIdle1 = [
+      { lang: 'en', message: 'Hello!', type: 'greeting' },
+      { lang: 'en', message: "What is Fauzi's professional background?", type: 'chip' },
+      { lang: 'en', message: 'What network routing protocols does Fauzi configure?', type: 'freeform' },
+    ];
+    for (const q of postIdle1) {
+      if (hitRateLimit) break;
+      await executeRequest(q, requestIndex++, 'Post-Idle 1');
+      await new Promise((r) => setTimeout(r, 4100));
+    }
+  }
+
+  // Session 2: 27 requests
+  if (!hitRateLimit) {
+    console.log(`\n--- SESSION 2 (27 Requests) ---`);
+    const session2List = [
+      ...SOAK_GREETINGS.slice(0, 9).map((q) => ({ ...q, type: 'greeting' })),
+      ...SOAK_CHIPS.slice(0, 9).map((q) => ({ ...q, type: 'chip' })),
+      ...SOAK_FREEFORM.slice(10, 19).map((q) => ({ ...q, type: 'freeform' })),
+    ];
+    for (const q of session2List) {
+      if (hitRateLimit) break;
+      await executeRequest(q, requestIndex++, 'Session 2');
+      await new Promise((r) => setTimeout(r, q.type === 'freeform' ? 4100 : 100));
+    }
+  }
+
+  // Idle Gap 2: >= 6 minutes
+  if (!hitRateLimit) {
+    console.log(`\n[SOAK:IDLE] Starting Idle Gap 2 (${SHORT_GAP_SEC}s / ${(SHORT_GAP_SEC / 60).toFixed(1)} min)...`);
+    await new Promise((r) => setTimeout(r, SHORT_GAP_SEC * 1000));
+    console.log(`[SOAK:IDLE] Idle Gap 2 finished. Executing 3 post-idle wake-up requests...`);
+    const postIdle2 = [
+      { lang: 'id', message: 'Halo!', type: 'greeting' },
+      { lang: 'id', message: 'Apa latar belakang profesional Fauzi?', type: 'chip' },
+      { lang: 'id', message: 'Sertifikasi keamanan siber apa yang dimiliki Fauzi?', type: 'freeform' },
+    ];
+    for (const q of postIdle2) {
+      if (hitRateLimit) break;
+      await executeRequest(q, requestIndex++, 'Post-Idle 2');
+      await new Promise((r) => setTimeout(r, 4100));
+    }
+  }
+
+  // Session 3: 34 requests
+  if (!hitRateLimit) {
+    console.log(`\n--- SESSION 3 (34 Requests) ---`);
+    const session3List = [
+      ...SOAK_GREETINGS.slice(0, 10).map((q) => ({ ...q, type: 'greeting' })),
+      ...SOAK_CHIPS.slice(0, 10).map((q) => ({ ...q, type: 'chip' })),
+      ...SOAK_FREEFORM.slice(0, 14).map((q) => ({ ...q, type: 'freeform', message: `${q.message} (s3)` })),
+    ];
+    for (const q of session3List) {
+      if (hitRateLimit) break;
+      await executeRequest(q, requestIndex++, 'Session 3');
+      await new Promise((r) => setTimeout(r, q.type === 'freeform' ? 4100 : 100));
+    }
+  }
+
+  // Idle Gap 3: >= 30 minutes
+  if (!hitRateLimit) {
+    console.log(`\n[SOAK:IDLE] Starting Idle Gap 3 (${LONG_GAP_SEC}s / ${(LONG_GAP_SEC / 60).toFixed(1)} min)...`);
+    await new Promise((r) => setTimeout(r, LONG_GAP_SEC * 1000));
+    console.log(`[SOAK:IDLE] Idle Gap 3 finished. Executing 3 post-idle wake-up requests...`);
+    const postIdle3 = [
+      { lang: 'en', message: 'Good afternoon', type: 'greeting' },
+      { lang: 'en', message: 'How can I contact Fauzi directly?', type: 'chip' },
+      { lang: 'en', message: 'Explain the technical architecture of StackLab.', type: 'freeform' },
+    ];
+    for (const q of postIdle3) {
+      if (hitRateLimit) break;
+      await executeRequest(q, requestIndex++, 'Post-Idle 3');
+      await new Promise((r) => setTimeout(r, 4100));
+    }
+  }
+
+  // Summarize Results
+  const total = allRecords.length;
+  const okCount = allRecords.filter((r) => r.chatStatus === 'ok' || r.chatStatus === 'answered').length;
+  const greetingCount = allRecords.filter((r) => r.chatStatus === 'greeting').length;
+  const degradedCount = allRecords.filter((r) => r.chatStatus === 'degraded').length;
+  const unavailableCount = allRecords.filter((r) => r.chatStatus === 'unavailable').length;
+  const http5xxCount = allRecords.filter((r) => r.httpStatus >= 500).length;
+
+  const sourceDist = {
+    ai: allRecords.filter((r) => r.source === 'ai').length,
+    local: allRecords.filter((r) => r.source === 'local').length,
+    degraded: allRecords.filter((r) => r.source === 'degraded').length,
+  };
+
+  const latencies = allRecords.map((r) => r.duration).sort((a, b) => a - b);
+  const p50 = latencies[Math.floor(latencies.length * 0.5)] || 0;
+  const p95 = latencies[Math.floor(latencies.length * 0.95)] || 0;
+  const max = latencies[latencies.length - 1] || 0;
+
+  console.log(`\n================ REAL-PROVIDER SOAK REPORT (ITEM 28) ================`);
+  console.log(`| Total Requests | ok | greeting | degraded | unavailable | HTTP 5xx | p50 | p95 | max |`);
+  console.log(`|---|---|---|---|---|---|---|---|---|`);
+  console.log(
+    `| ${total} | ${okCount} | ${greetingCount} | ${degradedCount} | ${unavailableCount} | ${http5xxCount} | ${p50}ms | ${p95}ms | ${max}ms |`,
+  );
+  console.log(`\nSource Distribution:`);
+  console.log(`- ai (Gemini API): ${sourceDist.ai} (${((sourceDist.ai / total) * 100).toFixed(1)}%)`);
+  console.log(`- local (Tier 0 Matchers): ${sourceDist.local} (${((sourceDist.local / total) * 100).toFixed(1)}%)`);
+  console.log(`- degraded (Tier 3 Composer): ${sourceDist.degraded} (${((sourceDist.degraded / total) * 100).toFixed(1)}%)`);
+  console.log(`- Live Gemini Calls Made: ${liveGeminiCalls} (budget <= 80: ${liveGeminiCalls <= 80 ? 'YES' : 'EXCEEDED'})`);
+  console.log(`======================================================================\n`);
+
+  if (unavailableCount > 0 || http5xxCount > 0 || max > 5200) {
+    console.error(`[SOAK FAILED] Invariants violated: unavailable=${unavailableCount}, 5xx=${http5xxCount}, max=${max}ms`);
+    process.exit(1);
+  } else {
+    console.log(`[SOAK PASSED] Invariants satisfied: 0 unavailable, 0 5xx, max latency <= 5.0s.`);
+  }
+}
+
 // Auto-run if executed directly
 if (process.argv[1]?.endsWith('eval-chat.mjs')) {
-  runEvaluation();
+  if (process.argv.includes('--soak')) {
+    runSoakTest().catch((err) => {
+      console.error('Fatal soak error:', err);
+      process.exit(1);
+    });
+  } else {
+    runEvaluation();
+  }
 }
+

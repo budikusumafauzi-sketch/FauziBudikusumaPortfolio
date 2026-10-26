@@ -22,6 +22,7 @@ import { ANSWER_MAX_CHARS, COPY } from '@/lib/chat-contract';
 import { POST } from '@/app/api/chat/route';
 import * as dbModule from '@/lib/server/db';
 import * as envModule from '@/lib/env';
+import * as knowledgeModule from '@/lib/server/knowledge';
 
 describe('Gemini prompt contract and sanitization', () => {
   it('system instruction enforces strict grounding, plain text, and no hallucination', () => {
@@ -283,8 +284,8 @@ describe('Route Handler POST /api/chat with Gemini grounding and sources', () =>
     expect(data.answer).toBe(COPY.out_of_scope);
   });
 
-  it('returns 503 unavailable when database lookup fails', async () => {
-    vi.spyOn(dbModule.prisma.knowledgeRecord, 'findMany').mockRejectedValue(new Error('Connection terminated'));
+  it('returns 503 unavailable only when all knowledge sources fail', async () => {
+    vi.spyOn(knowledgeModule, 'loadKnowledge').mockRejectedValue(new Error('All knowledge sources unavailable'));
 
     const req = makePostRequest({ message: 'Tell me about Fauzi' }, '192.168.1.13');
     const res = await POST(req);

@@ -78,22 +78,30 @@ export async function loadKnowledge(
   let stale = false;
 
   if (isTestEnv && !enableCacheInTest) {
-    const start = Date.now();
-    const rows = await client.knowledgeRecord.findMany({
-      select: {
-        id: true,
-        category: true,
-        title: true,
-        body: true,
-        keywords: true,
-        url: true,
-        position: true,
-      },
-      orderBy: { id: 'asc' },
-    });
-    dbMs = Date.now() - start;
-    records = rows;
-    source = 'db';
+    try {
+      const start = Date.now();
+      const rows = await client.knowledgeRecord.findMany({
+        select: {
+          id: true,
+          category: true,
+          title: true,
+          body: true,
+          keywords: true,
+          url: true,
+          position: true,
+        },
+        orderBy: { id: 'asc' },
+      });
+      dbMs = Date.now() - start;
+      records = rows;
+      source = 'db';
+    } catch {
+      // Invariant I-1: If database query times out or fails in test, fall back to snapshot
+      const cacheRes = await getOrUpdateKnowledgeCache(client);
+      records = cacheRes.records;
+      dbMs = cacheRes.dbMs;
+      source = cacheRes.source ?? 'snapshot';
+    }
   } else {
     const cacheRes = await getOrUpdateKnowledgeCache(client);
     records = cacheRes.records;

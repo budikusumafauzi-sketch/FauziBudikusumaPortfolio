@@ -20,6 +20,7 @@ import { COPY, MAX_MESSAGE_LENGTH, MAX_BODY_BYTES } from '@/lib/chat-contract';
 import * as geminiModule from '@/lib/server/gemini';
 import * as dbModule from '@/lib/server/db';
 import * as envModule from '@/lib/env';
+import * as knowledgeModule from '@/lib/server/knowledge';
 import { resetRateLimitStore } from '@/lib/server/rate-limit';
 
 function makeRequest(
@@ -414,8 +415,8 @@ describe('6. Resilience & Controlled 503 Fallbacks', () => {
     expect(data.answer.length).toBeGreaterThan(10);
   });
 
-  it('returns 503 unavailable when database lookup fails', async () => {
-    vi.spyOn(dbModule.prisma.knowledgeRecord, 'findMany').mockRejectedValue(new Error('DB Timeout'));
+  it('returns 503 unavailable only when all knowledge sources fail', async () => {
+    vi.spyOn(knowledgeModule, 'loadKnowledge').mockRejectedValue(new Error('Total knowledge failure'));
 
     const req = makeRequest({ message: 'Tell me about Fauzi' }, { clientIp: '10.0.1.4' });
     const res = await POST(req);
