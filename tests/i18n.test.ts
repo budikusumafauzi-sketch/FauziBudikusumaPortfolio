@@ -5,6 +5,9 @@ import { dictionaries, Dictionary } from "@/lib/i18n/dictionaries";
 import { LanguageToggle } from "@/components/layout/language-toggle";
 import { LanguageProvider } from "@/lib/i18n/context";
 
+import { journeyData } from "@/data/journey";
+import { certificationsData } from "@/data/certifications";
+
 describe("Bilingual ID/EN Foundation (TASK-032 / CR-005a)", () => {
   it("defines comprehensive dictionaries for both en and id with identical schema keys", () => {
     const en = dictionaries.en;
@@ -74,8 +77,9 @@ describe("Bilingual ID/EN Foundation (TASK-032 / CR-005a)", () => {
   it("verifies proper noun preservation per CR-005a rules", () => {
     // Verified proper nouns must remain untranslated
     expect(dictionaries.id.footer.brandHeadline).toContain("PENGEMBANG PERANGKAT LUNAK");
-    expect(dictionaries.id.profileJourney.summaryP1).toContain("Universitas AMIKOM Yogyakarta");
-    expect(dictionaries.id.profileJourney.summaryP2).toContain("Dinas Komunikasi dan Informatika (Kominfo) DIY");
-    expect(dictionaries.id.profileJourney.summaryP2).toContain("MikroTik MTCNA");
+    expect(dictionaries.id.profileJourney.principlesTag).toContain("PRINSIP KERJA");
+    expect(journeyData[0].organization).toContain("Universitas AMIKOM Yogyakarta");
+    expect(journeyData[1].organization).toContain("Dinas Komunikasi dan Informatika (Kominfo) DIY");
+    expect(certificationsData.some((c) => c.title.includes("MikroTik"))).toBe(true);
   });
 });

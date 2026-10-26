@@ -3,7 +3,7 @@
     "id": "certification:mtcna",
     "category": "CERTIFICATION",
     "title": "MikroTik Certified Network Associate (MTCNA) (MikroTik)",
-    "body": "Verified credential issued by MikroTik. Issued 2024. Category: Networking. Details: Enterprise routing protocols, wireless, firewall configuration, and bandwidth management.",
+    "body": "Verified credential issued by MikroTik. Issued 2026. Category: Networking. Details: Certification demonstrating foundational competency in MikroTik-based network management, covering routing configuration, wireless networking, firewalls, and bandwidth management to ensure reliable network connectivity.",
     "keywords": [
       "certification",
       "credential",
@@ -23,7 +23,7 @@
     "id": "certification:google-cybersecurity",
     "category": "CERTIFICATION",
     "title": "Google Cybersecurity Professional Certificate (Google)",
-    "body": "Verified credential issued by Google. Issued 2024. Category: Security. Details: Threat intelligence, SIEM tools, network defense strategies, and Python security automation.",
+    "body": "Verified credential issued by Google. Issued 2025. Category: Security. Details: Professional certification program covering cybersecurity fundamentals, threat and vulnerability identification, network hardening, and the use of security tools such as SIEM. Also encompasses the practical use of Linux, SQL, and Python to support security analysis and incident response.",
     "keywords": [
       "certification",
       "credential",
@@ -42,7 +42,7 @@
     "id": "certification:google-ai",
     "category": "CERTIFICATION",
     "title": "Google AI Essentials (Google)",
-    "body": "Verified credential issued by Google. Issued 2024. Category: AI & ML. Details: Generative AI foundational workflows, prompt engineering, and ethical AI integration.",
+    "body": "Verified credential issued by Google. Issued 2025. Category: AI & ML. Details: Foundational learning program on leveraging generative artificial intelligence effectively and responsibly, including prompt design, AI integration into daily workflows, productivity optimization, and understanding ethical AI practices.",
     "keywords": [
       "certification",
       "credential",
@@ -61,8 +61,8 @@
   {
     "id": "certification:uji-kompetensi-1",
     "category": "CERTIFICATION",
-    "title": "Sertifikat Uji Kompetensi Keahlian (Paket 1) (BNSP / LSP SMK N 1 Seyegan)",
-    "body": "Verified credential issued by BNSP / LSP SMK N 1 Seyegan. Issued 2024. Category: Vocational. Details: Enterprise local area network design, structured cabling, and server installation.",
+    "title": "Sertifikat Uji Kompetensi Keahlian (Bagian 1) (BNSP / LSP SMK N 1 Seyegan)",
+    "body": "Verified credential issued by BNSP / LSP SMK N 1 Seyegan. Issued 2026. Category: Vocational. Details: Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
     "keywords": [
       "certification",
       "credential",
@@ -72,7 +72,7 @@
       "verified",
       "bnsplspsmkn1seyegan",
       "vocational",
-      "sertifikatujikompetensikeahlianpaket1"
+      "sertifikatujikompetensikeahlianbagian1"
     ],
     "url": null,
     "position": 3,
@@ -81,8 +81,8 @@
   {
     "id": "certification:uji-kompetensi-2",
     "category": "CERTIFICATION",
-    "title": "Sertifikat Uji Kompetensi Keahlian (Paket 2) (BNSP / LSP SMK N 1 Seyegan)",
-    "body": "Verified credential issued by BNSP / LSP SMK N 1 Seyegan. Issued 2024. Category: Vocational. Details: Wide area network configuration, wireless distribution, and routing maintenance.",
+    "title": "Sertifikat Uji Kompetensi Keahlian (Bagian 2) (BNSP / LSP SMK N 1 Seyegan)",
+    "body": "Verified credential issued by BNSP / LSP SMK N 1 Seyegan. Issued 2026. Category: Vocational. Details: Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
     "keywords": [
       "certification",
       "credential",
@@ -92,7 +92,7 @@
       "verified",
       "bnsplspsmkn1seyegan",
       "vocational",
-      "sertifikatujikompetensikeahlianpaket2"
+      "sertifikatujikompetensikeahlianbagian2"
     ],
     "url": null,
     "position": 4,
@@ -102,7 +102,7 @@
     "id": "certification:nilai-pkl-1",
     "category": "CERTIFICATION",
     "title": "Sertifikat Praktik Kerja Lapangan (Bagian 1) (Dinas Kominfo DIY)",
-    "body": "Verified credential issued by Dinas Kominfo DIY. Issued 2024. Category: Industry Experience. Details: Provincial IT help desk support, troubleshooting, and network service maintenance.",
+    "body": "Verified credential issued by Dinas Kominfo DIY. Issued 2025. Category: Industry Experience. Details: Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
     "keywords": [
       "certification",
       "credential",
@@ -122,7 +122,7 @@
     "id": "certification:nilai-pkl-2",
     "category": "CERTIFICATION",
     "title": "Sertifikat Penilaian Praktik Kerja Lapangan (Bagian 2) (Dinas Kominfo DIY)",
-    "body": "Verified credential issued by Dinas Kominfo DIY. Issued 2024. Category: Industry Experience. Details: Official evaluation record of technical competencies demonstrated at Dinas Kominfo DIY.",
+    "body": "Verified credential issued by Dinas Kominfo DIY. Issued 2025. Category: Industry Experience. Details: Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
     "keywords": [
       "certification",
       "credential",
@@ -240,7 +240,7 @@
     "id": "education:amikom",
     "category": "EDUCATION",
     "title": "Bachelor of Informatics (S1 Informatika) at Universitas AMIKOM Yogyakarta",
-    "body": "Pursuing undergraduate degree in Informatics focusing on distributed systems architecture, database engineering, and modern full-stack web applications. Period: 2026 — 2029 (Expected). Academic curriculum and practical coursework center on software engineering, distributed systems, relational and NoSQL database systems, algorithm optimization, and modern full-stack web architectures.",
+    "body": "Pursuing a bachelor's degree in Informatics, building a solid foundation in computing, algorithms, database systems, and software engineering, with focused study on Artificial Intelligence and Machine Learning systems. Period: 2026 — 2030. Academic curriculum and practical coursework center on software engineering, distributed systems, relational and NoSQL database systems, algorithm optimization, and modern full-stack web architectures.",
     "keywords": [
       "education",
       "study",
@@ -251,8 +251,9 @@
       "bachelorofinformaticss1informatika",
       "universitasamikomyogyakarta",
       "informatics",
-      "softwarearchitecture",
-      "databasesystems"
+      "softwaredevelopment",
+      "artificialintelligence",
+      "machinelearning"
     ],
     "url": null,
     "position": 0,
@@ -262,7 +263,7 @@
     "id": "education:smk",
     "category": "EDUCATION",
     "title": "Computer & Network Engineering (TKJ) at SMK Negeri 1 Seyegan",
-    "body": "Graduated from vocational diploma in Computer and Network Engineering (TKJ), mastering routing & switching (MikroTik/Cisco), Linux server administration, and structured network cabling. Period: 2023 — 2026. Hands-on mastery in MikroTik RouterOS routing, Cisco IOS switching, Linux server administration, structured fiber optic and UTP LAN cabling, network topology design, and earned two national BNSP/LSP UKK vocational certifications.",
+    "body": "Built a technical foundation in network topology, device configuration, routing, switching, system administration, and connectivity troubleshooting, forming the bedrock for broader IT infrastructure exploration. Period: 2023 — 2026. Hands-on mastery in MikroTik RouterOS routing, Cisco IOS switching, Linux server administration, structured fiber optic and UTP LAN cabling, network topology design, and earned two national BNSP/LSP UKK vocational certifications.",
     "keywords": [
       "education",
       "study",
@@ -272,9 +273,9 @@
       "sekolah",
       "computernetworkengineeringtkj",
       "smknegeri1seyegan",
-      "mikrotikrouting",
-      "ciscoswitching",
-      "linuxservers",
+      "mikrotik",
+      "cisco",
+      "systemadministration",
       "networktopology"
     ],
     "url": null,
@@ -285,7 +286,7 @@
     "id": "experience:kominfo",
     "category": "EXPERIENCE",
     "title": "Help Desk Supervisor Intern — Dinas Komunikasi dan Informatika (Kominfo) DIY",
-    "body": "Supervised provincial government help desk workflows, analyzed incident escalations, and assisted in troubleshooting enterprise network infrastructure and service continuity. Period: 2025. Responsibilities included supervising provincial government IT help desk operations, managing technical incident escalation workflows, monitoring provincial government network telemetry and service continuity, and troubleshooting enterprise network and server infrastructure.",
+    "body": "Underwent practical training in IT services, supporting network and bandwidth monitoring, device health inspection, troubleshooting, technical documentation, and network equipment installation using The Dude and PRTG across provincial government and school environments. Period: 2025. Responsibilities included supervising provincial government IT help desk operations, managing technical incident escalation workflows, monitoring provincial government network telemetry and service continuity, and troubleshooting enterprise network and server infrastructure.",
     "keywords": [
       "experience",
       "work",
@@ -297,9 +298,9 @@
       "internship",
       "helpdesksupervisorintern",
       "dinaskomunikasidaninformatikakominfodiy",
-      "publicsectorit",
-      "networktroubleshooting",
-      "helpdeskmanagement"
+      "networkmonitoring",
+      "troubleshooting",
+      "technicaldocumentation"
     ],
     "url": null,
     "position": 0,
@@ -322,13 +323,13 @@
   {
     "id": "gallery:magang-kominfo-diy",
     "category": "GALLERY",
-    "title": "Kegiatan Magang di Dinas Kominfo DIY",
+    "title": "Internship Activities at Dinas Kominfo DIY",
     "body": "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
       "dokumentasi",
-      "kegiatanmagangdidinaskominfodiy"
+      "internshipactivitiesatdinaskominfodiy"
     ],
     "url": null,
     "position": 1,
@@ -337,13 +338,13 @@
   {
     "id": "gallery:magang-monitoring-jaringan",
     "category": "GALLERY",
-    "title": "Kegiatan Magang Monitoring Jaringan",
+    "title": "Network Monitoring Internship Activities",
     "body": "Real-time enterprise network telemetry and provincial infrastructure monitoring during internship at Dinas Kominfo DIY. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
       "dokumentasi",
-      "kegiatanmagangmonitoringjaringan"
+      "networkmonitoringinternshipactivities"
     ],
     "url": null,
     "position": 2,
@@ -352,13 +353,13 @@
   {
     "id": "gallery:maintenance-server",
     "category": "GALLERY",
-    "title": "Maintenance Server & Infrastruktur",
+    "title": "Server & Infrastructure Maintenance",
     "body": "Routine server hardware maintenance, structured rack inspection, and operational node integrity checks. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
       "dokumentasi",
-      "maintenanceserverinfrastruktur"
+      "serverinfrastructuremaintenance"
     ],
     "url": null,
     "position": 3,
@@ -367,7 +368,7 @@
   {
     "id": "gallery:policy-brief-sleman",
     "category": "GALLERY",
-    "title": "Penyerahan Hasil Perumusan Policy Brief Organisasi Kab Sleman",
+    "title": "Handover of Sleman Regency Organizational Policy Brief Outcomes",
     "body": "Formal handover of organizational policy brief formulation outcomes for Sleman Regency. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
@@ -381,13 +382,13 @@
   {
     "id": "gallery:survey-gedung-agung",
     "category": "GALLERY",
-    "title": "Survey Jaringan Gedung Agung",
+    "title": "Gedung Agung Network Survey",
     "body": "On-site field survey and network infrastructure assessment conducted at Gedung Agung. Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.",
     "keywords": [
       "gallery",
       "documentation",
       "dokumentasi",
-      "surveyjaringangedungagung"
+      "gedungagungnetworksurvey"
     ],
     "url": null,
     "position": 5,
@@ -397,7 +398,7 @@
     "id": "profile:main",
     "category": "PROFILE",
     "title": "FAUZI BUDIKUSUMA — SOFTWARE DEVELOPMENT & NETWORK ENGINEER",
-    "body": "Fauzi Budikusuma is a Software Development & Network Engineer based in Yogyakarta and Surakarta, Indonesia. He is an undergraduate Informatics student at Universitas AMIKOM Yogyakarta and a Computer & Network Engineering (TKJ) graduate from SMK Negeri 1 Seyegan. He is actively available for professional opportunities, internships, and collaborative engineering roles. Spoken languages: Indonesian (native) and English (professional working proficiency). Overview: Undergraduate Informatics student at Universitas AMIKOM Yogyakarta and Computer & Network Engineering graduate from SMK Negeri 1 Seyegan. Combines modern full-stack software engineering with enterprise network architecture, Mikrotik routing, and AI-assisted automation. Focus Areas: Full-Stack Web & API Development, Enterprise Network Architecture & Routing, AI-Assisted Systems & Cloud Automation.",
+    "body": "Fauzi Budikusuma is a Software Development & Network Engineer based in Yogyakarta and Surakarta, Indonesia. He is an undergraduate Informatics student at Universitas AMIKOM Yogyakarta and a Computer & Network Engineering (TKJ) graduate from SMK Negeri 1 Seyegan. He is actively available for professional opportunities, internships, and collaborative engineering roles. Spoken languages: Indonesian (native) and English (professional working proficiency). Overview: Undergraduate Informatics student at Universitas AMIKOM Yogyakarta and Computer & Network Engineering graduate from SMK Negeri 1 Seyegan. Combines modern full-stack software engineering with enterprise network architecture, Mikrotik routing, and AI-assisted automation. Focus Areas: Full-Stack Web & API Development, Enterprise Network Architecture & Routing, Artificial Intelligence & Machine Learning.",
     "keywords": [
       "fauzi",
       "budikusuma",
@@ -477,7 +478,7 @@
     "id": "project:network-monitoring-dashboard",
     "category": "PROJECT",
     "title": "Network Monitoring Dashboard",
-    "body": "Real-time network telemetry and SNMP device monitoring dashboard providing active node health, bandwidth throughput, and automated incident alerts. Built with: SNMP, Fastify, TypeScript, Tailwind CSS. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/network-monitoring-dashboard. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "body": "Network monitoring application presenting device health, latency telemetry, packet loss, and connectivity history through visual dashboards. Features automated incident logging and proactive alerting to detect disruptions and evaluate network reliability. Built with: SNMP, Fastify, TypeScript, Tailwind CSS. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/network-monitoring-dashboard. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -498,7 +499,7 @@
     "id": "project:research-news-intelligence-center",
     "category": "PROJECT",
     "title": "Research News Intelligence Center",
-    "body": "Automated intelligence platform aggregating, categorizing, and summarizing tech news and academic research streams via NLP pipelines. Built with: FastAPI, Python, PostgreSQL, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/research-news-intelligence-center. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "body": "Information intelligence platform that aggregates and organizes tech news and academic research publications. Integrates AI-assisted analytics to power automated summarization, key takeaway extraction, topic clustering, and trend tracking via a centralized dashboard. Built with: FastAPI, Python, PostgreSQL, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/research-news-intelligence-center. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -519,7 +520,7 @@
     "id": "project:stacklab",
     "category": "PROJECT",
     "title": "StackLab",
-    "body": "Developer workflow orchestration and sandbox environment for containerized microservices and automated API testing pipelines. Built with: Node.js, Docker, TypeScript, Redis. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/stacklab-v1. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "body": "Interactive learning and technical simulation platform offering hands-on practice environments for SQL, APIs, JSON, Linux systems, and computer networking. Designed to validate comprehension, test configurations, and sharpen technical engineering skills in structured workspaces. Built with: Node.js, Docker, TypeScript, Redis. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/stacklab-v1. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -540,7 +541,7 @@
     "id": "project:sentinel",
     "category": "PROJECT",
     "title": "Sentinel",
-    "body": "Infrastructure security monitoring and network anomaly detection system providing automated traffic analysis and alerting. Built with: Python, Network Security, FastAPI, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/sentinel. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "body": "Cybersecurity intelligence platform engineered to evaluate device security posture based on verifiable technical signals. Combines rule-based risk evaluation, threat intelligence, and remediation recommendations, utilizing AI as an analytical assistant rather than an authoritative decision-maker. Built with: Python, Network Security, FastAPI, Docker. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/sentinel. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -561,7 +562,7 @@
     "id": "project:enterprise-network-lab",
     "category": "PROJECT",
     "title": "Enterprise Network Lab (MikroTik CHR)",
-    "body": "Multi-area OSPF and BGP routing topology built on MikroTik Cloud Hosted Router (CHR) featuring VLAN segmentation and hardened firewall filters. Built with: MikroTik CHR, OSPF, BGP, VLAN, Firewall. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/enterprise-network-lab-mikrotik. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "body": "Enterprise network laboratory simulation utilizing MikroTik Cloud Hosted Router (CHR), focusing on OSPF and BGP routing, VLAN segmentation, and hardened firewall filtering. Serves as a practical testbed for multi-region network design, inter-site connectivity, and network infrastructure governance. Built with: MikroTik CHR, OSPF, BGP, VLAN, Firewall. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/enterprise-network-lab-mikrotik. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",
@@ -583,7 +584,7 @@
     "id": "project:datacenter-simulation",
     "category": "PROJECT",
     "title": "Data Center Network Simulation",
-    "body": "Enterprise leaf-spine architecture simulation with redundant core switching, LACP link aggregation, and resilient disaster recovery routing. Built with: Leaf-Spine, Cisco Packet Tracer, LACP, VLAN. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/Enterprise-Data-Center-Network-Simulation. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
+    "body": "Hierarchical data center network architecture simulation spanning core, distribution, access, WAN edge, server farm, and network operations center (NOC). Design emphasizes connection redundancy, network segmentation, high service availability, and comprehensive infrastructure observability. Built with: Leaf-Spine, Cisco Packet Tracer, LACP, VLAN. Public repository available on GitHub: https://github.com/budikusumafauzi-sketch/Enterprise-Data-Center-Network-Simulation. Display photo with interactive full-screen lightbox preview available in Selected Projects.",
     "keywords": [
       "project",
       "built",

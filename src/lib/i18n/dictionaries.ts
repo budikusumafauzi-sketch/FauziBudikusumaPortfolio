@@ -35,6 +35,7 @@ export interface Dictionary {
     downloadCv: string;
     statusAvailable: string;
     portraitAlt: string;
+    focusAreas: string[];
   };
   profileJourney: {
     title: string;
@@ -42,6 +43,7 @@ export interface Dictionary {
     overviewTag: string;
     summaryP1: string;
     summaryP2: string;
+    summaryP3: string;
     principlesTag: string;
     principlesTitle: string;
     principle1: string;
@@ -53,6 +55,11 @@ export interface Dictionary {
       amikom: string;
       kominfo: string;
       smk: string;
+    };
+    journeyChips: {
+      amikom: string[];
+      kominfo: string[];
+      smk: string[];
     };
   };
   skills: {
@@ -87,6 +94,7 @@ export interface Dictionary {
     date: string;
     category: string;
     closeModal: string;
+    descriptions: Record<string, string>;
   };
   documentation: {
     title: string;
@@ -94,6 +102,7 @@ export interface Dictionary {
     swipeHint: string;
     closeModal: string;
     previewAria: string;
+    titles: Record<string, string>;
     captions: {
       img1: string;
       img2: string;
@@ -183,35 +192,61 @@ export const dictionaries: Record<Language, Dictionary> = {
     hero: {
       headline: "SOFTWARE DEVELOPMENT & NETWORK ENGINEER",
       intro:
-        "Undergraduate Informatics student at Universitas AMIKOM Yogyakarta specializing in Software Development and IT Networking. Proven track record in full-stack architecture, network infrastructure configuration, and enterprise IT support.",
+        "I focus on software development and IT infrastructure engineering, with a strong emphasis on application design, system integration, network reliability, and technical process automation. My practical experience in information technology services covers network monitoring, device status analysis, troubleshooting, and technical documentation. I also develop projects spanning web applications, monitoring systems, enterprise network simulations, and AI-assisted solutions.\n\nThroughout every development process, I prioritize systematic problem-solving, implementation accuracy, security, and long-term system maintainability. I continually deepen my technical competence through project development and technology exploration, aiming to build scalable, reliable solutions that deliver tangible value to users and organizations.",
       viewProjects: "View Projects",
       contactMe: "Contact Me",
       downloadCv: "Download CV",
       statusAvailable: "AVAILABLE FOR WORKSPACE COLLABORATION",
       portraitAlt: "Fauzi Budikusuma — Formal Portrait",
+      focusAreas: [
+        "Full-Stack Web & API Development",
+        "Enterprise Network Architecture & Routing",
+        "Artificial Intelligence & Machine Learning",
+      ],
     },
     profileJourney: {
       title: "Profile & Journey",
       descriptor: "BACKGROUND & EXPERTISE",
       overviewTag: "OVERVIEW",
       summaryP1:
-        "I am a dedicated undergraduate student in Informatics at Universitas AMIKOM Yogyakarta, pursuing dual specializations in Software Engineering and Network Architecture. My practical foundation bridges modern software systems with robust routing and infrastructure protocols.",
+        "I focus on software development and network engineering, with a keen attention to application design, system integration, infrastructure monitoring, and technical troubleshooting. I build my core competencies through hands-on project engineering and practical field experience in information technology services.",
       summaryP2:
-        "With hands-on experience as a Help Desk Supervisor Intern at Dinas Komunikasi dan Informatika (Kominfo) DIY and industry certifications including MikroTik MTCNA, I bring disciplined engineering practices to both codebases and production networks.",
+        "My practical experience encompasses network and device health monitoring, bandwidth utilization analysis, technical incident resolution, as well as documentation and deployment support for network hardware. On the software engineering side, I explore web applications, monitoring platforms, infrastructure simulations, and artificial intelligence integration to deliver functional, well-structured solutions.",
+      summaryP3:
+        "In every engineering engagement, I prioritize a systematic methodology, implementation rigor, traceable documentation, and a steadfast commitment to system security and reliability. I continually advance my technical capabilities through iterative practice, rigorous evaluation, and continuous learning to deliver solutions that solve real-world problems.",
       principlesTag: "OPERATIONAL PRINCIPLES:",
       principlesTitle: "OPERATIONAL PRINCIPLES",
-      principle1: "Resilient & Auditable Architecture",
-      principle2: "Strict Network Integrity & Standards",
-      principle3: "Truthful, Zero-Hallucination Delivery",
+      principle1: "System Reliability & Structured Architecture",
+      principle2: "Network Integrity & Technical Security",
+      principle3: "Accurate & Evidence-Based Documentation",
       chronoTag: "CHRONO",
       timelineTitle: "EDUCATION & EXPERIENCE TIMELINE",
       journeyDescriptions: {
         amikom:
-          "Pursuing Bachelor's Degree in Informatics, focusing on software development and enterprise computer networking.",
+          "Pursuing a bachelor's degree in Informatics, building a solid foundation in computing, algorithms, database systems, and software engineering. I also focus on deepening my understanding of Artificial Intelligence (AI) and Machine Learning (ML), including concepts, methodologies, and their real-world applications in developing intelligent systems and data-driven solutions.",
         kominfo:
-          "Supervised IT helpdesk operations, diagnosed enterprise network issues, managed user ticket workflows, and configured local area network infrastructure across provincial government departments.",
+          "Underwent practical training in information technology services, supporting network and bandwidth monitoring, device health inspection, troubleshooting, and technical documentation. Utilized The Dude and PRTG to assist network monitoring across provincial government and educational environments, while actively supporting network equipment installation according to team requirements.",
         smk:
-          "Specialized in Computer and Network Engineering (TKJ). Mastered foundational network topology, Linux server administration, and routing protocols.",
+          "Built a technical foundation in network topology, device configuration, routing, switching, system administration, and connectivity troubleshooting. This learning experience formed the bedrock for broader exploration into IT infrastructure and systems development.",
+      },
+      journeyChips: {
+        amikom: [
+          "Informatics",
+          "Software Development",
+          "Artificial Intelligence",
+          "Machine Learning",
+        ],
+        kominfo: [
+          "Network Monitoring",
+          "Troubleshooting",
+          "Technical Documentation",
+        ],
+        smk: [
+          "MikroTik",
+          "Cisco",
+          "System Administration",
+          "Network Topology",
+        ],
       },
     },
     skills: {
@@ -237,17 +272,17 @@ export const dictionaries: Record<Language, Dictionary> = {
       previewAria: "Preview display image for",
       descriptions: {
         "project-network-monitoring-dashboard":
-          "Real-time network telemetry and SNMP device monitoring dashboard providing active node health, bandwidth throughput, and automated incident alerts.",
+          "Network monitoring application providing device status, latency metrics, packet loss, and connectivity history through a visual dashboard. Features incident logging and automated alerts to help identify disruptions and evaluate network reliability.",
         "project-research-news-intelligence-center":
-          "Automated intelligence platform aggregating, categorizing, and summarizing tech news and academic research streams via NLP pipelines.",
+          "Information intelligence platform aggregating and organizing technology news and research publications. Integrates AI-assisted analysis to support information summarization, key takeaway extraction, topic clustering, and trend monitoring through a centralized dashboard.",
         "project-stacklab":
-          "Developer workflow orchestration and sandbox environment for containerized microservices and automated API testing pipelines.",
+          "Interactive technical learning and simulation platform providing hands-on sandbox environments for SQL, APIs, JSON, Linux, and computer networks. Designed to help users test their understanding, explore configurations, and practice technical skills in a structured workspace.",
         "project-sentinel":
-          "Infrastructure security monitoring and network anomaly detection system providing automated traffic analysis and alerting.",
+          "Cybersecurity intelligence platform designed to evaluate device security posture based on verifiable technical signals. Combines rule-based risk evaluation, threat intelligence, and mitigation recommendations with AI as an analytical assistant rather than an autonomous decision maker.",
         "project-enterprise-network-lab":
-          "Multi-area OSPF and BGP routing topology built on MikroTik Cloud Hosted Router (CHR) featuring VLAN segmentation and hardened firewall filters.",
+          "Enterprise network lab simulation utilizing MikroTik Cloud Hosted Router (CHR), focusing on OSPF and BGP routing, VLAN segmentation, and firewall rule enforcement. Serves as a practical environment to understand multi-area network topology, inter-site connectivity, and network infrastructure management.",
         "project-datacenter-simulation":
-          "Enterprise leaf-spine architecture simulation with redundant core switching, LACP link aggregation, and resilient disaster recovery routing.",
+          "Data center network architecture simulation built with a layered topology covering core, distribution, access, WAN connectivity, server farm, and network operations center. The design emphasizes link redundancy, network segmentation, high service availability, and operational observability.",
       },
     },
     credentials: {
@@ -259,6 +294,22 @@ export const dictionaries: Record<Language, Dictionary> = {
       date: "DATE",
       category: "CATEGORY",
       closeModal: "Close certificate preview",
+      descriptions: {
+        "cert-mtcna":
+          "Certification demonstrating foundational competency in MikroTik-based network management, covering routing configuration, wireless networking, firewalls, and bandwidth management to ensure reliable network connectivity.",
+        "cert-google-cybersecurity":
+          "Professional certification program covering cybersecurity fundamentals, threat and vulnerability identification, network hardening, and the use of security tools such as SIEM. Also encompasses the practical use of Linux, SQL, and Python to support security analysis and incident response.",
+        "cert-google-ai":
+          "Foundational learning program on leveraging generative artificial intelligence effectively and responsibly, including prompt design, AI integration into daily workflows, productivity optimization, and understanding ethical AI practices.",
+        "cert-uji-kompetensi-1":
+          "Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
+        "cert-uji-kompetensi-2":
+          "Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
+        "cert-nilai-pkl-1":
+          "Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
+        "cert-nilai-pkl-2":
+          "Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
+      },
     },
     documentation: {
       title: "Field Documentation",
@@ -266,6 +317,14 @@ export const dictionaries: Record<Language, Dictionary> = {
       swipeHint: "SWIPE ↔",
       closeModal: "Close field photo preview",
       previewAria: "Preview field photo for",
+      titles: {
+        "gallery-gdg-jogja-gen-ai": "Google Developer Groups (GDG) Jogja — Build Your First Gen AI App",
+        "gallery-magang-kominfo-diy": "Internship Activities at Dinas Kominfo DIY",
+        "gallery-magang-monitoring-jaringan": "Network Monitoring Internship Activities",
+        "gallery-maintenance-server": "Server & Infrastructure Maintenance",
+        "gallery-policy-brief-sleman": "Handover of Sleman Regency Organizational Policy Brief Outcomes",
+        "gallery-survey-gedung-agung": "Gedung Agung Network Survey",
+      },
       captions: {
         img1: "Active participation in Google Developer Groups (GDG) Jogja session on building generative AI applications.",
         img2: "Field technical support and help desk supervisor activities at Dinas Komunikasi dan Informatika (Kominfo) DIY.",
@@ -291,7 +350,7 @@ export const dictionaries: Record<Language, Dictionary> = {
       brandHeadline: "SOFTWARE DEVELOPMENT & NETWORK ENGINEER",
       location: "YOGYAKARTA, ID",
       tagline1: "Crafted with Next.js, Tailwind CSS & Prisma.",
-      tagline2: "Zero-cost, truthful, verifiable engineering.",
+      tagline2: "BUILT WITH PURPOSE. GROWING THROUGH EXPERIENCE.",
       copyright: "© 2026 Fauzi Budikusuma. All rights reserved.",
       top: "TOP",
       backToTopAria: "Back to top",
@@ -360,35 +419,61 @@ export const dictionaries: Record<Language, Dictionary> = {
     hero: {
       headline: "PENGEMBANG PERANGKAT LUNAK & TEKNIK JARINGAN",
       intro:
-        "Mahasiswa S1 Informatika di Universitas AMIKOM Yogyakarta yang mendalami Pengembangan Perangkat Lunak dan Teknik Jaringan. Berpengalaman dalam arsitektur full-stack, konfigurasi infrastruktur jaringan, dan dukungan TI enterprise.",
+        "Saya berfokus pada pengembangan perangkat lunak dan rekayasa infrastruktur TI, dengan perhatian pada perancangan aplikasi, integrasi sistem, keandalan jaringan, serta otomatisasi proses teknis. Pengalaman praktik di bidang layanan teknologi informasi mencakup pemantauan jaringan, analisis status perangkat, pemecahan masalah, dan dokumentasi teknis. Saya juga mengembangkan berbagai proyek yang mencakup aplikasi web, sistem pemantauan, simulasi jaringan perusahaan, dan solusi berbantuan kecerdasan buatan.\n\nDalam setiap proses pengembangan, saya mengutamakan pemecahan masalah secara sistematis, ketepatan implementasi, keamanan, dan pemeliharaan sistem jangka panjang. Saya terus memperdalam kompetensi teknis melalui pengembangan proyek dan eksplorasi teknologi, dengan tujuan membangun solusi yang terukur, andal, serta memberikan nilai nyata bagi pengguna dan organisasi.",
       viewProjects: "Lihat Proyek",
       contactMe: "Hubungi Saya",
       downloadCv: "Unduh CV",
       statusAvailable: "TERSEDIA UNTUK KOLABORASI RUANG KERJA",
       portraitAlt: "Fauzi Budikusuma — Potret Formal",
+      focusAreas: [
+        "Pengembangan Web & API Full-Stack",
+        "Arsitektur & Routing Jaringan Enterprise",
+        "Kecerdasan Buatan & Pembelajaran Mesin",
+      ],
     },
     profileJourney: {
       title: "Profil & Perjalanan",
       descriptor: "LATAR BELAKANG & KEAHLIAN",
       overviewTag: "RINGKASAN",
       summaryP1:
-        "Saya adalah mahasiswa S1 Informatika di Universitas AMIKOM Yogyakarta yang mendalami bidang Rekayasa Perangkat Lunak dan Arsitektur Jaringan. Landasan praktis saya memadukan sistem perangkat lunak modern dengan protokol routing dan infrastruktur jaringan yang andal.",
+        "Saya berfokus pada pengembangan perangkat lunak dan rekayasa jaringan, dengan perhatian pada perancangan aplikasi, integrasi sistem, pemantauan infrastruktur, dan pemecahan masalah teknis. Saya membangun kompetensi melalui pengembangan proyek serta pengalaman praktik langsung di bidang layanan teknologi informasi.",
       summaryP2:
-        "Dengan pengalaman langsung sebagai Help Desk Supervisor Intern di Dinas Komunikasi dan Informatika (Kominfo) DIY serta sertifikasi industri termasuk MikroTik MTCNA, saya menerapkan praktik rekayasa yang terdisiplin pada basis kode maupun jaringan produksi.",
-      principlesTag: "PRINSIP OPERASIONAL:",
-      principlesTitle: "PRINSIP OPERASIONAL",
-      principle1: "Arsitektur Andal & Dapat Diaudit",
-      principle2: "Integritas Jaringan & Standar yang Ketat",
-      principle3: "Penyampaian Faktual & Tanpa Halusinasi",
+        "Pengalaman praktik tersebut mencakup pemantauan kondisi jaringan dan perangkat, pemeriksaan penggunaan bandwidth, penanganan kendala teknis, serta dokumentasi dan dukungan instalasi perangkat jaringan. Di sisi pengembangan perangkat lunak, saya mengeksplorasi aplikasi web, sistem pemantauan, simulasi infrastruktur, dan pemanfaatan kecerdasan buatan untuk membangun solusi yang fungsional dan terstruktur.",
+      summaryP3:
+        "Dalam setiap pekerjaan, saya mengutamakan pendekatan sistematis, ketelitian implementasi, dokumentasi yang dapat ditelusuri, serta perhatian terhadap keamanan dan keandalan sistem. Saya terus mengembangkan kompetensi melalui praktik, evaluasi, dan pembelajaran berkelanjutan untuk menghasilkan solusi yang relevan dengan kebutuhan nyata.",
+      principlesTag: "PRINSIP KERJA:",
+      principlesTitle: "PRINSIP KERJA",
+      principle1: "Keandalan Sistem dan Arsitektur yang Terstruktur",
+      principle2: "Integritas Jaringan dan Keamanan Teknis",
+      principle3: "Dokumentasi Akurat dan Berbasis Bukti",
       chronoTag: "KRONOLOGI",
       timelineTitle: "LINI MASA PENDIDIKAN & PENGALAMAN",
       journeyDescriptions: {
         amikom:
-          "Menempuh pendidikan S1 Informatika, berfokus pada pengembangan perangkat lunak dan jaringan komputer enterprise.",
+          "Menempuh pendidikan sarjana di bidang Informatika dengan membangun fondasi dalam komputasi, algoritma, basis data, dan pengembangan perangkat lunak. Saya juga berfokus memperdalam pemahaman mengenai Kecerdasan Buatan (Artificial Intelligence/AI) dan Pembelajaran Mesin (Machine Learning/ML), termasuk konsep, metode, serta penerapannya dalam pengembangan sistem cerdas dan solusi berbasis data.",
         kominfo:
-          "Mensupervisi operasional helpdesk TI, mendiagnosis kendala jaringan enterprise, mengelola alur tiket pengguna, dan mengonfigurasi infrastruktur LAN antar dinas pemerintah provinsi.",
+          "Menjalani praktik di bidang layanan teknologi informasi dengan mendukung pemantauan jaringan dan bandwidth, pemeriksaan status perangkat, troubleshooting, serta dokumentasi teknis. Menggunakan The Dude dan PRTG untuk membantu pemantauan jaringan di lingkungan pemerintah Provinsi dan sekolah, serta mendukung kegiatan instalasi perangkat jaringan sesuai kebutuhan tim.",
         smk:
-          "Kompetensi keahlian Teknik Komputer dan Jaringan (TKJ). Menguasai topologi jaringan dasar, administrasi server Linux, dan protokol routing.",
+          "Membangun fondasi teknis dalam topologi jaringan, konfigurasi perangkat, routing, switching, administrasi sistem, dan pemecahan masalah konektivitas. Pengalaman pembelajaran ini membentuk dasar untuk mengeksplorasi infrastruktur TI dan pengembangan sistem secara lebih luas.",
+      },
+      journeyChips: {
+        amikom: [
+          "Informatika",
+          "Pengembangan Perangkat Lunak",
+          "Artificial Intelligence",
+          "Machine Learning",
+        ],
+        kominfo: [
+          "Pemantauan Jaringan",
+          "Troubleshooting",
+          "Dokumentasi Teknis",
+        ],
+        smk: [
+          "MikroTik",
+          "Cisco",
+          "Administrasi Sistem",
+          "Topologi Jaringan",
+        ],
       },
     },
     skills: {
@@ -414,17 +499,17 @@ export const dictionaries: Record<Language, Dictionary> = {
       previewAria: "Lihat gambar tampilan proyek",
       descriptions: {
         "project-network-monitoring-dashboard":
-          "Dasbor telemetri jaringan waktu-nyata dan pemantauan perangkat SNMP yang menyediakan status kesehatan node aktif, throughput bandwidth, dan peringatan insiden otomatis.",
+          "Aplikasi pemantauan jaringan yang menyajikan status perangkat, metrik latensi, kehilangan paket, dan riwayat konektivitas melalui dasbor visual. Dilengkapi pencatatan kejadian serta peringatan otomatis untuk membantu mengidentifikasi gangguan dan mengevaluasi keandalan jaringan.",
         "project-research-news-intelligence-center":
-          "Platform intelijen otomatis yang mengagregasi, mengkategorikan, dan meringkas berita teknologi serta riset akademik melalui alur kerja NLP.",
+          "Platform intelijen informasi yang mengumpulkan dan mengorganisasi berita teknologi serta publikasi penelitian. Mengintegrasikan analisis berbantuan AI untuk mendukung peringkasan informasi, ekstraksi poin penting, pengelompokan topik, dan pemantauan tren melalui satu dasbor terpusat.",
         "project-stacklab":
-          "Orkestrasi alur kerja pengembang dan lingkungan sandbox untuk layanan mikro berbasis kontainer serta alur pengujian API otomatis.",
+          "Platform pembelajaran dan simulasi teknis interaktif yang menyediakan lingkungan praktik untuk SQL, API, JSON, Linux, dan jaringan komputer. Dirancang untuk membantu pengguna menguji pemahaman, mengeksplorasi konfigurasi, dan melatih keterampilan teknis melalui lingkungan kerja yang terstruktur.",
         "project-sentinel":
-          "Sistem pemantauan keamanan infrastruktur dan deteksi anomali jaringan yang menyediakan analisis lalu lintas otomatis serta sistem peringatan.",
+          "Platform intelijen keamanan siber yang dirancang untuk mengevaluasi kondisi keamanan perangkat berdasarkan sinyal teknis yang dapat diverifikasi. Menggabungkan evaluasi risiko berbasis aturan, informasi ancaman, dan rekomendasi mitigasi dengan AI sebagai pendukung analisis, bukan penentu hasil penilaian keamanan.",
         "project-enterprise-network-lab":
-          "Topologi perutean OSPF dan BGP multi-area yang dibangun pada MikroTik Cloud Hosted Router (CHR) dengan segmentasi VLAN dan filter firewall yang diperketat.",
+          "Simulasi laboratorium jaringan perusahaan menggunakan MikroTik Cloud Hosted Router (CHR), dengan fokus pada routing OSPF dan BGP, segmentasi VLAN, serta penerapan aturan firewall. Proyek ini menjadi sarana praktik untuk memahami desain jaringan multiwilayah, konektivitas antarsitus, dan pengelolaan infrastruktur jaringan.",
         "project-datacenter-simulation":
-          "Simulasi arsitektur leaf-spine enterprise dengan peralihan inti redundan, agregasi tautan LACP, dan perutean pemulihan bencana yang tangguh.",
+          "Simulasi arsitektur jaringan pusat data dengan pendekatan berlapis yang mencakup core, distribution, access, konektivitas WAN, server farm, dan pusat operasi jaringan. Perancangan menekankan redundansi koneksi, segmentasi jaringan, ketersediaan layanan, dan kemudahan pemantauan infrastruktur.",
       },
     },
     credentials: {
@@ -436,6 +521,22 @@ export const dictionaries: Record<Language, Dictionary> = {
       date: "TANGGAL",
       category: "KATEGORI",
       closeModal: "Tutup pratinjau sertifikat",
+      descriptions: {
+        "cert-mtcna":
+          "Sertifikasi yang menunjukkan kompetensi dasar dalam pengelolaan jaringan berbasis MikroTik, mencakup konfigurasi routing, jaringan nirkabel, firewall, serta manajemen bandwidth untuk mendukung konektivitas jaringan yang andal.",
+        "cert-google-cybersecurity":
+          "Program sertifikasi profesional yang mencakup dasar-dasar keamanan siber, identifikasi ancaman dan kerentanan, pengamanan jaringan, serta penggunaan alat keamanan seperti SIEM. Materi juga mencakup pemanfaatan Linux, SQL, dan Python untuk mendukung analisis serta penanganan masalah keamanan.",
+        "cert-google-ai":
+          "Program pembelajaran dasar mengenai pemanfaatan kecerdasan buatan generatif secara efektif dan bertanggung jawab, termasuk penyusunan prompt, integrasi AI ke dalam alur kerja, peningkatan produktivitas, serta pemahaman mengenai penggunaan AI yang etis.",
+        "cert-uji-kompetensi-1":
+          "Sertifikat kompetensi yang mencakup dasar perancangan jaringan area lokal, penyusunan topologi, identifikasi kebutuhan perangkat, pengkabelan terstruktur, dan instalasi infrastruktur jaringan sesuai kebutuhan teknis.",
+        "cert-uji-kompetensi-2":
+          "Sertifikat kompetensi yang mencakup dasar perancangan jaringan area lokal, penyusunan topologi, identifikasi kebutuhan perangkat, pengkabelan terstruktur, dan instalasi infrastruktur jaringan sesuai kebutuhan teknis.",
+        "cert-nilai-pkl-1":
+          "Dokumen pengakuan atas pelaksanaan praktik kerja lapangan di bidang layanan teknologi informasi. Kegiatan praktik mencakup dukungan teknis, pemantauan jaringan dan perangkat, penanganan kendala konektivitas, serta dokumentasi dan dukungan pemeliharaan infrastruktur TI.",
+        "cert-nilai-pkl-2":
+          "Dokumen pengakuan atas pelaksanaan praktik kerja lapangan di bidang layanan teknologi informasi. Kegiatan praktik mencakup dukungan teknis, pemantauan jaringan dan perangkat, penanganan kendala konektivitas, serta dokumentasi dan dukungan pemeliharaan infrastruktur TI.",
+      },
     },
     documentation: {
       title: "Dokumentasi Lapangan",
@@ -443,6 +544,14 @@ export const dictionaries: Record<Language, Dictionary> = {
       swipeHint: "GESER ↔",
       closeModal: "Tutup pratinjau foto lapangan",
       previewAria: "Lihat foto lapangan untuk",
+      titles: {
+        "gallery-gdg-jogja-gen-ai": "Google Developer Groups (GDG) Jogja — Build Your First Gen AI App",
+        "gallery-magang-kominfo-diy": "Kegiatan Magang di Dinas Kominfo DIY",
+        "gallery-magang-monitoring-jaringan": "Kegiatan Magang Monitoring Jaringan",
+        "gallery-maintenance-server": "Maintenance Server & Infrastruktur",
+        "gallery-policy-brief-sleman": "Penyerahan Policy Brief Organisasi Kabupaten Sleman",
+        "gallery-survey-gedung-agung": "Survey Lapangan Gedung Agung",
+      },
       captions: {
         img1: "Partisipasi aktif dalam sesi teknis Google Developer Groups (GDG) Jogja membangun aplikasi generative AI.",
         img2: "Dokumentasi kegiatan operasional dan supervisi helpdesk TI di Dinas Kominfo DIY.",
@@ -468,7 +577,7 @@ export const dictionaries: Record<Language, Dictionary> = {
       brandHeadline: "PENGEMBANG PERANGKAT LUNAK & TEKNIK JARINGAN",
       location: "YOGYAKARTA, ID",
       tagline1: "Dibangun dengan Next.js, Tailwind CSS & Prisma.",
-      tagline2: "Rekayasa tanpa biaya, faktual, dan dapat diverifikasi.",
+      tagline2: "DIBANGUN DENGAN TUJUAN. BERKEMBANG MELALUI PENGALAMAN.",
       copyright: "© 2026 Fauzi Budikusuma. Hak cipta dilindungi.",
       top: "ATAS",
       backToTopAria: "Kembali ke atas",

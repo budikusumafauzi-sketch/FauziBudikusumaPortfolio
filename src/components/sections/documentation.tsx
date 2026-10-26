@@ -117,6 +117,7 @@ export function DocumentationSection() {
         <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
           <div className="flex gap-5 sm:gap-6 items-stretch select-none">
             {galleryData.map((item) => {
+              const docTitle = t.documentation.titles?.[item.id] || item.title;
               return (
                 <div
                   key={item.id}
@@ -138,7 +139,7 @@ export function DocumentationSection() {
                     onPointerDown={handlePointerDown}
                     onPointerUp={(e) => handlePointerUp(e, item)}
                     onKeyDown={(e) => handleKeyDown(e, item)}
-                    aria-label={`${t.documentation.previewAria} ${item.title}`}
+                    aria-label={`${t.documentation.previewAria} ${docTitle}`}
                     className="group relative h-80 sm:h-88 w-full overflow-hidden rounded-xl border border-border-default bg-surface-card shadow-sm transition-all duration-300 hover:border-accent hover:shadow-[0_0_24px_var(--color-accent-glow)] cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent block text-left"
                   >
                     {/* Gallery Image */}
@@ -162,7 +163,7 @@ export function DocumentationSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent flex flex-col justify-end p-5 text-white pointer-events-none">
                       {/* Title */}
                       <h3 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight leading-snug">
-                        {item.title}
+                        {docTitle}
                       </h3>
                     </div>
                   </button>
@@ -179,7 +180,7 @@ export function DocumentationSection() {
             onClose={closeModal}
             src={selectedDoc.imagePath}
             alt={selectedDoc.alt}
-            title={selectedDoc.title}
+            title={t.documentation.titles?.[selectedDoc.id] || selectedDoc.title}
             closeAriaLabel={t.documentation.closeModal}
             aspectRatioClass="aspect-[4/3] sm:aspect-[16/10]"
           />

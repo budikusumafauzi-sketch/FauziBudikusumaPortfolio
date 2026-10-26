@@ -40,13 +40,20 @@ export function HeroSection() {
             </div>
 
             {/* Profile Summary */}
-            <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-xl mb-6">
-              {t.hero.intro}
-            </p>
+            <div className="space-y-3.5 max-w-2xl mb-6">
+              {t.hero.intro.split("\n\n").map((paragraph, idx) => (
+                <p
+                  key={idx}
+                  className="text-text-secondary text-base sm:text-lg leading-relaxed text-justify"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
 
             {/* Core Focus Area Chips */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {profileData.focusAreas.map((area) => (
+              {(t.hero.focusAreas || profileData.focusAreas).map((area) => (
                 <span
                   key={area}
                   className="rounded border border-border-default bg-surface-card/60 px-2.5 py-1 font-mono text-xs uppercase tracking-wider text-text-muted"

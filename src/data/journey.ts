@@ -8,10 +8,10 @@ export const journeyData: JourneyItem[] = [
     kind: "education",
     title: "Bachelor of Informatics (S1 Informatika)",
     organization: "Universitas AMIKOM Yogyakarta",
-    period: "2026 — 2029 (Expected)",
+    period: "2026 — 2030",
     description:
-      "Pursuing undergraduate degree in Informatics focusing on distributed systems architecture, database engineering, and modern full-stack web applications.",
-    chips: ["Informatics", "Software Architecture", "Database Systems"],
+      "Pursuing a bachelor's degree in Informatics, building a solid foundation in computing, algorithms, database systems, and software engineering, with focused study on Artificial Intelligence and Machine Learning systems.",
+    chips: ["Informatics", "Software Development", "Artificial Intelligence", "Machine Learning"],
   }),
   JourneyItemSchema.parse({
     id: "journey-kominfo",
@@ -22,8 +22,8 @@ export const journeyData: JourneyItem[] = [
     organization: "Dinas Komunikasi dan Informatika (Kominfo) DIY",
     period: "2025",
     description:
-      "Supervised provincial government help desk workflows, analyzed incident escalations, and assisted in troubleshooting enterprise network infrastructure and service continuity.",
-    chips: ["Public Sector IT", "Network Troubleshooting", "Help Desk Management"],
+      "Underwent practical training in IT services, supporting network and bandwidth monitoring, device health inspection, troubleshooting, technical documentation, and network equipment installation using The Dude and PRTG across provincial government and school environments.",
+    chips: ["Network Monitoring", "Troubleshooting", "Technical Documentation"],
   }),
   JourneyItemSchema.parse({
     id: "journey-smk",
@@ -34,7 +34,7 @@ export const journeyData: JourneyItem[] = [
     organization: "SMK Negeri 1 Seyegan",
     period: "2023 — 2026",
     description:
-      "Graduated from vocational diploma in Computer and Network Engineering (TKJ), mastering routing & switching (MikroTik/Cisco), Linux server administration, and structured network cabling.",
-    chips: ["MikroTik Routing", "Cisco Switching", "Linux Servers", "Network Topology"],
+      "Built a technical foundation in network topology, device configuration, routing, switching, system administration, and connectivity troubleshooting, forming the bedrock for broader IT infrastructure exploration.",
+    chips: ["MikroTik", "Cisco", "System Administration", "Network Topology"],
   }),
 ];

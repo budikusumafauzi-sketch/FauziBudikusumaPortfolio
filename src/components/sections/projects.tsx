@@ -78,7 +78,7 @@ export function ProjectsSection() {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-text-secondary text-sm leading-relaxed mb-5 line-clamp-3">
+                  <p className="text-text-secondary text-sm leading-relaxed mb-5">
                     {projectSummary}
                   </p>
 

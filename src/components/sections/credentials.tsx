@@ -153,9 +153,9 @@ export function CredentialsSection() {
                     </h3>
 
                     {/* Description */}
-                    {cert.description && (
+                    {(t.credentials.descriptions?.[cert.id] || cert.description) && (
                       <p className="text-text-secondary text-xs sm:text-sm leading-relaxed mb-4">
-                        {cert.description}
+                        {t.credentials.descriptions?.[cert.id] || cert.description}
                       </p>
                     )}
                   </div>

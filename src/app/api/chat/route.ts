@@ -53,9 +53,9 @@ function logStageMetric(metric: {
   dbMs: number;
   aiMs: number;
   cacheHit: boolean;
-  source: 'cache' | 'db' | 'snapshot';
+  source: 'cache' | 'db' | 'snapshot' | 'local';
   hedged?: boolean;
-  winner?: 'primary' | 'fallback' | 'cache';
+  winner?: 'primary' | 'fallback' | 'cache' | 'local';
   attempts?: number;
   softDeadlineHit?: boolean;
   promptTokens?: number;
@@ -69,6 +69,13 @@ function logStageMetric(metric: {
   errorClass?: string;
   httpStatus?: number;
   causeCode?: string;
+  providerStatus?: string;
+  abortOrigin?: 'client' | 'server' | 'none';
+  a1Ms?: number;
+  a2Ms?: number;
+  a1Model?: string;
+  a2Model?: string;
+  connReused?: boolean;
 }) {
   if (process.env.NODE_ENV !== 'test') {
     const parts = [
@@ -93,6 +100,13 @@ function logStageMetric(metric: {
     if (metric.errorClass) parts.push(`errorClass=${metric.errorClass}`);
     if (metric.httpStatus) parts.push(`httpStatus=${metric.httpStatus}`);
     if (metric.causeCode) parts.push(`causeCode=${metric.causeCode}`);
+    if (metric.providerStatus) parts.push(`providerStatus=${metric.providerStatus}`);
+    if (metric.abortOrigin) parts.push(`abortOrigin=${metric.abortOrigin}`);
+    if (metric.a1Ms !== undefined) parts.push(`a1Ms=${metric.a1Ms}`);
+    if (metric.a2Ms !== undefined) parts.push(`a2Ms=${metric.a2Ms}`);
+    if (metric.a1Model) parts.push(`a1Model=${metric.a1Model}`);
+    if (metric.a2Model) parts.push(`a2Model=${metric.a2Model}`);
+    if (metric.connReused !== undefined) parts.push(`connReused=${metric.connReused}`);
 
     console.log(`[CHAT:METRIC] ${parts.join(' ')}`);
   }
@@ -291,6 +305,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         errorClass: geminiResult.errorClass,
         httpStatus: geminiResult.httpStatus,
         causeCode: geminiResult.networkCauseCode,
+        providerStatus: geminiResult.providerStatus,
+        abortOrigin: geminiResult.abortOrigin,
+        a1Ms: geminiResult.a1Ms,
+        a2Ms: geminiResult.a2Ms,
+        a1Model: geminiResult.a1Model,
+        a2Model: geminiResult.a2Model,
+        connReused: geminiResult.connReused,
       });
       if (geminiResult.status === 'no_data') {
         return json({ status: 'no_data', answer: getFixedCopy('no_data', language) }, 200);
@@ -315,6 +336,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       status: geminiResult.kind === 'no_data' ? 'no_data' : 'answered',
       model: geminiResult.modelUsed,
       retries: geminiResult.retryCount,
+      providerStatus: geminiResult.providerStatus,
+      abortOrigin: geminiResult.abortOrigin,
+      a1Ms: geminiResult.a1Ms,
+      a2Ms: geminiResult.a2Ms,
+      a1Model: geminiResult.a1Model,
+      a2Model: geminiResult.a2Model,
+      connReused: geminiResult.connReused,
     });
 
     if (geminiResult.kind === 'no_data') {

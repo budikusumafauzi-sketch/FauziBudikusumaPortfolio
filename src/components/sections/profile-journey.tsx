@@ -23,6 +23,13 @@ export function ProfileJourneySection() {
     return fallback;
   };
 
+  const getJourneyChips = (id: string, fallback: string[]) => {
+    if (id.includes("amikom")) return t.profileJourney.journeyChips?.amikom ?? fallback;
+    if (id.includes("kominfo")) return t.profileJourney.journeyChips?.kominfo ?? fallback;
+    if (id.includes("smk")) return t.profileJourney.journeyChips?.smk ?? fallback;
+    return fallback;
+  };
+
   return (
     <section id="profile" className="scroll-mt-24 py-16 sm:py-20">
       <Container>
@@ -48,11 +55,14 @@ export function ProfileJourneySection() {
                   Engineering Foundations
                 </h3>
 
-                <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-4">
+                <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-4 text-justify">
                   {t.profileJourney.summaryP1}
                 </p>
-                <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-6">
+                <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-4 text-justify">
                   {t.profileJourney.summaryP2}
+                </p>
+                <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-6 text-justify">
+                  {t.profileJourney.summaryP3}
                 </p>
 
                 <div className="border-t border-border-default/80 pt-6 my-6">
@@ -131,18 +141,21 @@ export function ProfileJourneySection() {
                       </p>
 
                       {/* Item Tags / Chips */}
-                      {item.chips && item.chips.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5">
-                          {item.chips.map((chip) => (
-                            <span
-                              key={chip}
-                              className="rounded bg-surface-raised px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-text-muted border border-border-default/60"
-                            >
-                              {chip}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                      {(() => {
+                        const chips = getJourneyChips(item.id, item.chips ?? []);
+                        return chips && chips.length > 0 ? (
+                          <div className="flex flex-wrap gap-1.5">
+                            {chips.map((chip) => (
+                              <span
+                                key={chip}
+                                className="rounded bg-surface-raised px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-text-muted border border-border-default/60"
+                              >
+                                {chip}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null;
+                      })()}
                     </div>
                   );
                 })}

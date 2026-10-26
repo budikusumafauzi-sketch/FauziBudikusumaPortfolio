@@ -97,30 +97,44 @@ export type GenerateAnswerResult =
       kind: 'answer' | 'greeting' | 'no_data';
       citations: string[];
       aiMs?: number;
+      a1Ms?: number;
+      a2Ms?: number;
+      a1Model?: string;
+      a2Model?: string;
+      connReused?: boolean;
       retryCount?: number;
       modelUsed?: string;
       hedged?: boolean;
-      winner?: 'primary' | 'fallback' | 'cache';
+      winner?: 'primary' | 'fallback' | 'cache' | 'local';
       attempts?: number;
       softDeadlineHit?: boolean;
       promptTokens?: number;
       outputTokens?: number;
       thoughtsTokens?: number;
+      providerStatus?: string;
+      abortOrigin?: 'client' | 'server' | 'none';
     }
   | {
       success: false;
       status: 'unavailable' | 'no_data';
       logCode: string;
       aiMs?: number;
+      a1Ms?: number;
+      a2Ms?: number;
+      a1Model?: string;
+      a2Model?: string;
+      connReused?: boolean;
       retryCount?: number;
       modelUsed?: string;
       hedged?: boolean;
-      winner?: 'primary' | 'fallback' | 'cache';
+      winner?: 'primary' | 'fallback' | 'cache' | 'local';
       attempts?: number;
       softDeadlineHit?: boolean;
       errorClass?: string;
       httpStatus?: number;
       networkCauseCode?: string;
+      providerStatus?: string;
+      abortOrigin?: 'client' | 'server' | 'none';
     };
 
 /**
@@ -246,6 +260,9 @@ interface SingleAttemptOutcome {
   httpStatus?: number;
   networkCauseCode?: string;
   isTransient?: boolean;
+  attemptMs?: number;
+  providerStatus?: string;
+  abortOrigin?: 'client' | 'server' | 'none';
 }
 
 /**
@@ -276,7 +293,6 @@ export async function generateGroundedAnswer(
   }
 
   const { GEMINI_API_KEY, GEMINI_MODEL, GEMINI_FALLBACK_MODEL } = envCheck.env;
-  const ai = clientOverride ?? new GoogleGenAI({ apiKey: GEMINI_API_KEY });
   const prompt = buildPrompt(facts, question, history, language);
 
   const startTotal = Date.now();
@@ -284,12 +300,19 @@ export async function generateGroundedAnswer(
   let softDeadlineHit = false;
   let attempts = 1;
   let retryCount = 0;
-  let winner: 'primary' | 'fallback' | 'cache' = 'primary';
+  let winner: 'primary' | 'fallback' | 'cache' | 'local' = 'primary';
   let lastModelUsed = GEMINI_MODEL;
   let lastLogCode = 'chat.gemini_error';
   let lastErrorClass: string | undefined;
   let lastHttpStatus: number | undefined;
   let lastCauseCode: string | undefined;
+
+  const a1Model = GEMINI_MODEL;
+  const a2Model = GEMINI_FALLBACK_MODEL || GEMINI_MODEL;
+  let a1Ms: number | undefined;
+  let a2Ms: number | undefined;
+  let lastProviderStatus: string | undefined;
+  let lastAbortOrigin: 'client' | 'server' | 'none' = 'none';
 
   const controller1 = new AbortController();
   let controller2: AbortController | null = null;
@@ -300,6 +323,9 @@ export async function generateGroundedAnswer(
     signal: AbortSignal,
     attemptRole: 'primary' | 'fallback',
   ): Promise<SingleAttemptOutcome> => {
+    const attemptStart = Date.now();
+    // Fresh client instance per attempt (unless overridden in tests) to prevent idle socket stalls (item 7, E5)
+    const attemptAi = clientOverride ?? new GoogleGenAI({ apiKey: GEMINI_API_KEY });
     try {
       const config: Record<string, unknown> = {
         systemInstruction: SYSTEM_INSTRUCTION,
@@ -333,12 +359,16 @@ export async function generateGroundedAnswer(
         config.thinkingConfig = { thinkingBudget: 0 };
       }
 
-      const response = await ai.models.generateContent({
+      const response = await attemptAi.models.generateContent({
         model: modelName,
         contents: prompt,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: config as any,
       });
+
+      const attemptMs = Date.now() - attemptStart;
+      if (attemptRole === 'primary') a1Ms = attemptMs;
+      else a2Ms = attemptMs;
 
       if (signal.aborted || settled) {
         return { success: false, isTransient: true };
@@ -504,12 +534,38 @@ export async function generateGroundedAnswer(
         },
       };
     } catch (err: unknown) {
+      const attemptMs = Date.now() - attemptStart;
+      if (attemptRole === 'primary') a1Ms = attemptMs;
+      else a2Ms = attemptMs;
+
       const isAborted = signal.aborted;
       const logCode = classifyGeminiError(err, isAborted);
       const isTransient = isTransientGeminiError(err, isAborted);
       const errorClass = err instanceof Error ? err.constructor.name : typeof err;
       let httpStatus: number | undefined;
       let networkCauseCode: string | undefined;
+      let providerStatus: string | undefined;
+
+      const errMsg = err instanceof Error ? err.message : String(err);
+      const statusMatch = errMsg.match(/"status"\s*:\s*"([A-Z_]+)"/);
+      if (statusMatch) {
+        providerStatus = statusMatch[1];
+      } else if (errMsg.includes('UNAVAILABLE')) {
+        providerStatus = 'UNAVAILABLE';
+      } else if (errMsg.includes('RESOURCE_EXHAUSTED')) {
+        providerStatus = 'RESOURCE_EXHAUSTED';
+      } else if (errMsg.includes('DEADLINE_EXCEEDED')) {
+        providerStatus = 'DEADLINE_EXCEEDED';
+      }
+
+      const abortOrigin: 'client' | 'server' | 'none' = isAborted
+        ? 'client'
+        : errMsg.toLowerCase().includes('aborted')
+        ? 'server'
+        : 'none';
+
+      lastProviderStatus = providerStatus;
+      lastAbortOrigin = abortOrigin;
 
       if (typeof err === 'object' && err !== null) {
         if ('status' in err) {
@@ -531,6 +587,9 @@ export async function generateGroundedAnswer(
         errorClass,
         httpStatus,
         networkCauseCode,
+        attemptMs,
+        providerStatus,
+        abortOrigin,
       };
     }
   };
@@ -552,6 +611,19 @@ export async function generateGroundedAnswer(
       cleanup();
       controller1.abort();
       if (controller2) controller2.abort();
+
+      res.a1Ms = a1Ms;
+      res.a2Ms = a2Ms;
+      res.a1Model = a1Model;
+      res.a2Model = a2Model;
+      res.connReused = false;
+      if (!res.providerStatus && lastProviderStatus) {
+        res.providerStatus = lastProviderStatus;
+      }
+      if (!res.abortOrigin || res.abortOrigin === 'none') {
+        res.abortOrigin = lastAbortOrigin;
+      }
+
       resolve(res);
     };
 
@@ -571,6 +643,8 @@ export async function generateGroundedAnswer(
         errorClass: lastErrorClass ?? 'DOMException',
         httpStatus: lastHttpStatus ?? 504,
         networkCauseCode: lastCauseCode,
+        abortOrigin: 'client',
+        providerStatus: lastProviderStatus ?? 'TIMEOUT',
       });
     }, TOTAL_REQUEST_BUDGET_MS);
 

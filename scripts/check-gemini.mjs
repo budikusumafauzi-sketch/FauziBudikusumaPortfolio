@@ -21,10 +21,9 @@ function extractEnv(key) {
 const apiKey = extractEnv('GEMINI_API_KEY');
 const ai = new GoogleGenAI({ apiKey });
 
-const candidates = [
-  'models/gemini-3.5-flash-lite',
-  'models/gemini-3.1-flash-lite',
-];
+const primaryModel = extractEnv('GEMINI_MODEL') || 'models/gemini-3.1-flash-lite';
+const fallbackModel = extractEnv('GEMINI_FALLBACK_MODEL') || 'models/gemini-3.5-flash';
+const candidates = [primaryModel, fallbackModel].filter(Boolean);
 
 const testPrompt = `=== REFERENCE FACTS (VERIFIED PORTFOLIO DATA) ===
 Fauzi Budikusuma holds the MikroTik Certified Network Associate (MTCNA) certification.
@@ -38,7 +37,7 @@ What certifications and internship experience does Fauzi Budikusuma have?
 Produce JSON conforming strictly to schema: {"kind": "answer"|"greeting"|"no_data", "answer": string, "citations": string[]}.`;
 
 async function testGrounded() {
-  console.log('[CHECK:GEMINI] Testing structured prompt on candidates...');
+  console.log('[CHECK:GEMINI] Testing structured prompt on configured models...');
   for (const m of candidates) {
     const start = Date.now();
     try {
@@ -48,7 +47,7 @@ async function testGrounded() {
         temperature: 0.2,
         responseMimeType: 'application/json',
       };
-      if (m.includes('3.1') || m.includes('2.5') || m.includes('2.0')) {
+      if (!m.includes('3.5')) {
         config.thinkingConfig = { thinkingBudget: 0 };
       }
       const res = await ai.models.generateContent({
@@ -61,7 +60,16 @@ async function testGrounded() {
       console.log('Result:\n', res.text?.trim());
     } catch (e) {
       const latency = Date.now() - start;
-      console.log(`\nModel ${m} FAILED (${latency}ms):`, e.message);
+      let errClass = 'chat.gemini_error';
+      const msg = e.message || String(e);
+      if (msg.includes('API_KEY_INVALID') || msg.includes('400')) errClass = 'chat.config_key';
+      else if (msg.includes('403') || msg.includes('PERMISSION_DENIED')) errClass = 'chat.config_denied';
+      else if (msg.includes('404') || msg.includes('not found')) errClass = 'chat.config_model';
+      else if (msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED')) errClass = 'chat.gemini_quota';
+      else if (msg.includes('503') || msg.includes('UNAVAILABLE')) errClass = 'chat.gemini_unavailable';
+      else if (msg.includes('timeout') || msg.includes('aborted')) errClass = 'chat.gemini_timeout';
+
+      console.log(`\nModel ${m} FAILED (${latency}ms) [${errClass}]:`, msg);
     }
   }
 }

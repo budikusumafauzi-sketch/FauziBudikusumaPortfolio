@@ -99,7 +99,7 @@ export const rawSkills: Array<Omit<SkillItem, "position"> & { position?: number 
     verification: "VERIFIED",
     name: "Framer Motion",
     group: "Frontend",
-    iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/framermotion/framermotion-original-wordmark.svg",
+    iconUrl: "/assets/skills/framer-motion.svg",
   },
   {
     id: "skill-react-router",

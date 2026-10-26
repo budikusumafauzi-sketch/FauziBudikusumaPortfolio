@@ -11,7 +11,7 @@ export const profileData: ProfileData = ProfileSchema.parse({
   focusAreas: [
     "Full-Stack Web & API Development",
     "Enterprise Network Architecture & Routing",
-    "AI-Assisted Systems & Cloud Automation",
+    "Artificial Intelligence & Machine Learning",
   ],
   location: "Yogyakarta, Indonesia",
   portraitPath: "/assets/profile/fauzi-portrait.jpg",

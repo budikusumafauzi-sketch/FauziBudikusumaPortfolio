@@ -7,10 +7,11 @@ export const certificationsData: CertificationItem[] = [
     position: 0,
     title: "MikroTik Certified Network Associate (MTCNA)",
     issuer: "MikroTik",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2026",
     category: "Networking",
     imagePath: "/assets/certificates/mikrotik-mtcna.jpg",
-    description: "Enterprise routing protocols, wireless, firewall configuration, and bandwidth management.",
+    description:
+      "Certification demonstrating foundational competency in MikroTik-based network management, covering routing configuration, wireless networking, firewalls, and bandwidth management to ensure reliable network connectivity.",
   }),
   CertificationItemSchema.parse({
     id: "cert-google-cybersecurity",
@@ -18,10 +19,11 @@ export const certificationsData: CertificationItem[] = [
     position: 1,
     title: "Google Cybersecurity Professional Certificate",
     issuer: "Google",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2025",
     category: "Security",
     imagePath: "/assets/certificates/google-cybersecurity.jpg",
-    description: "Threat intelligence, SIEM tools, network defense strategies, and Python security automation.",
+    description:
+      "Professional certification program covering cybersecurity fundamentals, threat and vulnerability identification, network hardening, and the use of security tools such as SIEM. Also encompasses the practical use of Linux, SQL, and Python to support security analysis and incident response.",
   }),
   CertificationItemSchema.parse({
     id: "cert-google-ai",
@@ -29,32 +31,35 @@ export const certificationsData: CertificationItem[] = [
     position: 2,
     title: "Google AI Essentials",
     issuer: "Google",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2025",
     category: "AI & ML",
     imagePath: "/assets/certificates/google-ai-essentials.jpg",
-    description: "Generative AI foundational workflows, prompt engineering, and ethical AI integration.",
+    description:
+      "Foundational learning program on leveraging generative artificial intelligence effectively and responsibly, including prompt design, AI integration into daily workflows, productivity optimization, and understanding ethical AI practices.",
   }),
   CertificationItemSchema.parse({
     id: "cert-uji-kompetensi-1",
     verification: "VERIFIED",
     position: 3,
-    title: "Sertifikat Uji Kompetensi Keahlian (Paket 1)",
+    title: "Sertifikat Uji Kompetensi Keahlian (Bagian 1)",
     issuer: "BNSP / LSP SMK N 1 Seyegan",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2026",
     category: "Vocational",
     imagePath: "/assets/certificates/uji-kompetensi-1.jpg",
-    description: "Enterprise local area network design, structured cabling, and server installation.",
+    description:
+      "Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
   }),
   CertificationItemSchema.parse({
     id: "cert-uji-kompetensi-2",
     verification: "VERIFIED",
     position: 4,
-    title: "Sertifikat Uji Kompetensi Keahlian (Paket 2)",
+    title: "Sertifikat Uji Kompetensi Keahlian (Bagian 2)",
     issuer: "BNSP / LSP SMK N 1 Seyegan",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2026",
     category: "Vocational",
     imagePath: "/assets/certificates/uji-kompetensi-2.jpg",
-    description: "Wide area network configuration, wireless distribution, and routing maintenance.",
+    description:
+      "Competency certificate covering foundational local area network design, topology planning, hardware requirement identification, structured cabling, and network infrastructure installation according to technical standards.",
   }),
   CertificationItemSchema.parse({
     id: "cert-nilai-pkl-1",
@@ -62,10 +67,11 @@ export const certificationsData: CertificationItem[] = [
     position: 5,
     title: "Sertifikat Praktik Kerja Lapangan (Bagian 1)",
     issuer: "Dinas Kominfo DIY",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2025",
     category: "Industry Experience",
     imagePath: "/assets/certificates/nilai-pkl-1.jpg",
-    description: "Provincial IT help desk support, troubleshooting, and network service maintenance.",
+    description:
+      "Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
   }),
   CertificationItemSchema.parse({
     id: "cert-nilai-pkl-2",
@@ -73,9 +79,10 @@ export const certificationsData: CertificationItem[] = [
     position: 6,
     title: "Sertifikat Penilaian Praktik Kerja Lapangan (Bagian 2)",
     issuer: "Dinas Kominfo DIY",
-    issuedLabel: "Issued 2024",
+    issuedLabel: "Issued 2025",
     category: "Industry Experience",
     imagePath: "/assets/certificates/nilai-pkl-2.jpg",
-    description: "Official evaluation record of technical competencies demonstrated at Dinas Kominfo DIY.",
+    description:
+      "Official credential verifying the completion of practical field work in information technology services. Activities encompassed technical support, network and device monitoring, connectivity troubleshooting, technical documentation, and IT infrastructure maintenance support.",
   }),
 ];

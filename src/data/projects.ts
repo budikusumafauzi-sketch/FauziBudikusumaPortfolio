@@ -8,7 +8,7 @@ export const projectsData: ProjectItem[] = [
     position: 0,
     title: "Network Monitoring Dashboard",
     summary:
-      "Real-time network telemetry and SNMP device monitoring dashboard providing active node health, bandwidth throughput, and automated incident alerts.",
+      "Network monitoring application presenting device health, latency telemetry, packet loss, and connectivity history through visual dashboards. Features automated incident logging and proactive alerting to detect disruptions and evaluate network reliability.",
     technologies: ["SNMP", "Fastify", "TypeScript", "Tailwind CSS"],
     coverPath: "/assets/projects/network-monitoring-dashboard.png",
     repoUrl: "https://github.com/budikusumafauzi-sketch/network-monitoring-dashboard",
@@ -21,7 +21,7 @@ export const projectsData: ProjectItem[] = [
     position: 1,
     title: "Research News Intelligence Center",
     summary:
-      "Automated intelligence platform aggregating, categorizing, and summarizing tech news and academic research streams via NLP pipelines.",
+      "Information intelligence platform that aggregates and organizes tech news and academic research publications. Integrates AI-assisted analytics to power automated summarization, key takeaway extraction, topic clustering, and trend tracking via a centralized dashboard.",
     technologies: ["FastAPI", "Python", "PostgreSQL", "Docker"],
     coverPath: "/assets/projects/research-news-intelligence-center.png",
     repoUrl: "https://github.com/budikusumafauzi-sketch/research-news-intelligence-center",
@@ -34,7 +34,7 @@ export const projectsData: ProjectItem[] = [
     position: 2,
     title: "StackLab",
     summary:
-      "Developer workflow orchestration and sandbox environment for containerized microservices and automated API testing pipelines.",
+      "Interactive learning and technical simulation platform offering hands-on practice environments for SQL, APIs, JSON, Linux systems, and computer networking. Designed to validate comprehension, test configurations, and sharpen technical engineering skills in structured workspaces.",
     technologies: ["Node.js", "Docker", "TypeScript", "Redis"],
     coverPath: "/assets/projects/stacklab.jpg",
     repoUrl: "https://github.com/budikusumafauzi-sketch/stacklab-v1",
@@ -47,7 +47,7 @@ export const projectsData: ProjectItem[] = [
     position: 3,
     title: "Sentinel",
     summary:
-      "Infrastructure security monitoring and network anomaly detection system providing automated traffic analysis and alerting.",
+      "Cybersecurity intelligence platform engineered to evaluate device security posture based on verifiable technical signals. Combines rule-based risk evaluation, threat intelligence, and remediation recommendations, utilizing AI as an analytical assistant rather than an authoritative decision-maker.",
     technologies: ["Python", "Network Security", "FastAPI", "Docker"],
     coverPath: "/assets/projects/sentinel.png",
     repoUrl: "https://github.com/budikusumafauzi-sketch/sentinel",
@@ -60,7 +60,7 @@ export const projectsData: ProjectItem[] = [
     position: 4,
     title: "Enterprise Network Lab (MikroTik CHR)",
     summary:
-      "Multi-area OSPF and BGP routing topology built on MikroTik Cloud Hosted Router (CHR) featuring VLAN segmentation and hardened firewall filters.",
+      "Enterprise network laboratory simulation utilizing MikroTik Cloud Hosted Router (CHR), focusing on OSPF and BGP routing, VLAN segmentation, and hardened firewall filtering. Serves as a practical testbed for multi-region network design, inter-site connectivity, and network infrastructure governance.",
     technologies: ["MikroTik CHR", "OSPF", "BGP", "VLAN", "Firewall"],
     coverPath: "/assets/projects/enterprise-network-lab-mikrotik.png",
     repoUrl: "https://github.com/budikusumafauzi-sketch/enterprise-network-lab-mikrotik",
@@ -73,7 +73,7 @@ export const projectsData: ProjectItem[] = [
     position: 5,
     title: "Data Center Network Simulation",
     summary:
-      "Enterprise leaf-spine architecture simulation with redundant core switching, LACP link aggregation, and resilient disaster recovery routing.",
+      "Hierarchical data center network architecture simulation spanning core, distribution, access, WAN edge, server farm, and network operations center (NOC). Design emphasizes connection redundancy, network segmentation, high service availability, and comprehensive infrastructure observability.",
     technologies: ["Leaf-Spine", "Cisco Packet Tracer", "LACP", "VLAN"],
     coverPath: "/assets/projects/enterprise-data-center-network-simulation.png",
     repoUrl: "https://github.com/budikusumafauzi-sketch/Enterprise-Data-Center-Network-Simulation",
