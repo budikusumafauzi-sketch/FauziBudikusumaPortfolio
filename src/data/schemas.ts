@@ -73,7 +73,7 @@ export type CertificationItem = z.infer<typeof CertificationItemSchema>;
 // Gallery Schema
 export const GalleryItemSchema = BaseItemSchema.extend({
   title: z.string().min(2).max(150),
-  caption: z.string().min(5).max(300),
+  caption: z.string().max(300).optional(),
   imagePath: z.string().startsWith("/"),
   alt: z.string().min(5).max(200),
 });

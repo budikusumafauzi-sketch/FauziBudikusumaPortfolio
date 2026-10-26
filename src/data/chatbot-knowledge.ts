@@ -375,11 +375,12 @@ export function buildKnowledgeRecords(inputs: BuildKnowledgeInput = {}): Knowled
     if (item.verification !== "VERIFIED") continue;
 
     const slug = item.id.replace(/^gallery-/, "");
+    const desc = item.caption ? `${item.caption} ` : "";
     records.push({
       id: `gallery:${slug}`,
       category: "GALLERY",
       title: item.title,
-      body: `${item.caption} Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.`,
+      body: `${desc}Visual documentation photo with interactive full-screen lightbox preview available in Field Documentation.`,
       keywords: sanitizeKeywords(["gallery", "documentation", "dokumentasi", item.title]),
       url: null,
       position: galPos++,

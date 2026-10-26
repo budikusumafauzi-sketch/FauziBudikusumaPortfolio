@@ -116,11 +116,7 @@ export function DocumentationSection() {
         {/* Carousel Viewport (touch-action pan-y ensures vertical page scrolling is never blocked) */}
         <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
           <div className="flex gap-5 sm:gap-6 items-stretch select-none">
-            {galleryData.map((item, idx) => {
-              const localizedCaption =
-                (t.documentation.captions as Record<string, string>)[`img${idx + 1}`] ||
-                item.caption;
-
+            {galleryData.map((item) => {
               return (
                 <div
                   key={item.id}
@@ -163,21 +159,11 @@ export function DocumentationSection() {
                     </div>
 
                     {/* Gradient Scrim for Legibility in Both Dark and Light Themes */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent flex flex-col justify-end p-5 text-white pointer-events-none">
-                      {/* Mono Bracket Index */}
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-accent-text font-semibold mb-1">
-                        [ FIELD LOG // 0{idx + 1} ]
-                      </span>
-
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent flex flex-col justify-end p-5 text-white pointer-events-none">
                       {/* Title */}
-                      <h3 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight mb-1.5 leading-snug">
+                      <h3 className="font-display font-bold text-base sm:text-lg text-white uppercase tracking-tight leading-snug">
                         {item.title}
                       </h3>
-
-                      {/* Verified Caption */}
-                      <p className="text-white/85 text-xs sm:text-[13px] leading-relaxed line-clamp-2">
-                        {localizedCaption}
-                      </p>
                     </div>
                   </button>
                 </div>

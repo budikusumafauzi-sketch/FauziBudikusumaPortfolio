@@ -17,16 +17,19 @@ describe("Field Documentation Section", () => {
     expect(html).not.toMatch(/0[0-9]\s*\/\//);
   });
 
-  it("renders all 6 gallery items with title and captions", () => {
+  it("renders all 6 gallery items with clean titles and omits FIELD LOG bracket index and card captions", () => {
     const html = renderToString(React.createElement(DocumentationSection));
     expect(galleryData.length).toBe(6);
 
     for (const item of galleryData) {
       const escapedTitle = item.title.replace(/&/g, "&amp;");
-      const escapedCaption = item.caption.replace(/&/g, "&amp;");
       expect(html).toContain(escapedTitle);
-      expect(html).toContain(escapedCaption);
+      if (item.caption) {
+        const escapedCaption = item.caption.replace(/&/g, "&amp;");
+        expect(html).not.toContain(escapedCaption);
+      }
     }
+    expect(html).not.toContain("FIELD LOG");
   });
 
   it("includes touch-pan-y for non-blocking vertical scrolling", () => {
