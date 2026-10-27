@@ -196,7 +196,7 @@ export const dictionaries: Record<Language, Dictionary> = {
       viewProjects: "View Projects",
       contactMe: "Contact Me",
       downloadCv: "Download CV",
-      statusAvailable: "AVAILABLE FOR WORKSPACE COLLABORATION",
+      statusAvailable: "OPEN TO WORK COLLABORATIONS",
       portraitAlt: "Fauzi Budikusuma — Formal Portrait",
       focusAreas: [
         "Full-Stack Web & API Development",
@@ -423,7 +423,7 @@ export const dictionaries: Record<Language, Dictionary> = {
       viewProjects: "Lihat Proyek",
       contactMe: "Hubungi Saya",
       downloadCv: "Unduh CV",
-      statusAvailable: "TERSEDIA UNTUK KOLABORASI RUANG KERJA",
+      statusAvailable: "TERBUKA UNTUK KOLABORASI KERJA",
       portraitAlt: "Fauzi Budikusuma — Potret Formal",
       focusAreas: [
         "Pengembangan Web & API Full-Stack",

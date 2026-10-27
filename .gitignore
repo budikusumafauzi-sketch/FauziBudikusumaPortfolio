@@ -44,3 +44,12 @@ next-env.d.ts
 dokumen informasi/
 sertifikat portfolio/
 knowledge-inbox/
+
+# visual reference mockups (R-062, R-093)
+design/approved/
+
+# temporary agent scratch files and review documents
+tmp-*
+*.tmp
+*.pdf
+!public/assets/**/*.pdf
