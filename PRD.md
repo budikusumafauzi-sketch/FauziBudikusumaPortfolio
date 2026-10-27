@@ -235,7 +235,7 @@ Facts seen in the approved designs are listed as **DESIGN-OBSERVED / DRAFT** to 
 | LinkedIn | same | handle `in/fauzibudikusuma` | full URL `[OWNER TO PROVIDE]` |
 | GitHub | same | handle `budikusumafauzi-sketch` | full URL `[OWNER TO PROVIDE]` |
 | Instagram | same | handle `budikusuma._fauzi` | full URL `[OWNER TO PROVIDE]` |
-| CV | `public/assets/documents/Fauzi-Budikusuma-CV.pdf` | — | `[OWNER TO PROVIDE]` final PDF |
+| CV | `public/assets/documents/Fauzi-Budikusuma-CV.pdf` | — | `VERIFIED` (owner-supplied, 2026-10-27) |
 | Credential verification URLs | `certifications.ts` | none | optional, `[OWNER TO PROVIDE]` |
 | Location label | footer | "Yogyakarta, ID" | DRAFT |
 

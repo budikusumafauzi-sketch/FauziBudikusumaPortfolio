@@ -27,6 +27,6 @@ export const siteConfig: SiteConfig = {
     { label: "Documentation", href: "#documentation" },
     { label: "Contact", href: "#contact" },
   ],
-  cvPath: "/assets/cv/fauzi-budikusuma-cv-placeholder.pdf",
+  cvPath: "/assets/documents/Fauzi-Budikusuma-CV.pdf",
   cvDownloadName: "Fauzi-Budikusuma-CV.pdf",
 };
