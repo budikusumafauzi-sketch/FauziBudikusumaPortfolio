@@ -44,7 +44,7 @@ export function ProfileJourneySection() {
           <div className="lg:col-span-5">
             <Card className="p-6 sm:p-8 flex flex-col justify-between h-full bg-surface-card">
               <div>
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
                   <span className="font-mono text-xs uppercase tracking-widest text-text-muted">
                     SYS // {t.profileJourney.overviewTag}
                   </span>
@@ -91,11 +91,11 @@ export function ProfileJourneySection() {
           {/* Right Column: Timeline Card */}
           <div className="lg:col-span-7">
             <Card className="p-6 sm:p-8 bg-surface-card">
-              <div className="flex items-center justify-between mb-8 pb-4 border-b border-border-default/80">
+              <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 mb-8 pb-4 border-b border-border-default/80">
                 <h3 className="font-display font-bold text-lg sm:text-xl text-text-strong uppercase tracking-tight">
                   Chronological Journey
                 </h3>
-                <span className="font-mono text-xs uppercase tracking-widest text-text-muted font-medium">
+                <span className="font-mono text-xs uppercase tracking-widest text-text-muted font-medium sm:shrink-0">
                   {t.profileJourney.timelineTitle}
                 </span>
               </div>

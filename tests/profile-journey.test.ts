@@ -36,4 +36,12 @@ describe("Profile & Journey Section (TASK-010 / FR-ABT)", () => {
     expect(html).toContain("OPERATIONAL PRINCIPLES:");
     expect(html).toContain(profileData.location);
   });
+
+  it("renders Chronological Journey card header with responsive stacked mobile classes", () => {
+    const html = renderToString(React.createElement(ProfileJourneySection));
+    expect(html).toContain("Chronological Journey");
+    expect(html).toContain("EDUCATION &amp; EXPERIENCE TIMELINE");
+    // Verify responsive stacking on mobile (< 640px) and row on sm+
+    expect(html).toContain("flex-col items-start gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6");
+  });
 });
