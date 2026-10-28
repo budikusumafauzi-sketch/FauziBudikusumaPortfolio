@@ -10,13 +10,13 @@
 
 | Field | Value |
 |---|---|
-| Date | 2026-10-26 |
+| Date | 2026-10-28 |
 | Current phase | **7 — Quality and security review (Revision 4: CR-014 Complete / Phase 7 Done)** |
 | Waiting for | Owner Gate G8 Approval / Phase 8 Deployment (`TASK-026`) |
 | Last completed task | TASK-044 — Fault-injection and soak verification (CR-014 / Revision 4) |
 | Next task | TASK-026 — Service eligibility check and deployment (Phase 8) |
 | Blockers | None |
-| Last verified commit | `36aa124` |
+| Last verified commit | `f17d297` |
 
 ## 2. Phases and gates
 
