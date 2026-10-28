@@ -12,6 +12,11 @@
 [![Vitest](https://img.shields.io/badge/Vitest-401_Tests_Passing-6e9f18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
+[![Live Production Demo](https://img.shields.io/badge/Live_Demo-fauzi--budikusuma--portfolio.vercel.app-00c853?style=for-the-badge&logo=vercel&logoColor=white)](https://fauzi-budikusuma-portfolio.vercel.app)
+[![GitHub Repository](https://img.shields.io/badge/GitHub_Repo-FauziBudikusumaPortfolio-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/budikusumafauzi-sketch/FauziBudikusumaPortfolio)
+
+![Fauzi Budikusuma Portfolio Preview Banner](./docs/previews/hero-dark.png)
+
 ---
 
 ## Executive Overview
@@ -24,8 +29,26 @@ Designed with an obsession for craftsmanship, accessibility (WCAG 2.1 AA), least
 
 ---
 
+## ✨ Visual Preview
+
+| Dark Theme (Default) | Light Theme |
+| :---: | :---: |
+| ![Hero Dark Mode](./docs/previews/hero-dark.png) | ![Hero Light Mode](./docs/previews/hero-light.png) |
+
+| Selected Projects & Lightbox | Credentials & Field Documentation |
+| :---: | :---: |
+| ![Selected Projects](./docs/previews/projects-showcase.png) | ![Credentials & Documentation](./docs/previews/credentials-documentation.png) |
+
+| Grounded AI Assistant (`LIVE`) | Mobile Responsive (`375px`) |
+| :---: | :---: |
+| ![Grounded AI Assistant](./docs/previews/ai-assistant-live.png) | ![Mobile Responsive View](./docs/previews/mobile-responsive.png) |
+
+---
+
 ## Table of Contents
 
+- [Executive Overview](#executive-overview)
+- [✨ Visual Preview](#-visual-preview)
 - [Key Features & Engineering Highlights](#key-features--engineering-highlights)
 - [System Architecture & Tech Stack](#system-architecture--tech-stack)
 - [Grounded AI Assistant Architecture](#grounded-ai-assistant-architecture)
@@ -164,6 +187,8 @@ The test suite (`tests/db-readonly.test.ts`) actively executes **Negative Write 
 ## Directory Structure
 
 ```text
+├── docs/
+│   └── previews/                # Live application preview screenshots for documentation
 ├── prisma/
 │   ├── migrations/              # SQL schema migration history
 │   ├── schema.prisma            # Declarative database model & connection settings
@@ -356,6 +381,9 @@ Replace the sample assets in `public/assets/` with your own files:
 - `public/assets/certificates/`: Scans or preview images for your credentials.
 - `public/assets/gallery/`: High-resolution photos for field documentation.
 - `src/app/icon.png` & `src/app/apple-icon.png`: Application and favicon icons.
+
+> [!TIP]
+> **Refreshing Preview Screenshots:** When forking or adapting this repository as your personal template, replace the preview screenshots in `docs/previews/` (`hero-dark.png`, `hero-light.png`, `projects-showcase.png`, `credentials-documentation.png`, `ai-assistant-live.png`, `mobile-responsive.png`) with captures of your own customized portfolio to refresh the GitHub `README.md` visual gallery.
 
 ---
 
