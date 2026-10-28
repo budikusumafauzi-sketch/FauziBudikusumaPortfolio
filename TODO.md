@@ -16,7 +16,7 @@
 | Last completed task | TASK-044 — Fault-injection and soak verification (CR-014 / Revision 4) |
 | Next task | TASK-026 — Service eligibility check and deployment (Phase 8) |
 | Blockers | None |
-| Last verified commit | `f17d297` |
+| Last verified commit | `cbd1eec` |
 
 ## 2. Phases and gates
 
