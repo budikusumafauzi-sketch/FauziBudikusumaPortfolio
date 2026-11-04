@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Image from "next/image";
-import useEmblaCarousel from "embla-carousel-react";
 import { Container, SectionHeader, IconButton } from "@/components/ui/primitives";
 import { galleryData } from "@/data/gallery";
 import { type GalleryItem } from "@/data/schemas";
@@ -12,40 +11,106 @@ import { Lightbox } from "@/components/ui/lightbox";
 
 export function DocumentationSection() {
   const { t } = useLanguage();
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    containScroll: "trimSnaps",
-    dragFree: false,
-  });
-
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [prevBtnDisabled, setPrevBtnDisabled] = React.useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = React.useState(false);
   const [selectedDoc, setSelectedDoc] = React.useState<GalleryItem | null>(null);
   const triggerRefMap = React.useRef<Map<string, HTMLButtonElement>>(new Map());
-  const pointerStartRef = React.useRef<{ x: number; y: number } | null>(null);
 
-  const scrollPrev = React.useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
+  // Mouse drag-to-scroll state (desktop mouse only)
+  const [isDragging, setIsDragging] = React.useState(false);
+  const mouseDragRef = React.useRef<{
+    isDown: boolean;
+    startX: number;
+    scrollLeft: number;
+    hasMoved: boolean;
+  }>({
+    isDown: false,
+    startX: 0,
+    scrollLeft: 0,
+    hasMoved: false,
+  });
+  const hasDraggedRef = React.useRef(false);
 
-  const scrollNext = React.useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+  // Card Anti-Misfire Click vs Swipe Guard (Requirement D)
+  const cardPointerRef = React.useRef<{
+    x: number;
+    y: number;
+    scrollLeft: number;
+  } | null>(null);
+  const didSwipeRef = React.useRef(false);
 
-  const onSelect = React.useCallback(() => {
-    if (!emblaApi) return;
-    setPrevBtnDisabled(!emblaApi.canScrollPrev());
-    setNextBtnDisabled(!emblaApi.canScrollNext());
-  }, [emblaApi]);
+  // Real-time synchronization of prev (<) and next (>) navigation buttons (Requirement E)
+  const updateScrollButtons = React.useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const { scrollLeft, clientWidth, scrollWidth } = container;
+    const canScrollPrev = scrollLeft > 4;
+    const canScrollNext = scrollLeft + clientWidth < scrollWidth - 4;
+    setPrevBtnDisabled(!canScrollPrev);
+    setNextBtnDisabled(!canScrollNext);
+  }, []);
 
   React.useEffect(() => {
-    if (!emblaApi) return;
-    queueMicrotask(() => {
-      onSelect();
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    container.addEventListener("scroll", updateScrollButtons, { passive: true });
+
+    const observer = new ResizeObserver(() => {
+      updateScrollButtons();
     });
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
+    observer.observe(container);
+    if (container.firstElementChild) {
+      observer.observe(container.firstElementChild);
+    }
+
+    updateScrollButtons();
+
+    return () => {
+      container.removeEventListener("scroll", updateScrollButtons);
+      observer.disconnect();
+    };
+  }, [updateScrollButtons]);
+
+  const getStepWidth = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return 320;
+    const track = container.firstElementChild as HTMLElement | null;
+    const firstCard = track?.firstElementChild as HTMLElement | null;
+    if (firstCard && track) {
+      const cardWidth = firstCard.offsetWidth;
+      const computedGap = parseFloat(window.getComputedStyle(track).gap || "20") || 20;
+      return cardWidth + computedGap;
+    }
+    return container.clientWidth * 0.85;
+  };
+
+  const scrollPrev = React.useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const stepWidth = getStepWidth();
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    container.scrollBy({
+      left: -stepWidth,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, []);
+
+  const scrollNext = React.useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const stepWidth = getStepWidth();
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    container.scrollBy({
+      left: stepWidth,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, []);
 
   const closeModal = React.useCallback(() => {
     const docId = selectedDoc?.id;
@@ -57,26 +122,133 @@ export function DocumentationSection() {
     }
   }, [selectedDoc]);
 
-  // Pointer drag vs click guard (CR-015 / AC-4)
-  const handlePointerDown = (e: React.PointerEvent) => {
-    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+  const openModal = (item: GalleryItem) => {
+    setSelectedDoc(item);
   };
 
-  const handlePointerUp = (e: React.PointerEvent, item: GalleryItem) => {
-    if (!pointerStartRef.current) return;
-    const deltaX = Math.abs(e.clientX - pointerStartRef.current.x);
-    const deltaY = Math.abs(e.clientY - pointerStartRef.current.y);
-    pointerStartRef.current = null;
-    // Movement > 6px is a carousel drag/swipe; <= 6px is an intentional click/tap
-    if (deltaX <= 6 && deltaY <= 6) {
-      setSelectedDoc(item);
+  // Separation of Touch vs Desktop Mouse Drag (Requirement C)
+  const handleContainerPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // For touch devices, NEVER capture pointer or prevent default.
+    // Let native mobile scrolling handle touch swipe with inertial momentum.
+    if (e.pointerType === "touch") return;
+
+    if (e.pointerType === "mouse" && e.button === 0) {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+      mouseDragRef.current = {
+        isDown: true,
+        startX: e.clientX,
+        scrollLeft: container.scrollLeft,
+        hasMoved: false,
+      };
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent, item: GalleryItem) => {
+  const handleContainerPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch") return;
+
+    const drag = mouseDragRef.current;
+    if (!drag.isDown) return;
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const deltaX = e.clientX - drag.startX;
+
+    // Movement > 6px initiates desktop mouse drag-to-scroll
+    if (!drag.hasMoved && Math.abs(deltaX) > 6) {
+      drag.hasMoved = true;
+      hasDraggedRef.current = true;
+      setIsDragging(true);
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {
+        // Safe fallback
+      }
+    }
+
+    if (drag.hasMoved) {
+      container.scrollLeft = drag.scrollLeft - deltaX;
+    }
+  };
+
+  const handleContainerPointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch") return;
+
+    const drag = mouseDragRef.current;
+    if (drag.isDown) {
+      if (drag.hasMoved) {
+        try {
+          if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+          }
+        } catch {
+          // Safe fallback
+        }
+        setTimeout(() => {
+          hasDraggedRef.current = false;
+        }, 50);
+      } else {
+        hasDraggedRef.current = false;
+      }
+      drag.isDown = false;
+      drag.hasMoved = false;
+      setIsDragging(false);
+    }
+  };
+
+  // Laptop Touchpad Wheel Support (Requirement B)
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    // Shift + vertical wheel converted to horizontal scroll
+    if (e.shiftKey && Math.abs(e.deltaY) > 0 && e.deltaX === 0) {
+      container.scrollLeft += e.deltaY;
+    }
+    // Dominant horizontal touchpad swipe is handled natively by overflow-x-auto,
+    // and overscroll-x-contain prevents page navigation gestures.
+  };
+
+  // Card Anti-Misfire Click vs Swipe Guard (Requirement D)
+  const handleCardPointerDown = (e: React.PointerEvent) => {
+    cardPointerRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      scrollLeft: scrollContainerRef.current?.scrollLeft ?? 0,
+    };
+  };
+
+  const handleCardPointerUp = (e: React.PointerEvent) => {
+    const start = cardPointerRef.current;
+    if (!start) return;
+
+    const currentScrollLeft = scrollContainerRef.current?.scrollLeft ?? 0;
+    const deltaX = Math.abs(e.clientX - start.x);
+    const deltaY = Math.abs(e.clientY - start.y);
+    const deltaScroll = Math.abs(currentScrollLeft - start.scrollLeft);
+
+    cardPointerRef.current = null;
+
+    if (hasDraggedRef.current || deltaX > 6 || deltaY > 6 || deltaScroll > 6) {
+      didSwipeRef.current = true;
+      setTimeout(() => {
+        didSwipeRef.current = false;
+      }, 150);
+    }
+  };
+
+  const handleCardClick = (item: GalleryItem) => {
+    if (hasDraggedRef.current || didSwipeRef.current) {
+      return;
+    }
+    openModal(item);
+  };
+
+  const handleCardKeyDown = (e: React.KeyboardEvent, item: GalleryItem) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      setSelectedDoc(item);
+      openModal(item);
     }
   };
 
@@ -113,15 +285,29 @@ export function DocumentationSection() {
           </div>
         </div>
 
-        {/* Carousel Viewport (touch-action pan-y ensures vertical page scrolling is never blocked) */}
-        <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
+        {/* Natural Scroll Container with CSS Scroll Snap & Native Touchpad/Swipe Support */}
+        <div
+          ref={scrollContainerRef}
+          onPointerDown={handleContainerPointerDown}
+          onPointerMove={handleContainerPointerMove}
+          onPointerUp={handleContainerPointerUpOrCancel}
+          onPointerCancel={handleContainerPointerUpOrCancel}
+          onWheel={handleWheel}
+          className={`overflow-x-auto overscroll-x-contain scroll-smooth motion-reduce:scroll-auto ${
+            isDragging ? "snap-proximity cursor-grabbing select-none" : "snap-x snap-mandatory cursor-grab"
+          } [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x touch-pan-y [-webkit-overflow-scrolling:touch]`}
+          style={{
+            WebkitOverflowScrolling: "touch",
+            touchAction: "pan-x pan-y",
+          }}
+        >
           <div className="flex gap-5 sm:gap-6 items-stretch select-none">
             {galleryData.map((item) => {
               const docTitle = t.documentation.titles?.[item.id] || item.title;
               return (
                 <div
                   key={item.id}
-                  className="flex-[0_0_84%] sm:flex-[0_0_46%] lg:flex-[0_0_24%] min-w-0"
+                  className="flex-[0_0_84%] sm:flex-[0_0_46%] lg:flex-[0_0_24%] min-w-0 snap-start"
                 >
                   {/* Interactive Card Button Trigger (AC-3, AC-4) */}
                   <button
@@ -130,15 +316,10 @@ export function DocumentationSection() {
                       else triggerRefMap.current.delete(item.id);
                     }}
                     type="button"
-                    onClick={() => {
-                      // Fallback for non-pointer activations (e.g. synthetic test clicks)
-                      if (!pointerStartRef.current) {
-                        setSelectedDoc(item);
-                      }
-                    }}
-                    onPointerDown={handlePointerDown}
-                    onPointerUp={(e) => handlePointerUp(e, item)}
-                    onKeyDown={(e) => handleKeyDown(e, item)}
+                    onClick={() => handleCardClick(item)}
+                    onPointerDown={handleCardPointerDown}
+                    onPointerUp={handleCardPointerUp}
+                    onKeyDown={(e) => handleCardKeyDown(e, item)}
                     aria-label={`${t.documentation.previewAria} ${docTitle}`}
                     className="group relative h-80 sm:h-88 w-full overflow-hidden rounded-xl border border-border-default bg-surface-card shadow-sm transition-all duration-300 hover:border-accent hover:shadow-[0_0_24px_var(--color-accent-glow)] cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent block text-left"
                   >
@@ -148,8 +329,9 @@ export function DocumentationSection() {
                       alt={item.alt}
                       fill
                       unoptimized
+                      draggable={false}
                       sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 24vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105 select-none pointer-events-none"
                     />
 
                     {/* Subtle Hover Indicator */}
